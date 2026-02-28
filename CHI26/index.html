@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHI'26 Flagged Papers — Seena Reading List</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #FF5021;
+    --primary-hover: #FF6B47;
+    --accent: #2C5F6F;
+    --accent-light: #2C5F6F18;
+    --background: #F6F5F4;
+    --card: #FFFFFF;
+    --foreground: #1A1918;
+    --charcoal: #3A3734;
+    --mid-gray: #9B9691;
+    --light-gray: #E8E6E4;
+    --border: #E8E6E4;
+    --coral-pink: #FF7A5C;
+    --warm-yellow: #FFB84D;
+    --sage-green: #7C9885;
+    --burnt-sienna: #D93A00;
+    --success: #4ADE80;
+    --warning: #FFC66D;
+    --error: #F87171;
+    --info: #60A5FA;
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --radius-3xl: 1.5rem;
+    --radius-full: 9999px;
+    --radius-xl: 0.75rem;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 56px 24px 120px;
+  }
+
+  .header { margin-bottom: 48px; }
+
+  .seena-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .seena-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    background: var(--primary);
+  }
+
+  .seena-wordmark {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--foreground);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+  }
+
+  h1 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--foreground);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+
+  h1 span { color: var(--primary); }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--charcoal);
+    max-width: 620px;
+    line-height: 1.7;
+    opacity: 0.75;
+  }
+
+  .stats-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 32px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-3xl);
+    padding: 20px 28px;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .stat {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .stat-value {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--foreground);
+  }
+
+  .stat-value.read-count { color: var(--sage-green); }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--mid-gray);
+    font-weight: 500;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--light-gray);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-left: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--coral-pink));
+    border-radius: var(--radius-full);
+    transition: width 0.5s ease-out;
+  }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 8px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    background: var(--card);
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--mid-gray);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .filter-btn:active { transform: scale(0.98); }
+
+  .filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .paper-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .paper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-3xl);
+    padding: 28px 32px;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-xs);
+    animation: fadeIn 0.2s ease forwards;
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .paper:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--light-gray);
+  }
+
+  .paper.is-read { opacity: 0.55; }
+  .paper.is-read:hover { opacity: 0.85; }
+
+  .paper-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .paper-number {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mid-gray);
+    min-width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background);
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .paper-content { flex: 1; min-width: 0; }
+
+  .paper-title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--foreground);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .paper-relevance {
+    font-size: 14px;
+    color: var(--charcoal);
+    line-height: 1.65;
+    opacity: 0.7;
+  }
+
+  .paper-relevance em {
+    color: var(--primary);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .paper-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .paper-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+  }
+
+  .tag-interviews { background: #2C5F6F14; color: var(--accent); }
+  .tag-qual { background: #7C988514; color: var(--sage-green); }
+  .tag-behavior { background: #FF502114; color: var(--primary); }
+  .tag-agents { background: #FFB84D18; color: #B8860B; }
+  .tag-bias { background: #F8717118; color: var(--error); }
+
+  .paper-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--light-gray);
+  }
+
+  .action-btn {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .action-btn:active { transform: scale(0.98); }
+
+  .btn-pdf {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-pdf:hover {
+    background: var(--primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-read {
+    background: transparent;
+    color: var(--mid-gray);
+    border: 1px solid var(--border);
+  }
+
+  .btn-read:hover {
+    border-color: var(--sage-green);
+    color: var(--sage-green);
+    background: #7C988510;
+  }
+
+  .btn-read.marked {
+    background: #7C988518;
+    border: 1px solid var(--sage-green);
+    color: var(--sage-green);
+  }
+
+  .btn-arxiv {
+    background: transparent;
+    color: var(--mid-gray);
+    border: 1px solid var(--border);
+  }
+
+  .btn-arxiv:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .btn-analysis {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .btn-analysis:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-analysis.open {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--mid-gray);
+    font-size: 14px;
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-3xl);
+  }
+
+  /* ── Analysis Panel ── */
+  .analysis-panel {
+    display: none;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 2px solid var(--primary);
+  }
+
+  .analysis-panel.open {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .analysis-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .analysis-badge {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .analysis-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--primary);
+  }
+
+  .analysis-meta {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    color: var(--mid-gray);
+  }
+
+  /* TTS-optimized reading sections */
+  .tts-section {
+    margin-bottom: 28px;
+  }
+
+  .tts-section-title {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tts-paragraph {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--charcoal);
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    position: relative;
+    user-select: text;
+  }
+
+  .tts-paragraph:hover {
+    background: #FF502108;
+  }
+
+  .tts-paragraph.speaking {
+    background: #FF502112;
+    border-left: 3px solid var(--primary);
+    color: var(--foreground);
+  }
+
+  .tts-paragraph .highlight {
+    color: var(--primary);
+    font-weight: 500;
+  }
+
+  .tts-paragraph .stat-highlight {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .tts-vitals {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--charcoal);
+    padding: 16px 20px;
+    background: var(--background);
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+
+  .tts-vitals strong {
+    color: var(--foreground);
+  }
+
+  /* TTS Controls */
+  .tts-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--background);
+    border-radius: var(--radius-full);
+    margin-bottom: 24px;
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .tts-btn {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tts-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .tts-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  .tts-status {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    color: var(--mid-gray);
+    margin-left: auto;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--light-gray);
+    margin: 28px 0;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 36px 16px 80px; }
+    h1 { font-size: 28px; }
+    .stats-row { flex-wrap: wrap; padding: 16px 20px; gap: 16px; }
+    .progress-track { width: 100%; margin-left: 0; }
+    .paper { padding: 20px 22px; border-radius: var(--radius-xl); }
+    .paper-title { font-size: 16px; }
+    .paper-actions { flex-wrap: wrap; }
+    .filter-btn { padding: 6px 14px; font-size: 10px; }
+    .tts-paragraph { font-size: 15px; padding: 8px 10px; }
+    .tts-controls { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="seena-mark">
+      <div class="seena-dot"></div>
+      <span class="seena-wordmark">Seena</span>
+    </div>
+    <div class="eyebrow">CHI 2026 · Research Reading List</div>
+    <h1>Flagged Papers for <span>Seena</span></h1>
+    <p class="subtitle">8 papers from the CHI'26 preprint collection directly relevant to Seena's behavioral intelligence platform — contextual micro-interviews, qualitative analysis, and human-AI interaction.</p>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-value read-count" id="readCount">0</span>
+        <span class="stat-label">read</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-value">8</span>
+        <span class="stat-label">total</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="interviews">Interviews</button>
+    <button class="filter-btn" data-filter="qual">Qual Analysis</button>
+    <button class="filter-btn" data-filter="behavior">Behavior</button>
+    <button class="filter-btn" data-filter="agents">Agents</button>
+    <button class="filter-btn" data-filter="bias">LLM Bias</button>
+    <button class="filter-btn" data-filter="read">✓ Read</button>
+    <button class="filter-btn" data-filter="unread">Unread</button>
+  </div>
+
+  <div class="paper-list" id="paperList"></div>
+</div>
+
+<script>
+// ── Paper 1 Analysis Content ──
+const paper1Analysis = `
+<div class="analysis-panel open" id="analysisPanel1">
+  <div class="analysis-header">
+    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~12 min listen</div>
+  </div>
+
+  <div class="tts-controls" id="ttsControls">
+    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> Sensing What Surveys Miss: Understanding and Personalizing Proactive LLM Support by User Modeling<br>
+    <strong>Authors:</strong> Ailin Liu and four co-authors<br>
+    <strong>Venue:</strong> CHI 2026<br>
+    <strong>One-liner:</strong> A system that uses skin conductance and mouse movement to detect when survey respondents are struggling, then triggers personalized LLM help at precisely the right moment.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here's the core insight that makes this paper worth your time. Most AI assistance systems wait for you to ask for help, or they blast you with support on a fixed schedule. But the authors of this paper asked a different question: <span class="highlight">what if the system could sense that you're struggling before you even realize it yourself?</span></p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">They built a system that watches two signals while you're filling out online surveys: your skin's electrical conductance, which is a proxy for stress and cognitive load, and how you're moving your mouse. By combining these signals with personalized machine learning classifiers that adapt to your individual patterns over time, the system can predict when you're genuinely having trouble with a question, versus just thinking carefully.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">When the system detects real difficulty, it proactively triggers LLM-generated clarifications and explanations. And here's the kicker: when the timing is right, it works. <span class="highlight">Response accuracy went up by twenty-one percent</span>, and <span class="highlight">false negatives, where people get things wrong because they didn't get help, dropped from fifty-one percent down to twenty-three percent.</span> This matters for anyone building AI systems that need to intervene at the right moment, which is exactly what Seena does with micro-interviews.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Contribution</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper makes two intertwined contributions. The primary one is an <span class="highlight">artifact contribution</span>: a working adaptive system that fuses physiological sensing with behavioral data, personalized classifiers, and LLM-based assistance into a real-time intervention pipeline. The secondary contribution is <span class="highlight">empirical</span>: a rigorous within-subjects study with thirty-two participants that demonstrates the system's effectiveness.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system's architecture is worth understanding in some detail. It uses electrodermal activity, or EDA, which measures tiny changes in how well your skin conducts electricity. When you're stressed or cognitively loaded, your sympathetic nervous system activates and your skin conductance spikes. They pair this with mouse movement dynamics, things like velocity, hesitation patterns, and cursor trajectory. Together, these signals feed into a classifier that's been personalized to each individual user.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">What's clever about the personalization is their threshold adaptation mechanism. They use a rule-based system with six traversal paths. Think of it like a thermostat that's constantly recalibrating. If the system offers help and the person accepts and gets the answer right, the threshold adjusts downward slightly. If the system doesn't offer help and the person gets the answer wrong, the threshold drops sharply, making it more sensitive. This creates a feedback loop that fine-tunes sensitivity to each individual over the course of a session.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd classify the contribution strength as <span class="highlight">significant</span>. It meaningfully advances the state of proactive AI assistance by demonstrating that physiological sensing plus personalized timing can dramatically outperform fixed or random intervention schedules. It's not quite transformative because the sensing hardware requirement, specifically EDA, limits immediate scalability. But the principle it validates is powerful.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the experimental design. The within-subjects setup with three conditions, aligned-adaptive, misaligned-adaptive, and random-adaptive, is elegant because it isolates the timing variable. Many papers in this space just compare "AI help versus no help." By keeping the assistance content constant and only varying when it arrives, the authors make a clean argument that <span class="highlight">timing is the critical variable</span>, not the content of the help itself.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the ecological validity of the difficulty spillover framing. This isn't an abstract problem. Anyone who's taken a long, mentally taxing survey knows the feeling of cognitive depletion accumulating across items. The authors ground their system in this well-documented phenomenon and show that properly timed interventions can actually break the cascade before it degrades later responses.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is the reliance on electrodermal activity sensing, which requires a wearable sensor on the participant's hand. The paper acknowledges this, but it limits the practical deployment path. Mouse movement alone, which the paper also uses, might be sufficient for many applications and would make the system accessible to anyone with a web browser. A key open question is how much accuracy you'd lose by dropping the EDA signal entirely.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A secondary concern is the sample size and population. Thirty-two participants is respectable for a lab study, but it's worth noting that the personalized classifier approach inherently needs per-user calibration. How well this transfers to truly diverse populations, different age groups, varying levels of tech literacy, and different cultural contexts around help-seeking remains to be explored.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Similar Reading</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's own references, several closely related works stand out. First, Conrad and colleagues' work from 2003 and 2006 on system-initiated clarifications in web surveys, which established the foundation for interactive survey support. Second, the ComPeer system by Liu and colleagues from 2024, which built a conversational agent for proactive peer support and found that <span class="highlight">timing accounted for forty percent of variance in intervention acceptance</span>, a finding that directly motivated this work.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Third, the Just-In-Time Information Retrieval agents concept from Rhodes and Maes in 2000, which pioneered the idea of proactive information delivery based on local context. And fourth, Andolina and colleagues' 2018 work on proactive agents that listen to conversations and retrieve related information, which established the pattern of ambient sensing plus proactive support that this paper builds on.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Seena Labs Relevance</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is <span class="highlight">directly and deeply relevant to Seena's core architecture</span>. The central challenge it addresses, when to proactively intervene in a user's task flow, is precisely the problem Seena's detection agents face when deciding the optimal moment to trigger a contextual micro-interview.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The threshold adaptation mechanism with its six traversal paths is immediately applicable to Seena. Right now, Seena's interview trigger logic needs to balance signal quality against user disruption. This paper provides a proven framework for continuously recalibrating that threshold per user. The insight that accepting help and answering correctly means the system was slightly too aggressive, while not receiving help and answering incorrectly means the system was far too conservative, maps directly to Seena's challenge of interview timing.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Seena can't rely on EDA sensing since it operates through standard web sessions. But the mouse movement features the paper extracts, velocity, hesitation, trajectory deviation, are all available to Seena's behavioral analytics layer. The paper validates that behavioral signals alone carry meaningful predictive power for cognitive state, which is encouraging for Seena's sensor-free approach. The key design principle to adopt is the <span class="highlight">personalized baseline with adaptive thresholds</span>, calibrating what "struggling" looks like for each individual user rather than applying population-level defaults.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Finally, the difficulty spillover finding is directly relevant to how Seena sequences micro-interviews. If asking a demanding reflection question depletes cognitive resources for subsequent product interactions, Seena needs to account for this cascade effect in its interview scheduling. Lighter, more contextual prompts may outperform deeper but more taxing questions, especially later in a session.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Several numbers from this study are directly citable in Seena's pitch materials and product memos. Aligned-adaptive assistance improved response accuracy by <span class="stat-highlight">twenty-one percent</span> compared to misaligned timing. False negative rates, cases where respondents needed help but didn't get it and answered incorrectly, dropped from <span class="stat-highlight">fifty point nine percent to twenty-two point nine percent</span> with properly timed interventions.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system also improved perceived efficiency, dependability, and benevolence, meaning users didn't just perform better, they felt better about the experience. And from the related work they cite, the ComPeer finding that <span class="stat-highlight">timing accounted for forty percent of variance in intervention acceptance</span> is an incredibly powerful statistic for making the case that when you ask matters as much as what you ask.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here's the dinner party version: <span class="highlight">Your products are interrupting users at the wrong time, and they're paying for it with worse decisions.</span> This paper proves that AI assistance delivered at the right moment improves outcomes by over twenty percent, while the same help delivered at the wrong moment is basically noise. For product managers, the takeaway is that building helpful features isn't enough. You need to build features that know when to show up.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for Substack or LinkedIn: "We spend millions making AI smarter, but this research shows the real unlock is making AI more patient. A twenty-one percent accuracy improvement came not from better answers, but from better timing." You could frame this as a broader "Everything is Designed" piece about how timing is the invisible design variable that product teams consistently underinvest in.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Industry vs. Theory</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper bridges both worlds. The theoretical foundation around difficulty spillover and adaptive thresholding is grounded in cognitive science literature. But the artifact itself, a working system with real performance gains, makes it immediately actionable for industry. The EDA requirement keeps the full system in the research domain for now, but the mouse-movement-only variant and the threshold adaptation logic are deployable in production today. For Seena, this is a "steal the architecture, adapt the sensors" paper.</p>
+  </div>
+</div>
+`;
+
+const paper2Analysis = `
+<div class="analysis-panel open">
+  <div class="analysis-header">
+    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~14 min listen</div>
+  </div>
+
+  <div class="tts-controls">
+    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> InterFlow: Designing Unobtrusive AI to Empower Interviewers in Semi-Structured Interviews<br>
+    <strong>Authors:</strong> Yi Wen and five co-authors<br>
+    <strong>Venue:</strong> CHI 2026, Barcelona<br>
+    <strong>One-liner:</strong> An AI-powered visual scaffold that dynamically adapts interview scripts in real time, tracks conversational balance, and surfaces follow-up suggestions through a co-interview agent — all without stealing the interviewer's attention.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you've ever conducted a semi-structured interview, you know the juggling act. You're trying to actively listen to your participant, mentally tracking which questions you've covered and which you haven't, deciding whether to probe deeper or move on, keeping an eye on the clock, and somehow taking notes that you'll actually be able to use later. <span class="highlight">InterFlow is a system designed to take several of those balls out of the air for you.</span></p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The authors built an AI-powered interface with three main components. First, an interactive script that transforms your static interview guide into a living visualization, color-coded by what you've covered, what's current, and what's still ahead, with drag-and-drop reordering. Second, a visual timer that shows not just elapsed time but your speaking ratio, so you can see at a glance whether you're talking too much or giving the participant enough space. And third, a mixed-initiative information capture system with three escalating levels of AI involvement: manual notes, AI-generated summaries you can trigger on demand, and a proactive co-interview agent that listens along and surfaces potential follow-up points you might have missed.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">They evaluated this against a baseline of a text editor plus OpenAI's realtime speech API in a within-subjects study with twelve participants. The results show InterFlow <span class="highlight">significantly enhanced situational awareness</span>, with the score jumping from 2.67 to 5.0 on a seven-point scale. But here's what makes this paper especially interesting: they also found real limitations in how actionable the AI's suggestions were during the fast-moving reality of a live conversation. That tension between useful AI and usable AI in real-time contexts is exactly the design problem Seena faces.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Contribution</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper's primary contribution is an <span class="highlight">artifact</span>: a working system that re-imagines the semi-structured interview tool as a dynamic, AI-augmented workspace. The secondary contribution is <span class="highlight">empirical</span>, grounded in a comparative user study, and there's a tertiary <span class="highlight">methodological</span> contribution in their design implications for unobtrusive AI assistance under time pressure.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system architecture is worth unpacking. The interactive script component uses spaCy for text processing and embeddings to perform question retrieval. As the conversation unfolds, it automatically detects which question the interviewer is currently on and updates the visual state. Questions are color-coded: yellow for the current question, gray for visited, blue for unvisited. Interviewers can drag and drop to reorder the remaining questions on the fly, which is a small but brilliant design choice. It means the AI doesn't dictate the interview flow; it gives you the scaffolding to manage it yourself.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The visual timer is more than a countdown. It embeds a speaking-ratio visualization that shows the balance between interviewer and interviewee talk time. This creates what the authors call a scaffold for metacognition, helping interviewers notice when they're dominating the conversation or when a participant is being unusually brief. Several participants reported using it as a checkpoint during natural pauses to decide whether to wrap up a topic or dig deeper.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The co-interview agent is the most ambitious component. It listens to the conversation continuously, combines conversation analysis with an LLM acting as a judge, and proactively surfaces points worth probing. It explains why it's flagging something, whether that's an inconsistency it detected, a topic the participant mentioned but didn't elaborate on, or a connection to the research questions. The key design decision here is that the agent provides suggestions but never takes action. The interviewer always decides whether and how to follow up.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd rate the contribution strength as <span class="highlight">significant</span>. The system meaningfully advances how we think about AI augmentation in qualitative research methods. It's not transformative because the core components, real-time transcription, LLM summarization, proactive suggestions, are individually known. But the integration into a coherent interview scaffold, combined with the honest evaluation of where it falls short, pushes the field forward in a genuinely useful way.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the <span class="highlight">design philosophy of graduated automation</span>. The three levels of information capture, manual notes, on-demand AI summary, and proactive co-interview agent, let users engage with AI at whatever level of involvement they're comfortable with in the moment. This is a textbook example of mixed-initiative interaction done well. It respects the interviewer's agency while offering genuine support. Too many AI tools in this space go all-or-nothing: either the AI runs the show or it sits passive until explicitly invoked. InterFlow finds the middle ground.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the intellectual honesty of the evaluation. The authors don't just report that InterFlow reduced cognitive load, which it did. They also carefully document where the system fell short. One participant's quote captures it perfectly: the system flagged an inconsistency, but the interviewer didn't know how to naturally shift the conversation to address it without breaking flow. This gap between recognizing an opportunity and being able to act on it in real time is a critical insight that most papers in this space would gloss over. Participants asked an average of <span class="stat-highlight">24.58 questions with InterFlow versus 18.17 with the baseline</span>, suggesting the system encouraged broader coverage, but the authors are careful to note that more questions doesn't automatically mean better interviews.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary weakness is the small sample size. Twelve participants is enough for a formative evaluation and to identify themes, but it limits the statistical power of the quantitative comparisons. The NASA Task Load Index and System Usability Scale results are suggestive but not conclusive at this scale. A larger study with more diverse interviewers, including novices versus experts, would strengthen the claims substantially.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A secondary concern is that the study used staged interviews rather than real research interviews with genuine stakes. The authors acknowledge this, but it matters. In a real study, the interviewer has deeper domain knowledge and stronger opinions about what matters. The co-interview agent's suggestions might be more or less useful when the interviewer already has strong hypotheses. Whether InterFlow helps most when you know your domain well or when you're exploring unfamiliar territory is an open question.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Similar Reading</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's own references, several key works stand out. First, Schroeder and colleagues' 2025 survey of LLM uses in qualitative research, which maps the broad landscape from data collection through analysis. Second, the Interview AI-ssistant work on real-time human-AI collaboration in interview preparation and execution, which tackles the same problem space from a different angle. Third, the work by Jiang and colleagues from 2021 on supporting qualitative research through computational methods, which established the foundation for AI-augmented qualitative workflows.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Also worth noting is the Envisioning AI Support paper that explored how interviewers across the expertise spectrum imagine AI assistance in semi-structured interviews, which provides the formative research that motivates InterFlow's design choices. And Chen and colleagues' 2025 work on AI support in online meetings, which tackles similar challenges of real-time AI assistance during attention-intensive conversational tasks, helping ground the design implications in a broader context.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Seena Labs Relevance</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper is the closest thing to a direct blueprint for Seena's micro-interview system that exists in the CHI literature.</span> While InterFlow targets human interviewers conducting research interviews, nearly every design decision maps to challenges Seena faces with its automated micro-interview agents.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The graduated automation model is immediately applicable. Seena's micro-interviews currently need to decide how much to automate versus how much to let the user direct. InterFlow's three-tier approach suggests Seena should offer analogous levels: let users flag things manually through direct feedback, provide AI-summarized context on demand, and have proactive agents surface follow-up opportunities. The key insight is that <span class="highlight">different users will engage with different levels at different moments</span>, and the system should support all three simultaneously.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The speaking-ratio visualization is directly transferable to Seena's interview analytics. In micro-interviews, the equivalent metric is the balance between system prompts and user responses. If Seena's interview agent is asking too many questions relative to the depth of user responses, that's a signal the questions are too broad or the timing is wrong. Building this kind of conversational balance metric into Seena's interview quality scoring would be straightforward and valuable.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The most important finding for Seena is the actionability gap. InterFlow showed that even when AI suggestions are accurate and well-timed, human interviewers often can't act on them because the conversation has moved on. For Seena, this has a counterintuitive implication: <span class="highlight">because Seena's interview agent is the one asking the questions, it can actually act on its own follow-up suggestions in ways human interviewers cannot.</span> This is a structural advantage of automated micro-interviews over human-conducted interviews augmented by AI. Seena should lean into this advantage by designing follow-up logic that's more aggressive than what a human interviewer could manage.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Finally, the interactive script concept maps to how Seena should manage interview guides. Rather than a fixed question sequence, Seena's interview agents should maintain a dynamic, reorderable script that adapts based on what the user has already revealed through their behavior. The drag-and-drop metaphor from InterFlow could become a configuration interface for product managers setting up Seena micro-interview campaigns, letting them prioritize questions but trusting the system to sequence them optimally for each session.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The headline number is the situational awareness improvement: <span class="stat-highlight">from 2.67 to 5.0 on a seven-point scale</span>, a statistically significant jump with a large effect size of d equals negative 1.07, and p equals .009. The visual timer specifically was rated positively at <span class="stat-highlight">5.67 out of 7</span>, making it the highest-rated individual component.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">On the interaction side, interviewers asked <span class="stat-highlight">24.58 questions on average with InterFlow versus 18.17 with the baseline</span>, a thirty-five percent increase in question coverage. The system uses NASA Task Load Index for cognitive load measurement, a well-validated instrument, and the System Usability Scale for usability, both standard references that lend credibility to the evaluation. The qualitative finding that suggestion actionability is constrained by conversational dynamics is also citable as evidence for why fully automated interview agents may outperform AI-augmented human interviewers in certain contexts.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">We've been thinking about AI for interviews all wrong. Instead of replacing the interviewer, the real opportunity is becoming their co-pilot.</span> InterFlow shows that when AI handles the logistics, tracking time, visualizing progress, catching what you missed, the human interviewer is freed up to do what humans do best: listen deeply and follow their instincts. But here's the twist. Even with a great co-pilot, human interviewers couldn't always act on the AI's suggestions fast enough. Which raises an uncomfortable question: in some contexts, might a well-designed AI interviewer actually be better than a human with AI assistance?</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for content: "The best AI assistant isn't the one that gives you the most information. It's the one that gives you the right information at the moment you can actually use it. InterFlow proves that timing and actionability matter more than intelligence." You could frame this as an Everything is Designed piece on the design of interruption, when AI should speak up versus shut up, and what that means for how we build products that assist without overwhelming.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Industry vs. Theory</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper sits firmly in the bridge between theory and practice. The theoretical contributions around unobtrusive AI design and mixed-initiative interaction under time pressure are well-grounded in HCI frameworks. But the system itself is immediately practical. Any UX research team doing regular interviews could benefit from a tool like InterFlow tomorrow. For Seena, this is less of a "steal the architecture" paper and more of a <span class="highlight">"steal the design philosophy" paper</span>. The graduated automation model, the conversational balance metrics, and especially the honest reckoning with the actionability gap are all design principles Seena should internalize as it builds out its micro-interview system.</p>
+  </div>
+</div>
+`;
+
+const paper3Analysis = `
+<div class="analysis-panel open">
+  <div class="analysis-header">
+    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~13 min listen</div>
+  </div>
+
+  <div class="tts-controls">
+    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> Behavioral Indicators of Overreliance During Interaction with Conversational Language Models<br>
+    <strong>Authors:</strong> Chang Liu, Qinyi Zhou, Xinjie Shen, Xingyu Bruce Liu, Tongshuang Wu, Xiang 'Anthony' Chen<br>
+    <strong>Venue:</strong> CHI 2026, Barcelona<br>
+    <strong>One-liner:</strong> A study of 77 participants that identifies five distinct behavioral patterns — visible in mouse clicks, scrolling, and copy-paste actions — that predict whether someone is blindly trusting an LLM's output or critically evaluating it.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here's the problem this paper tackles. When someone uses ChatGPT or Claude for a real task, how do you know whether they're actually thinking critically about what the AI says, or just blindly accepting it? You can check the final output, sure. But by then it's too late. The misinformation is already baked into their work. <span class="highlight">What if you could detect overreliance in real time, while it's happening, by watching how someone interacts with the interface?</span></p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">That's exactly what these researchers did. They had seventy-seven participants complete three real-world tasks, writing, article summarization, and trip planning, using an LLM that had been deliberately injected with plausible misinformation. Then they logged every click, scroll, copy, paste, and keystroke. By encoding these action sequences with an autoencoder and clustering them with DBSCAN, they identified five behavioral patterns that reliably distinguish careful users from overreliant ones.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The low-overreliance patterns include careful initial task comprehension, reading through the full LLM response before acting, and fine-grained navigation where users scroll to specific words and sentences rather than jumping to rough page regions. <span class="highlight">The high-overreliance patterns are revealing: frequent wholesale copy-paste, skipping the initial comprehension step entirely, repeatedly bouncing back to the LLM chat without checking other sources, coarse "ballpark" scrolling and cursor placement, and a particularly fascinating pattern where users hesitate at misinformation but accept it anyway.</span> That last one is gold for anyone building behavioral intelligence systems.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Contribution</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper makes a primary <span class="highlight">empirical contribution</span> with a secondary <span class="highlight">methodological</span> contribution. The empirical finding is the five behavioral patterns and their correlation with overreliance levels. The methodological contribution is the analysis pipeline itself: an autoencoder-based approach to encoding variable-length interaction sequences into fixed-size embeddings, followed by DBSCAN clustering to discover recurring behavioral patterns without predefined categories.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The analysis pipeline deserves attention because it's genuinely reusable. They segment interaction logs into overlapping time-based windows at multiple granularities, from ten seconds to sixty seconds. Each window of actions gets encoded as a standardized feature vector. An autoencoder compresses these into compact latent representations. Then DBSCAN, a density-based clustering algorithm that doesn't require you to specify the number of clusters in advance, groups similar behavioral sequences together. They trained separate models for each combination of task and window size, eighteen models total, and looked for patterns that appeared consistently across tasks.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The five patterns they found aren't just statistical artifacts. They make intuitive sense. Users who read the LLM's response carefully before doing anything with it catch more errors. Users who copy entire paragraphs at once, without reading first, absorb the misinformation wholesale. Users who scroll with coarse, "rough landing" movements are essentially skimming, while users who navigate to specific words and phrases are actually engaging with the content. And the hesitation pattern, where users pause at an error, seem to notice something is off, but then accept it anyway, suggests that overreliance isn't always about not noticing problems. Sometimes it's about not having the confidence or motivation to push back.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd rate the contribution strength as <span class="highlight">significant</span>. This work meaningfully advances our understanding of how to detect overreliance through process-level behavioral signals rather than outcome-based evaluation. It's not quite transformative because it stays correlational and doesn't yet demonstrate real-time detection or intervention. But it lays the groundwork for systems that could.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The biggest strength is the <span class="highlight">shift from outcome-based to process-based measurement of overreliance</span>. Almost all prior work measures overreliance by comparing task outcomes with and without AI. This paper argues, convincingly, that by the time you check the outcome, you've missed the window for intervention. By identifying behavioral signals during the interaction, the authors open up the possibility of just-in-time detection and mitigation. This is a conceptually important move for the field.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the ecological design. Three different tasks, writing, summarization, and trip planning, with task-specific misinformation injection methods, gives the findings much broader applicability than a single-task study. The fact that the behavioral patterns recur across tasks suggests they're tapping into general interaction tendencies rather than task-specific strategies. Seventy-seven participants is also a respectable sample for this kind of detailed behavioral logging study.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary weakness is that the relationship between behavioral patterns and overreliance is correlational, not causal. The authors are careful about this, but it means we can't say that coarse scrolling causes overreliance. It could be that users who are less motivated or more time-pressed both scroll coarsely and accept misinformation, with both behaviors stemming from a shared underlying cause. The fifteen-minute time limit on tasks may have amplified this, pushing some participants toward shortcuts they wouldn't normally take.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A secondary concern is the misinformation injection methodology. While well-designed, it creates a somewhat artificial setup. In real-world LLM use, errors aren't uniformly distributed or always "plausible." Sometimes LLMs are wildly wrong in obvious ways, and sometimes they're subtly wrong in ways that even experts miss. How these behavioral patterns hold up across different types and severities of error is an open question the authors acknowledge but can't yet answer.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Similar Reading</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The paper's intellectual lineage runs through several key references. First and foremost is the foundational work by Rzeszotarski and Kittur from 2011 on using interaction patterns to predict crowdworker task quality, which established the idea that behavioral traces can serve as quality indicators. Second, Gadiraju and colleagues' 2019 work on understanding crowd workers' behavior and task quality, which extended behavioral analysis to more complex task settings.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">On the overreliance side, Buçinca and colleagues' work on cognitive forcing functions to reduce overreliance on AI is a key reference, as it represents one of the few attempts to actually intervene against overreliance rather than just measure it. Vasconcelos and colleagues' 2023 work on explanations and overreliance is also relevant, exploring whether showing users how AI reaches its conclusions helps or hurts. And Passi and Vorvoreanu's 2022 framing of overreliance as "users accepting incorrect LLM recommendations" provides the definitional foundation the paper builds on.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Seena Labs Relevance</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper is foundational for Seena's behavioral analytics layer.</span> The five behavioral patterns identified here map almost directly to the kinds of signals Seena's detection agents should be monitoring during product sessions. But the application is inverted in an interesting way. While this paper detects overreliance on AI, Seena needs to detect behavioral signals that indicate a user is struggling with a product, confused by a feature, or encountering friction that warrants a micro-interview.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The autoencoder-plus-clustering pipeline is immediately adaptable to Seena's behavioral clustering system. Seena already does multi-dimensional session clustering. This paper provides a validated methodology for encoding variable-length interaction sequences into fixed-size embeddings suitable for clustering. The specific approach of overlapping time windows at multiple granularities is a smart technique Seena should adopt. It means you can detect both momentary behavioral shifts, like a ten-second hesitation, and sustained patterns, like sixty seconds of unfocused scrolling, with the same framework.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The <span class="highlight">hesitation pattern</span> is the single most valuable finding for Seena. Users who notice something is wrong but accept it anyway represent a specific behavioral state: they have a question or concern but lack the confidence or context to act on it. This is precisely the moment when a Seena micro-interview should trigger. A short, contextual prompt like "You seemed to pause here — was something unclear?" could convert that hesitation from a silent acceptance of confusion into an actionable insight.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The distinction between fine-grained and coarse-grained navigation patterns also maps to Seena's engagement quality metrics. Fine-grained scrolling, where someone navigates to specific words and sentences, suggests deep engagement. Coarse scrolling suggests surface-level interaction. Seena could use this distinction to weight behavioral signals differently: a micro-interview triggered after deep engagement is more likely to yield substantive responses than one triggered after superficial browsing.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Finally, the copy-paste frequency finding has implications for Seena's interview response quality. If a product user is frequently copying content from AI tools into their workflow, that behavioral signature could indicate they're in a task-completion mindset rather than a reflective one. Seena might want to delay micro-interviews until the user transitions out of rapid task execution and into a more evaluative state, which the behavioral patterns here could help identify.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The headline number is the study scale: <span class="stat-highlight">seventy-seven participants across three real-world tasks</span>, which is substantial for a behavioral logging study of this depth. The five behavioral patterns were identified using eighteen separate autoencoder models, one per combination of three tasks and six time-window sizes, lending robustness to the findings.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The specific behavioral contrasts are citable. Users with low overreliance spend measurably more time on initial task comprehension before interacting with the LLM output. Users with high overreliance show <span class="stat-highlight">frequent wholesale copy-paste operations</span> and <span class="stat-highlight">coarse scrolling patterns that target rough page regions rather than specific content</span>. The hesitation-then-acceptance pattern, where users pause at misinformation but accept it regardless, appeared consistently across tasks and time windows, suggesting it's a robust behavioral signature. The methodological contribution of using DBSCAN clustering on autoencoder embeddings of interaction sequences is itself citable as a validated approach for behavioral pattern discovery.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">Researchers found they can tell whether you're actually thinking about what ChatGPT says, or just blindly trusting it, just by watching how you scroll and copy-paste.</span> Five specific mouse and keyboard patterns predict whether you'll catch AI mistakes or absorb them. The creepiest finding? Some people clearly notice something is wrong, they hesitate, they pause, but they accept the AI's answer anyway. We're not just over-trusting AI. We're over-trusting it even when our instincts are screaming that something is off.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook: "The most dangerous moment in AI interaction isn't when you miss the error. It's when you see the error and accept it anyway. That hesitation-then-acceptance pattern tells us overreliance isn't a knowledge problem, it's a confidence problem." You could frame this as an Everything is Designed piece about how the design of AI interfaces, specifically the smooth, confident presentation of LLM output, may be actively suppressing people's healthy skepticism. When the AI speaks in perfectly formatted paragraphs with zero hedging, who are you to question it?</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Industry vs. Theory</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper leans theoretical and empirical, but the path to industry application is clear and short. The behavioral patterns themselves are directly observable in any web application with standard event logging. The autoencoder-clustering pipeline is computationally lightweight enough for production. The missing piece, which the authors acknowledge, is real-time detection and intervention. But the groundwork is laid. For Seena specifically, this is a <span class="highlight">"steal the methodology, adapt the targets" paper</span>. The pipeline is proven. The behavioral indicators are validated. Seena just needs to retrain the model to detect moments of user confusion and frustration rather than AI overreliance, and then trigger micro-interviews at those moments instead of mitigation nudges.</p>
+  </div>
+</div>
+`;
+
+const papers = [
+  {
+    id: 1,
+    title: "Sensing What Surveys Miss: Understanding and Personalizing Proactive LLM Support by User Modeling",
+    relevance: "Proactive LLM support through <em>user modeling</em> — directly maps to Seena's contextual micro-interview trigger logic and behavioral sensing.",
+    pdf: "https://arxiv.org/pdf/2602.00880",
+    arxiv: "https://arxiv.org/abs/2602.00880",
+    tags: ["interviews", "behavior"],
+    read: false,
+    hasAnalysis: true
+  },
+  {
+    id: 2,
+    title: "InterFlow: Designing Unobtrusive AI to Empower Interviewers in Semi-Structured Interviews",
+    relevance: "AI-augmented interviewing with <em>unobtrusive design</em> — core to Seena's AI-powered interview methodology and real-time guidance system.",
+    pdf: "https://arxiv.org/pdf/2602.06396",
+    arxiv: "https://arxiv.org/abs/2602.06396",
+    tags: ["interviews"],
+    read: false,
+    hasAnalysis: true
+  },
+  {
+    id: 3,
+    title: "Behavioral Indicators of Overreliance During Interaction with Conversational Language Models",
+    relevance: "<em>Behavioral signal detection</em> in conversational AI — relevant to Seena's multi-dimensional session clustering and behavioral pattern recognition.",
+    pdf: "https://arxiv.org/pdf/2602.11567",
+    arxiv: "https://arxiv.org/abs/2602.11567",
+    tags: ["behavior", "agents"],
+    read: false,
+    hasAnalysis: true
+  },
+  {
+    id: 4,
+    title: "Qualitative Coding Analysis through Open-Source Large Language Models: A User Study and Design Recommendations",
+    relevance: "LLMs for <em>qualitative coding</em> — directly competitive/complementary to Seena's AI analysis pipeline. Key benchmarking reference.",
+    pdf: "https://arxiv.org/pdf/2602.18352",
+    arxiv: "https://arxiv.org/abs/2602.18352",
+    tags: ["qual"],
+    read: false
+  },
+  {
+    id: 5,
+    title: "Reflexis: Supporting Reflexivity and Rigor in Collaborative Qualitative Analysis through Design for Deliberation",
+    relevance: "Rigor in collaborative <em>qual analysis</em> — relevant to Seena's evidence traceability system and researcher-AI deliberation loops.",
+    pdf: "https://arxiv.org/pdf/2601.15445",
+    arxiv: "https://arxiv.org/abs/2601.15445",
+    tags: ["qual"],
+    read: false
+  },
+  {
+    id: 6,
+    title: "When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks",
+    relevance: "Optimal <em>human-AI handoff points</em> — informs Seena's micro-interview timing and when to surface insights vs. keep collecting.",
+    pdf: "https://arxiv.org/pdf/2510.05307",
+    arxiv: "https://arxiv.org/abs/2510.05307",
+    tags: ["agents", "behavior"],
+    read: false
+  },
+  {
+    id: 7,
+    title: "Interaction Context Often Increases Sycophancy in LLMs",
+    relevance: "Critical for Seena's interview AI — understanding how <em>context biases LLM responses</em> and designing against sycophantic agreement in micro-interviews.",
+    pdf: "https://arxiv.org/pdf/2509.12517",
+    arxiv: "https://arxiv.org/abs/2509.12517",
+    tags: ["bias", "interviews"],
+    read: false
+  },
+  {
+    id: 8,
+    title: "Designing Computational Tools for Exploring Causal Relationships in Qualitative Data",
+    relevance: "<em>Causal reasoning</em> in qualitative data — maps to Seena's insight extraction and how behavioral clusters connect to product decisions.",
+    pdf: "https://arxiv.org/pdf/2602.06506",
+    arxiv: "https://arxiv.org/abs/2602.06506",
+    tags: ["qual", "behavior"],
+    read: false
+  }
+];
+
+// Load saved state
+const saved = localStorage.getItem('seena-chi26-read');
+if (saved) {
+  try {
+    const readIds = JSON.parse(saved);
+    papers.forEach(p => { if (readIds.includes(p.id)) p.read = true; });
+  } catch(e) {}
+}
+
+function saveState() {
+  const readIds = papers.filter(p => p.read).map(p => p.id);
+  localStorage.setItem('seena-chi26-read', JSON.stringify(readIds));
+}
+
+function updateStats() {
+  const readCount = papers.filter(p => p.read).length;
+  document.getElementById('readCount').textContent = readCount;
+  document.getElementById('progressFill').style.width = `${(readCount / papers.length) * 100}%`;
+}
+
+let currentFilter = 'all';
+let analysisOpen = {};
+
+function renderPapers() {
+  const list = document.getElementById('paperList');
+  let filtered = papers;
+
+  if (currentFilter === 'read') filtered = papers.filter(p => p.read);
+  else if (currentFilter === 'unread') filtered = papers.filter(p => !p.read);
+  else if (currentFilter !== 'all') filtered = papers.filter(p => p.tags.includes(currentFilter));
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty-state">No papers match this filter.</div>';
+    return;
+  }
+
+  const tagMap = {
+    interviews: ['tag-interviews', 'Interviews'],
+    qual: ['tag-qual', 'Qual Analysis'],
+    behavior: ['tag-behavior', 'Behavior'],
+    agents: ['tag-agents', 'Agents'],
+    bias: ['tag-bias', 'LLM Bias']
+  };
+
+  list.innerHTML = filtered.map((p, i) => {
+    const tags = p.tags.map(t => {
+      const [cls, label] = tagMap[t];
+      return `<span class="paper-tag ${cls}">${label}</span>`;
+    }).join('');
+
+    const analysisBtn = p.hasAnalysis
+      ? `<button class="action-btn btn-analysis ${analysisOpen[p.id] ? 'open' : ''}" onclick="toggleAnalysis(${p.id})">
+           ${analysisOpen[p.id] ? '▾ Hide Analysis' : '▸ Full Analysis'}
+         </button>`
+      : '';
+
+    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis };
+    const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisMap[p.id] || '') : '';
+
+    return `
+      <div class="paper ${p.read ? 'is-read' : ''}" style="animation-delay: ${i * 0.05}s" data-id="${p.id}">
+        <div class="paper-top">
+          <span class="paper-number">${String(p.id).padStart(2, '0')}</span>
+          <div class="paper-content">
+            <div class="paper-title">${p.title}</div>
+            <div class="paper-relevance">${p.relevance}</div>
+            <div class="paper-tags">${tags}</div>
+          </div>
+        </div>
+        <div class="paper-actions">
+          <a href="${p.pdf}" target="_blank" rel="noopener" class="action-btn btn-pdf">↗ Read PDF</a>
+          <a href="${p.arxiv}" target="_blank" rel="noopener" class="action-btn btn-arxiv">arXiv</a>
+          ${analysisBtn}
+          <button class="action-btn btn-read ${p.read ? 'marked' : ''}" onclick="toggleRead(${p.id})">
+            ${p.read ? '✓ Read' : 'Mark read'}
+          </button>
+        </div>
+        ${analysisContent}
+      </div>`;
+  }).join('');
+}
+
+function toggleRead(id) {
+  const paper = papers.find(p => p.id === id);
+  paper.read = !paper.read;
+  saveState();
+  updateStats();
+  renderPapers();
+}
+
+function toggleAnalysis(id) {
+  analysisOpen[id] = !analysisOpen[id];
+  renderPapers();
+}
+
+// ── TTS Engine ──
+let currentUtterance = null;
+let allParagraphs = [];
+let currentIndex = -1;
+let isPlayingAll = false;
+
+function ttsSpeak(el) {
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.tts-paragraph.speaking').forEach(p => p.classList.remove('speaking'));
+
+  el.classList.add('speaking');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  const text = el.innerText;
+  currentUtterance = new SpeechSynthesisUtterance(text);
+  currentUtterance.rate = 1.0;
+  currentUtterance.pitch = 1.0;
+
+  // Try to find a good voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.name.includes('Samantha') || v.name.includes('Daniel') || v.name.includes('Google'));
+  if (preferred) currentUtterance.voice = preferred;
+
+  currentUtterance.onend = () => {
+    el.classList.remove('speaking');
+    if (isPlayingAll) {
+      currentIndex++;
+      if (currentIndex < allParagraphs.length) {
+        ttsSpeak(allParagraphs[currentIndex]);
+      } else {
+        isPlayingAll = false;
+        updateTTSStatus('Done');
+      }
+    }
+  };
+
+  updateTTSStatus('Speaking...');
+  window.speechSynthesis.speak(currentUtterance);
+}
+
+function ttsPlayAll() {
+  allParagraphs = Array.from(document.querySelectorAll('.tts-paragraph'));
+  if (allParagraphs.length === 0) return;
+  currentIndex = 0;
+  isPlayingAll = true;
+  ttsSpeak(allParagraphs[0]);
+}
+
+function ttsPause() {
+  if (window.speechSynthesis.paused) {
+    window.speechSynthesis.resume();
+    updateTTSStatus('Speaking...');
+  } else {
+    window.speechSynthesis.pause();
+    updateTTSStatus('Paused');
+  }
+}
+
+function ttsStop() {
+  isPlayingAll = false;
+  currentIndex = -1;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.tts-paragraph.speaking').forEach(p => p.classList.remove('speaking'));
+  updateTTSStatus('Stopped');
+}
+
+function updateTTSStatus(text) {
+  const el = document.getElementById('ttsStatus');
+  if (el) el.textContent = text;
+}
+
+// Preload voices
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderPapers();
+  });
+});
+
+updateStats();
+renderPapers();
+</script>
+</body>
+</html>
