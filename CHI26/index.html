@@ -1168,6 +1168,129 @@
     .search-input { font-size: 16px; }
   }
 
+  /* ── Settings Modal ── */
+  .settings-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+  .settings-overlay.open { display: flex; }
+  .settings-modal {
+    background: var(--bg-elevated);
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 440px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+  .settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .settings-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+  }
+  .settings-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .settings-close:hover { background: var(--bg-sunken); }
+  .settings-body { padding: 20px; }
+  .settings-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .settings-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .settings-input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--bg-sunken);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    outline: none;
+    box-sizing: border-box;
+  }
+  .settings-input:focus { border-color: var(--accent); }
+  .settings-input code, .settings-hint code {
+    font-family: var(--font-mono);
+    background: var(--bg-sunken);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .settings-hint {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .settings-hint a { color: var(--accent); text-decoration: none; }
+  .settings-hint a:hover { text-decoration: underline; }
+  .settings-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .settings-btn {
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--bg-sunken);
+    color: var(--text-primary);
+    transition: all 0.15s;
+  }
+  .settings-btn:hover { background: var(--bg-hover); }
+  .settings-btn-save {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .settings-btn-save:hover { background: var(--accent-hover); }
+  .settings-status {
+    font-size: 12px;
+    margin-top: 10px;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+  }
+  .gh-connected { opacity: 1 !important; color: var(--green) !important; }
+
 </style>
 </head>
 <body>
@@ -1179,7 +1302,10 @@
         <div class="seena-dot"></div>
         <span class="seena-wordmark">Seena</span>
       </div>
-      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">☀</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="theme-toggle" id="ghSyncStatus" onclick="openSettings()" title="GitHub sync settings" style="font-size:14px;opacity:0.5;">⚙</button>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">☀</button>
+      </div>
     </div>
     <div class="eyebrow">CHI 2026 · Research Reading List</div>
     <h1>Flagged Papers</h1>
@@ -1238,6 +1364,40 @@
   </div>
 
   <div class="paper-list" id="paperList"></div>
+</div>
+
+<!-- Settings Modal -->
+<div class="settings-overlay" id="settingsOverlay" onclick="if(event.target===this)closeSettings()">
+  <div class="settings-modal">
+    <div class="settings-header">
+      <span class="settings-title">GitHub Sync</span>
+      <button class="settings-close" onclick="closeSettings()">×</button>
+    </div>
+    <div class="settings-body">
+      <p class="settings-desc">Connect to GitHub so your notes are saved as markdown files in the repo. Claude can then read and write to these files through its GitHub connection.</p>
+      <label class="settings-label">Personal Access Token</label>
+      <input type="password" class="settings-input" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+      <p class="settings-hint">Create a <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">fine-grained token</a> with read/write Contents access scoped to <code>thaxali/HCI</code>.</p>
+      <label class="settings-label" style="margin-top:12px;">Repository</label>
+      <input type="text" class="settings-input" id="ghRepoInput" value="thaxali/HCI" autocomplete="off">
+      <label class="settings-label" style="margin-top:12px;">Notes folder path</label>
+      <input type="text" class="settings-input" id="ghPathInput" value="CHI26/notes" autocomplete="off">
+      <div class="settings-actions">
+        <button class="settings-btn settings-btn-test" onclick="testGitHubConnection()">Test connection</button>
+        <button class="settings-btn settings-btn-save" onclick="saveGitHubSettings()">Save</button>
+      </div>
+      <div class="settings-status" id="ghSettingsStatus"></div>
+      <div class="settings-sync-section" id="ghSyncSection" style="display:none;">
+        <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+        <p class="settings-label">Sync</p>
+        <div class="settings-actions">
+          <button class="settings-btn settings-btn-test" onclick="syncNotesToGitHub()">Push all notes to GitHub</button>
+          <button class="settings-btn settings-btn-test" onclick="pullNotesFromGitHub()">Pull notes from GitHub</button>
+        </div>
+        <div class="settings-status" id="ghSyncStatus2"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Mention Autocomplete -->
@@ -3035,6 +3195,401 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
+// ── GitHub Sync ──
+const GH_TOKEN_KEY = 'chi26-gh-token';
+const GH_REPO_KEY = 'chi26-gh-repo';
+const GH_PATH_KEY = 'chi26-gh-path';
+
+function getGHConfig() {
+  return {
+    token: localStorage.getItem(GH_TOKEN_KEY) || '',
+    repo: localStorage.getItem(GH_REPO_KEY) || 'thaxali/HCI',
+    path: localStorage.getItem(GH_PATH_KEY) || 'CHI26/notes'
+  };
+}
+
+function isGHConfigured() {
+  const cfg = getGHConfig();
+  return cfg.token && cfg.repo && cfg.path;
+}
+
+function updateGHIcon() {
+  const icon = document.getElementById('ghSyncStatus');
+  if (isGHConfigured()) {
+    icon.textContent = '⚙';
+    icon.classList.add('gh-connected');
+    icon.title = 'GitHub sync connected';
+  } else {
+    icon.textContent = '⚙';
+    icon.classList.remove('gh-connected');
+    icon.title = 'GitHub sync — not connected';
+  }
+}
+
+function openSettings() {
+  const cfg = getGHConfig();
+  document.getElementById('ghTokenInput').value = cfg.token;
+  document.getElementById('ghRepoInput').value = cfg.repo;
+  document.getElementById('ghPathInput').value = cfg.path;
+  document.getElementById('ghSettingsStatus').textContent = '';
+  document.getElementById('ghSyncSection').style.display = isGHConfigured() ? 'block' : 'none';
+  document.getElementById('settingsOverlay').classList.add('open');
+}
+
+function closeSettings() {
+  document.getElementById('settingsOverlay').classList.remove('open');
+}
+
+function saveGitHubSettings() {
+  const token = document.getElementById('ghTokenInput').value.trim();
+  const repo = document.getElementById('ghRepoInput').value.trim();
+  const path = document.getElementById('ghPathInput').value.trim();
+  if (!token || !repo || !path) {
+    document.getElementById('ghSettingsStatus').textContent = 'All fields required.';
+    return;
+  }
+  localStorage.setItem(GH_TOKEN_KEY, token);
+  localStorage.setItem(GH_REPO_KEY, repo);
+  localStorage.setItem(GH_PATH_KEY, path);
+  document.getElementById('ghSettingsStatus').textContent = '✓ Saved';
+  document.getElementById('ghSyncSection').style.display = 'block';
+  updateGHIcon();
+  showToast('GitHub sync configured');
+}
+
+async function testGitHubConnection() {
+  const token = document.getElementById('ghTokenInput').value.trim();
+  const repo = document.getElementById('ghRepoInput').value.trim();
+  const status = document.getElementById('ghSettingsStatus');
+  if (!token || !repo) { status.textContent = 'Enter token and repo first.'; return; }
+  status.textContent = 'Testing...';
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      status.textContent = `✓ Connected to ${data.full_name} (${data.visibility})`;
+      status.style.color = 'var(--green)';
+    } else {
+      const err = await res.json();
+      status.textContent = `✗ ${res.status}: ${err.message || 'Failed'}`;
+      status.style.color = 'var(--rose)';
+    }
+  } catch (e) {
+    status.textContent = `✗ Network error: ${e.message}`;
+    status.style.color = 'var(--rose)';
+  }
+}
+
+// Build markdown content for a paper's notes
+function buildPaperNotesMarkdown(paperId) {
+  const paper = papers.find(p => p.id === paperId);
+  if (!paper) return null;
+  const notes = getNotes().filter(n => n.paperId === paperId);
+  const ratings = getRatings();
+  const rating = ratings[paperId];
+
+  let md = `# P${String(paperId).padStart(2,'0')}: ${paper.title}\n\n`;
+  md += `> **Status:** ${paper.read ? 'Read ✓' : 'Unread'}\n`;
+  if (rating) md += `> **Rating:** ${'★'.repeat(rating)}${'☆'.repeat(5-rating)} (${rating}/5)\n`;
+  md += `> **Tags:** ${paper.tags.join(', ')}\n`;
+  md += `> **PDF:** ${paper.pdf}\n`;
+  md += `> **arXiv:** ${paper.arxiv}\n\n`;
+
+  if (paper.relevance) {
+    md += `## Relevance\n\n${paper.relevance.replace(/<\/?em>/g, '*')}\n\n`;
+  }
+
+  if (notes.length > 0) {
+    md += `## Notes\n\n`;
+    const types = ['idea', 'question', 'connection', 'action', 'note'];
+    const typeLabels = { idea: 'Ideas', question: 'Questions', connection: 'Connections', action: 'Action Items', note: 'Notes' };
+
+    types.forEach(type => {
+      const typed = notes.filter(n => (n.type || 'note') === type);
+      if (typed.length === 0) return;
+      const icon = noteTypeMap[type][0];
+      md += `### ${icon} ${typeLabels[type]}\n\n`;
+      typed.forEach(n => {
+        md += `- ${n.text} *(${n.date})*\n`;
+      });
+      md += '\n';
+    });
+  }
+
+  return md;
+}
+
+// Write a single paper's notes to GitHub
+async function pushPaperNotes(paperId) {
+  const cfg = getGHConfig();
+  if (!cfg.token) return;
+
+  const md = buildPaperNotesMarkdown(paperId);
+  if (!md) return;
+
+  const filename = `paper-${String(paperId).padStart(2,'0')}.md`;
+  const filePath = `${cfg.path}/${filename}`;
+  const content = btoa(unescape(encodeURIComponent(md)));
+
+  try {
+    // Check if file already exists (to get sha for update)
+    let sha = null;
+    const getRes = await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${filePath}`, {
+      headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (getRes.ok) {
+      const existing = await getRes.json();
+      sha = existing.sha;
+    }
+
+    const body = {
+      message: `Update notes for P${String(paperId).padStart(2,'0')}`,
+      content: content,
+      branch: 'main'
+    };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${filePath}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${cfg.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!putRes.ok) {
+      const err = await putRes.json();
+      console.error('GitHub push failed:', err);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('GitHub push error:', e);
+    return false;
+  }
+}
+
+// Push all notes to GitHub
+async function syncNotesToGitHub() {
+  const cfg = getGHConfig();
+  if (!cfg.token) { showToast('Configure GitHub first'); return; }
+
+  const status = document.getElementById('ghSyncStatus2');
+  status.textContent = 'Syncing...';
+
+  // Find all papers that have notes, ratings, or are read
+  const allNotes = getNotes();
+  const ratings = getRatings();
+  const paperIds = new Set();
+
+  allNotes.forEach(n => { if (n.paperId) paperIds.add(n.paperId); });
+  Object.keys(ratings).forEach(id => paperIds.add(Number(id)));
+  papers.filter(p => p.read).forEach(p => paperIds.add(p.id));
+
+  let success = 0;
+  let failed = 0;
+  for (const pid of paperIds) {
+    const ok = await pushPaperNotes(pid);
+    if (ok) success++; else failed++;
+  }
+
+  // Also push a summary/index file
+  await pushSummaryFile();
+
+  status.textContent = `✓ Pushed ${success} paper${success !== 1 ? 's' : ''}${failed > 0 ? `, ${failed} failed` : ''}`;
+  status.style.color = failed > 0 ? 'var(--amber)' : 'var(--green)';
+  showToast(`Synced ${success} files to GitHub`);
+}
+
+// Push a summary index file
+async function pushSummaryFile() {
+  const cfg = getGHConfig();
+  if (!cfg.token) return;
+
+  const allNotes = getNotes();
+  const ratings = getRatings();
+  const readCount = papers.filter(p => p.read).length;
+
+  let md = `# CHI 2026 — Reading Notes\n\n`;
+  md += `> Auto-generated summary. Last synced: ${new Date().toLocaleString()}\n\n`;
+  md += `**Progress:** ${readCount}/${papers.length} papers read\n\n`;
+  md += `## Papers\n\n`;
+  md += `| # | Title | Status | Rating | Notes |\n`;
+  md += `|---|-------|--------|--------|-------|\n`;
+
+  papers.forEach(p => {
+    const noteCount = allNotes.filter(n => n.paperId === p.id).length;
+    const rating = ratings[p.id];
+    const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : '—';
+    const status = p.read ? '✓ Read' : '—';
+    const link = noteCount > 0 ? `[${noteCount} note${noteCount !== 1 ? 's' : ''}](paper-${String(p.id).padStart(2,'0')}.md)` : '—';
+    md += `| P${String(p.id).padStart(2,'0')} | ${p.title.substring(0, 60)}${p.title.length > 60 ? '...' : ''} | ${status} | ${stars} | ${link} |\n`;
+  });
+
+  md += `\n---\n\n*This file is read/written by the CHI'26 Reading List UI and can be accessed by Claude via its GitHub connection.*\n`;
+
+  const content = btoa(unescape(encodeURIComponent(md)));
+  const filePath = `${cfg.path}/README.md`;
+
+  try {
+    let sha = null;
+    const getRes = await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${filePath}`, {
+      headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (getRes.ok) {
+      const existing = await getRes.json();
+      sha = existing.sha;
+    }
+
+    const body = { message: 'Update reading notes summary', content, branch: 'main' };
+    if (sha) body.sha = sha;
+
+    await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${filePath}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${cfg.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+  } catch (e) {
+    console.error('GitHub summary push error:', e);
+  }
+}
+
+// Pull notes from GitHub
+async function pullNotesFromGitHub() {
+  const cfg = getGHConfig();
+  if (!cfg.token) { showToast('Configure GitHub first'); return; }
+
+  const status = document.getElementById('ghSyncStatus2');
+  status.textContent = 'Pulling...';
+
+  try {
+    // List all files in the notes folder
+    const listRes = await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${cfg.path}`, {
+      headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json' }
+    });
+
+    if (!listRes.ok) {
+      status.textContent = `✗ Could not list notes folder`;
+      status.style.color = 'var(--rose)';
+      return;
+    }
+
+    const files = await listRes.json();
+    const noteFiles = files.filter(f => f.name.startsWith('paper-') && f.name.endsWith('.md'));
+
+    let imported = 0;
+    const existingNotes = getNotes();
+
+    for (const file of noteFiles) {
+      const fileRes = await fetch(file.download_url);
+      const md = await fileRes.text();
+
+      // Extract paper ID from filename
+      const match = file.name.match(/paper-(\d+)\.md/);
+      if (!match) continue;
+      const paperId = parseInt(match[1], 10);
+
+      // Parse notes from the markdown
+      const noteLines = md.match(/^- (.+?) \*\((.+?)\)\*$/gm);
+      if (!noteLines) continue;
+
+      noteLines.forEach(line => {
+        const lineMatch = line.match(/^- (.+?) \*\((.+?)\)\*$/);
+        if (!lineMatch) return;
+        const text = lineMatch[1];
+        const date = lineMatch[2];
+
+        // Check if this note already exists locally
+        const exists = existingNotes.some(n => n.paperId === paperId && n.text === text);
+        if (!exists) {
+          // Detect note type from which section it's under (simplified — default to 'note')
+          const paper = papers.find(p => p.id === paperId);
+          existingNotes.push({
+            text,
+            type: 'note',
+            paperId,
+            paperTitle: paper ? paper.title : null,
+            timestamp: new Date().toISOString(),
+            date
+          });
+          imported++;
+        }
+      });
+
+      // Also check for read status
+      if (md.includes('Status:** Read')) {
+        const paper = papers.find(p => p.id === paperId);
+        if (paper && !paper.read) {
+          paper.read = true;
+        }
+      }
+
+      // Check for rating
+      const ratingMatch = md.match(/Rating:\*\* [★☆]+ \((\d)\/5\)/);
+      if (ratingMatch) {
+        const ratings = getRatings();
+        ratings[paperId] = parseInt(ratingMatch[1], 10);
+        localStorage.setItem(RATINGS_KEY, JSON.stringify(ratings));
+      }
+    }
+
+    if (imported > 0) {
+      saveNotes(existingNotes);
+      saveState();
+      updateStats();
+      renderPapers();
+    }
+
+    status.textContent = `✓ Pulled ${noteFiles.length} file${noteFiles.length !== 1 ? 's' : ''}, imported ${imported} new note${imported !== 1 ? 's' : ''}`;
+    status.style.color = 'var(--green)';
+    showToast(`Imported ${imported} new notes`);
+  } catch (e) {
+    status.textContent = `✗ Error: ${e.message}`;
+    status.style.color = 'var(--rose)';
+  }
+}
+
+// Auto-push when adding a note (if configured)
+const _originalAddNote = addNote;
+addNote = function() {
+  const input = document.getElementById('notesInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const notes = getNotes();
+  const paper = activePaperId ? papers.find(p => p.id === activePaperId) : null;
+  notes.push({
+    text,
+    type: currentNoteType,
+    paperId: activePaperId || null,
+    paperTitle: paper ? paper.title : null,
+    timestamp: new Date().toISOString(),
+    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+  });
+  saveNotes(notes);
+  input.value = '';
+  input.style.height = 'auto';
+  const label = paper ? `${noteTypeMap[currentNoteType][1]} saved to P${String(activePaperId).padStart(2,'0')} ✓` : `${noteTypeMap[currentNoteType][1]} saved ✓`;
+  showToast(label);
+  renderPapers();
+  recordActivity();
+
+  // Auto-push to GitHub if configured and note is tagged to a paper
+  if (activePaperId && isGHConfigured()) {
+    pushPaperNotes(activePaperId).then(ok => {
+      if (ok) showToast('Synced to GitHub ✓');
+    });
+  }
+};
+
 // ── Init ──
 loadTheme();
 loadReadState();
@@ -3044,6 +3599,7 @@ updateStats();
 renderStreak();
 renderPapers();
 updateNotesCount();
+updateGHIcon();
 </script>
 </body>
 </html>
