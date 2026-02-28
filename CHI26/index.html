@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHI'26 Reading List — Seena Labs</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/lucide-static@0.469.0/font/lucide.css" rel="stylesheet">
 <style>
 
   :root {
@@ -495,7 +496,8 @@
   }
 
   .paper.collapsed .paper-body { display: none; }
-  .paper.collapsed .paper-top { margin-bottom: 0; }
+  .paper.collapsed .paper-top { margin-bottom: 0; cursor: pointer; }
+  .paper.collapsed:hover { border-color: var(--accent); }
 
   .paper-top {
     display: flex;
@@ -917,8 +919,44 @@
     max-width: var(--max-width);
     margin: 0 auto;
     display: flex;
+    flex-direction: column;
     gap: var(--space-sm);
+  }
+
+  .notes-bar-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .notes-bar-meta {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .notes-input-container {
+    display: flex;
     align-items: flex-end;
+    gap: var(--space-sm);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 4px 4px 4px 0;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .notes-input-container:focus-within {
+    border-color: var(--teal);
+  }
+
+  .notes-input-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    padding-right: 2px;
   }
 
   .notes-context-badge {
@@ -975,25 +1013,23 @@
     font-family: var(--font-sans);
     font-size: 14px;
     padding: 8px 14px;
-    border: 1px solid var(--border);
+    border: none;
     border-radius: var(--radius-lg);
-    background: var(--bg);
+    background: transparent;
     color: var(--text-primary);
     outline: none;
     resize: none;
     min-height: 38px;
     max-height: 100px;
     line-height: 1.4;
-    transition: border-color var(--duration-fast) var(--ease-out);
   }
 
   .notes-input::placeholder { color: var(--text-tertiary); }
-  .notes-input:focus { border-color: var(--teal); }
 
   /* ── Voice Note Button ── */
   .voice-btn {
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     border: 1px solid var(--border);
     border-radius: var(--radius-full);
     background: var(--bg-elevated);
@@ -1001,10 +1037,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 15px;
     flex-shrink: 0;
     transition: all var(--duration-fast) var(--ease-out);
     position: relative;
+    color: var(--text-secondary);
   }
 
   .voice-btn:hover { border-color: var(--text-tertiary); }
@@ -1021,39 +1058,39 @@
   }
 
   .notes-send-btn {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    padding: 9px 16px;
+    width: 32px;
+    height: 32px;
     border: none;
     border-radius: var(--radius-full);
     background: var(--text-primary);
     color: var(--text-inverse);
     cursor: pointer;
-    white-space: nowrap;
     transition: all var(--duration-fast) var(--ease-out);
-    height: 38px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
   }
 
   .notes-send-btn:hover { opacity: 0.85; }
-  .notes-send-btn:active { transform: scale(0.97); }
+  .notes-send-btn:active { transform: scale(0.94); }
 
   .notes-download-btn {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 500;
-    padding: 9px 14px;
+    width: 28px;
+    height: 28px;
     border: 1px solid var(--border);
-    border-radius: var(--radius-full);
-    background: var(--bg-elevated);
+    border-radius: var(--radius-sm);
+    background: none;
     color: var(--text-tertiary);
     cursor: pointer;
-    white-space: nowrap;
     transition: all var(--duration-fast) var(--ease-out);
-    height: 38px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    padding: 0;
   }
 
   .notes-download-btn:hover { border-color: var(--text-tertiary); color: var(--text-primary); }
@@ -1157,10 +1194,11 @@
     .tts-controls { flex-wrap: wrap; gap: var(--space-xs); padding: var(--space-sm) var(--space-md); }
     .tts-btn { padding: 5px 10px; font-size: 9px; }
     .notes-bar { padding: var(--space-sm) var(--space-md); }
-    .notes-download-btn, .notes-count { display: none; }
+    .notes-bar-meta { display: none; }
     .notes-input { font-size: 16px; }
     .note-type-selector { gap: 1px; }
     .note-type-btn { width: 26px; height: 26px; font-size: 12px; }
+    .notes-input-container { border-radius: var(--radius-md); }
     .streak-section { padding: var(--space-md) var(--space-lg); }
     .streak-dot { width: 8px; height: 8px; }
     .controls-row { flex-wrap: wrap; gap: var(--space-sm); }
@@ -1291,6 +1329,14 @@
   }
   .gh-connected { opacity: 1 !important; color: var(--green) !important; }
 
+  /* ── Lucide Icon Helpers ── */
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
 </style>
 </head>
 <body>
@@ -1303,8 +1349,8 @@
         <span class="seena-wordmark">Seena</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <button class="theme-toggle" id="ghSyncStatus" onclick="openSettings()" title="GitHub sync settings" style="font-size:14px;opacity:0.5;">⚙</button>
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">☀</button>
+        <button class="theme-toggle" id="ghSyncStatus" onclick="openSettings()" title="GitHub sync settings" style="font-size:16px;opacity:0.5;"><i class="icon lucide-github"></i></button>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode"><i class="icon lucide-sun"></i></button>
       </div>
     </div>
     <div class="eyebrow">CHI 2026 · Research Reading List</div>
@@ -1336,7 +1382,7 @@
   </header>
 
   <div class="search-section">
-    <span class="search-icon">⌕</span>
+    <span class="search-icon"><i class="icon lucide-search"></i></span>
     <input type="text" class="search-input" id="searchInput" placeholder="Search papers..." autocomplete="off">
     <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
   </div>
@@ -1359,7 +1405,7 @@
   <div class="controls-row">
     <span class="results-count" id="resultsCount"></span>
     <div class="controls-actions">
-      <button class="control-btn" id="collapseToggle" onclick="toggleCollapseAll()">Collapse all</button>
+      <button class="control-btn" id="collapseToggle" onclick="toggleCollapseAll()"><i class="icon lucide-rows-3" style="margin-right:4px;font-size:13px;"></i> Collapse all</button>
     </div>
   </div>
 
@@ -1406,19 +1452,27 @@
 <!-- Notes Bar -->
 <div class="notes-bar">
   <div class="notes-bar-inner">
-    <span id="notesContextBadge" style="display:none" class="notes-context-badge" onclick="clearPaperContext()"></span>
-    <div class="note-type-selector">
-      <button class="note-type-btn active" data-type="note" onclick="setNoteType('note')" title="Note">📝</button>
-      <button class="note-type-btn" data-type="idea" onclick="setNoteType('idea')" title="Idea">💡</button>
-      <button class="note-type-btn" data-type="question" onclick="setNoteType('question')" title="Question">❓</button>
-      <button class="note-type-btn" data-type="connection" onclick="setNoteType('connection')" title="Connection">🔗</button>
-      <button class="note-type-btn" data-type="action" onclick="setNoteType('action')" title="Action Item">📋</button>
+    <div class="notes-bar-top">
+      <span id="notesContextBadge" style="display:none" class="notes-context-badge" onclick="clearPaperContext()"></span>
+      <div class="note-type-selector">
+        <button class="note-type-btn active" data-type="note" onclick="setNoteType('note')" title="Note"><i class="icon lucide-pen-line"></i></button>
+        <button class="note-type-btn" data-type="idea" onclick="setNoteType('idea')" title="Idea"><i class="icon lucide-lightbulb"></i></button>
+        <button class="note-type-btn" data-type="question" onclick="setNoteType('question')" title="Question"><i class="icon lucide-circle-help"></i></button>
+        <button class="note-type-btn" data-type="connection" onclick="setNoteType('connection')" title="Connection"><i class="icon lucide-link"></i></button>
+        <button class="note-type-btn" data-type="action" onclick="setNoteType('action')" title="Action Item"><i class="icon lucide-square-check-big"></i></button>
+      </div>
+      <div class="notes-bar-meta">
+        <span class="notes-count" id="notesCount"></span>
+        <button class="notes-download-btn" onclick="downloadNotes()" title="Export notes"><i class="icon lucide-download"></i></button>
+      </div>
     </div>
-    <textarea class="notes-input" id="notesInput" placeholder="Jot a note..." rows="1"></textarea>
-    <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceNote()" title="Voice note">🎙</button>
-    <button class="notes-send-btn" onclick="addNote()">Add</button>
-    <button class="notes-download-btn" onclick="downloadNotes()">↓ .md</button>
-    <span class="notes-count" id="notesCount"></span>
+    <div class="notes-input-container">
+      <textarea class="notes-input" id="notesInput" placeholder="Jot a note..." rows="1"></textarea>
+      <div class="notes-input-actions">
+        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceNote()" title="Voice note"><i class="icon lucide-mic"></i></button>
+        <button class="notes-send-btn" onclick="addNote()" title="Add note"><i class="icon lucide-arrow-up"></i></button>
+      </div>
+    </div>
   </div>
 </div>
 <div class="notes-toast" id="notesToast"></div>
@@ -2621,7 +2675,7 @@ function toggleTheme() {
 }
 
 function updateThemeIcon(theme) {
-  document.getElementById('themeToggle').textContent = theme === 'dark' ? '☾' : '☀';
+  document.getElementById('themeToggle').innerHTML = theme === 'dark' ? '<i class="icon lucide-moon"></i>' : '<i class="icon lucide-sun"></i>';
 }
 
 // ── Stats ──
@@ -3008,9 +3062,16 @@ function hideMentionDropdown() {
 }
 
 // ── Collapse/Expand ──
+function expandCard(el, paperId) {
+  const card = el.closest('.paper');
+  if (!card.classList.contains('collapsed')) return; // only act when collapsed
+  card.classList.remove('collapsed');
+}
+
 function toggleCollapseAll() {
   allCollapsed = !allCollapsed;
-  document.getElementById('collapseToggle').textContent = allCollapsed ? 'Expand all' : 'Collapse all';
+  const icon = allCollapsed ? 'lucide-rows-4' : 'lucide-rows-3';
+  document.getElementById('collapseToggle').innerHTML = `<i class="icon ${icon}" style="margin-right:4px;font-size:13px;"></i> ${allCollapsed ? 'Expand all' : 'Collapse all'}`;
   localStorage.setItem(COLLAPSED_KEY, allCollapsed);
   renderPapers();
 }
@@ -3080,7 +3141,7 @@ function renderPapers() {
 
     const analysisBtn = p.hasAnalysis
       ? `<button class="action-btn btn-analysis ${analysisOpen[p.id] ? 'open' : ''}" onclick="toggleAnalysis(${p.id})">
-           ${analysisOpen[p.id] ? '▾ Hide' : '▸ Analysis'}
+           <i class="icon ${analysisOpen[p.id] ? 'lucide-chevron-down' : 'lucide-sparkles'}" style="font-size:12px;margin-right:3px;"></i>${analysisOpen[p.id] ? 'Hide' : 'Analysis'}
          </button>`
       : '';
 
@@ -3088,30 +3149,31 @@ function renderPapers() {
     const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisMap[p.id] || '') : '';
 
     const noteCount = getNotes().filter(n => n.paperId === p.id).length;
-    const noteBadge = noteCount > 0 ? `<span class="note-count-badge">📝 ${noteCount}</span>` : '';
+    const noteBadge = noteCount > 0 ? `<span class="note-count-badge"><i class="icon lucide-message-square-text" style="font-size:11px;margin-right:3px;"></i>${noteCount}</span>` : '';
 
     const collapsed = allCollapsed && !analysisOpen[p.id] ? 'collapsed' : '';
     const ratingHtml = p.read ? renderRating(p.id) : '';
 
     return `
       <div class="paper ${p.read ? 'is-read' : ''} ${collapsed}" style="animation-delay: ${i * 0.03}s" data-id="${p.id}">
-        <div class="paper-top">
+        <div class="paper-top" onclick="expandCard(this, ${p.id})">
           <span class="paper-number">${String(p.id).padStart(2, '0')}</span>
           <div class="paper-content">
             <div class="paper-title">${p.title}${p.essential ? '<span class="essential-badge">Essential</span>' : ''}</div>
           </div>
+          ${collapsed ? '<i class="icon lucide-chevron-down" style="color:var(--text-tertiary);font-size:16px;flex-shrink:0;align-self:center;"></i>' : ''}
         </div>
         <div class="paper-body">
           <div class="paper-relevance">${p.relevance}</div>
           <div class="paper-tags">${tags}</div>
           ${p.note ? '<div class="paper-note">📌 ' + p.note + '</div>' : ''}
           <div class="paper-actions">
-            <a href="${p.pdf}" target="_blank" rel="noopener" class="action-btn" onclick="setPaperContext(${p.id})">↗ PDF</a>
-            <a href="${p.arxiv}" target="_blank" rel="noopener" class="action-btn">arXiv</a>
+            <a href="${p.pdf}" target="_blank" rel="noopener" class="action-btn" onclick="setPaperContext(${p.id})"><i class="icon lucide-file-text" style="font-size:12px;margin-right:3px;"></i>PDF</a>
+            <a href="${p.arxiv}" target="_blank" rel="noopener" class="action-btn"><i class="icon lucide-external-link" style="font-size:11px;margin-right:3px;"></i>arXiv</a>
             ${analysisBtn}
             ${noteBadge}
             <button class="action-btn btn-read ${p.read ? 'marked' : ''}" onclick="toggleRead(${p.id})">
-              ${p.read ? '✓ Read' : 'Mark read'}
+              <i class="icon ${p.read ? 'lucide-check-circle' : 'lucide-circle'}" style="font-size:12px;margin-right:3px;"></i>${p.read ? 'Read' : 'Mark read'}
             </button>
           </div>
           ${ratingHtml}
@@ -3216,11 +3278,11 @@ function isGHConfigured() {
 function updateGHIcon() {
   const icon = document.getElementById('ghSyncStatus');
   if (isGHConfigured()) {
-    icon.textContent = '⚙';
+    icon.innerHTML = '<i class="icon lucide-github"></i>';
     icon.classList.add('gh-connected');
     icon.title = 'GitHub sync connected';
   } else {
-    icon.textContent = '⚙';
+    icon.innerHTML = '<i class="icon lucide-github"></i>';
     icon.classList.remove('gh-connected');
     icon.title = 'GitHub sync — not connected';
   }
@@ -3594,7 +3656,7 @@ addNote = function() {
 loadTheme();
 loadReadState();
 allCollapsed = localStorage.getItem(COLLAPSED_KEY) === 'true';
-if (allCollapsed) document.getElementById('collapseToggle').textContent = 'Expand all';
+if (allCollapsed) document.getElementById('collapseToggle').innerHTML = '<i class="icon lucide-rows-4" style="margin-right:4px;font-size:13px;"></i> Expand all';
 updateStats();
 renderStreak();
 renderPapers();
