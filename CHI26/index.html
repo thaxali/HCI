@@ -568,17 +568,157 @@
     margin: 28px 0;
   }
 
+  /* ── Notes Bar ── */
+  .notes-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    z-index: 100;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .notes-bar-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .notes-input {
+    flex: 1;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 14px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--background);
+    color: var(--foreground);
+    outline: none;
+    resize: none;
+    min-height: 40px;
+    max-height: 100px;
+    line-height: 1.4;
+    transition: border-color 0.2s ease;
+  }
+
+  .notes-input::placeholder {
+    color: var(--mid-gray);
+  }
+
+  .notes-input:focus {
+    border-color: var(--primary);
+  }
+
+  .notes-send-btn {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 20px;
+    background: var(--primary);
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .notes-send-btn:hover {
+    background: var(--primary-hover);
+  }
+
+  .notes-send-btn:active {
+    transform: scale(0.97);
+  }
+
+  .notes-download-btn {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--card);
+    color: var(--mid-gray);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .notes-download-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .notes-count {
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 10px;
+    color: var(--mid-gray);
+    white-space: nowrap;
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  .notes-toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    font-family: 'IBM Plex Mono', Consolas, monospace;
+    font-size: 11px;
+    padding: 8px 18px;
+    background: var(--foreground);
+    color: var(--background);
+    border-radius: var(--radius-full);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 101;
+  }
+
+  .notes-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
   @media (max-width: 640px) {
-    .container { padding: 36px 16px 80px; }
-    h1 { font-size: 28px; }
-    .stats-row { flex-wrap: wrap; padding: 16px 20px; gap: 16px; }
+    .container { padding: 36px 16px 120px; }
+    h1 { font-size: 26px; }
+    .subtitle { font-size: 14px; }
+    .stats-row { flex-wrap: wrap; padding: 14px 16px; gap: 12px; }
+    .stat-value { font-size: 22px; }
     .progress-track { width: 100%; margin-left: 0; }
-    .paper { padding: 20px 22px; border-radius: var(--radius-xl); }
-    .paper-title { font-size: 16px; }
-    .paper-actions { flex-wrap: wrap; }
-    .filter-btn { padding: 6px 14px; font-size: 10px; }
-    .tts-paragraph { font-size: 15px; padding: 8px 10px; }
-    .tts-controls { flex-wrap: wrap; }
+    .paper { padding: 18px 16px; border-radius: var(--radius-xl); }
+    .paper-top { gap: 10px; }
+    .paper-number { min-width: 24px; height: 24px; font-size: 11px; }
+    .paper-title { font-size: 15px; }
+    .paper-relevance { font-size: 13px; }
+    .paper-actions { flex-wrap: wrap; gap: 6px; }
+    .action-btn { padding: 10px 16px; font-size: 12px; }
+    .filter-btn { padding: 8px 14px; font-size: 11px; }
+    .filters { gap: 6px; }
+    .tts-paragraph { font-size: 15px; padding: 10px 12px; line-height: 1.85; }
+    .tts-controls { flex-wrap: wrap; gap: 6px; padding: 10px 12px; }
+    .tts-btn { padding: 8px 14px; font-size: 12px; }
+    .tts-vitals { font-size: 12px; padding: 14px 16px; }
+    .analysis-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .notes-bar { padding: 10px 12px; }
+    .notes-download-btn { display: none; }
+    .notes-count { display: none; }
+    .notes-input { font-size: 16px; /* prevents iOS zoom */ }
   }
 </style>
 </head>
@@ -1228,6 +1368,108 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 
 updateStats();
 renderPapers();
+</script>
+
+<!-- Notes Bar -->
+<div class="notes-bar">
+  <div class="notes-bar-inner">
+    <textarea class="notes-input" id="notesInput" placeholder="Jot a note about what you're reading..." rows="1"></textarea>
+    <button class="notes-send-btn" id="notesSend" onclick="addNote()">Add</button>
+    <button class="notes-download-btn" id="notesDownload" onclick="downloadNotes()">↓ .md</button>
+    <span class="notes-count" id="notesCount"></span>
+  </div>
+</div>
+<div class="notes-toast" id="notesToast"></div>
+
+<script>
+// ── Notes System ──
+const NOTES_KEY = 'chi26-reading-notes';
+
+function getNotes() {
+  try {
+    return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
+  } catch { return []; }
+}
+
+function saveNotes(notes) {
+  localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+  updateNotesCount();
+}
+
+function addNote() {
+  const input = document.getElementById('notesInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const notes = getNotes();
+  notes.push({
+    text: text,
+    timestamp: new Date().toISOString(),
+    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+  });
+  saveNotes(notes);
+  input.value = '';
+  input.style.height = 'auto';
+  showToast('Note saved ✓');
+}
+
+function downloadNotes() {
+  const notes = getNotes();
+  if (notes.length === 0) {
+    showToast('No notes yet');
+    return;
+  }
+
+  let md = '# CHI 2026 — Reading Notes\n\n';
+  md += `> Exported ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}\n\n`;
+  md += '---\n\n';
+
+  notes.forEach((note, i) => {
+    md += `### Note ${i + 1}\n`;
+    md += `*${note.date}*\n\n`;
+    md += `${note.text}\n\n`;
+    if (i < notes.length - 1) md += '---\n\n';
+  });
+
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'notes.md';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('notes.md downloaded ↓');
+}
+
+function updateNotesCount() {
+  const count = getNotes().length;
+  const el = document.getElementById('notesCount');
+  el.textContent = count > 0 ? `${count} note${count !== 1 ? 's' : ''}` : '';
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('notesToast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// Auto-resize textarea
+const notesInput = document.getElementById('notesInput');
+notesInput.addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
+
+// Submit on Enter (Shift+Enter for newline)
+notesInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    addNote();
+  }
+});
+
+updateNotesCount();
 </script>
 </body>
 </html>
