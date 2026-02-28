@@ -178,7 +178,12 @@
     gap: 8px;
     margin-bottom: 24px;
     flex-wrap: wrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
   }
+  .filters::-webkit-scrollbar { display: none; }
 
   .filter-btn {
     font-family: 'IBM Plex Mono', Consolas, monospace;
@@ -310,6 +315,46 @@
   .tag-behavior { background: #FF502114; color: var(--primary); }
   .tag-agents { background: #FFB84D18; color: #B8860B; }
   .tag-bias { background: #F8717118; color: var(--error); }
+  .tag-seena { background: #6C3AED14; color: #6C3AED; }
+  .tag-brainspace { background: #0EA5E914; color: #0891B2; }
+  .tag-eid { background: #F59E0B14; color: #D97706; }
+  .tag-valuesensitive { background: #10B98114; color: #059669; }
+
+  .essential-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #FF5021, #D93A00);
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    margin-left: 8px;
+    animation: pulse-essential 2s ease-in-out infinite;
+  }
+  .essential-badge::before { content: '★'; }
+
+  @keyframes pulse-essential {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 80, 33, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(255, 80, 33, 0); }
+  }
+
+  .paper-note {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 8px 14px;
+    border-radius: var(--radius-xl);
+    margin-top: 6px;
+    border-left: 3px solid var(--accent);
+    line-height: 1.5;
+  }
 
   .paper-actions {
     display: flex;
@@ -739,7 +784,7 @@
       </div>
       <div class="stat-divider"></div>
       <div class="stat">
-        <span class="stat-value">8</span>
+        <span class="stat-value" id="totalCount">25</span>
         <span class="stat-label">total</span>
       </div>
       <div class="progress-track">
@@ -755,6 +800,10 @@
     <button class="filter-btn" data-filter="behavior">Behavior</button>
     <button class="filter-btn" data-filter="agents">Agents</button>
     <button class="filter-btn" data-filter="bias">LLM Bias</button>
+    <button class="filter-btn" data-filter="seena">Seena Labs</button>
+    <button class="filter-btn" data-filter="brainspace">Brain Space</button>
+    <button class="filter-btn" data-filter="eid">Everything is Designed</button>
+    <button class="filter-btn" data-filter="valuesensitive">Value-Sensitive</button>
     <button class="filter-btn" data-filter="read">✓ Read</button>
     <button class="filter-btn" data-filter="unread">Unread</button>
   </div>
@@ -1725,6 +1774,180 @@ const papers = [
     tags: ["qual", "behavior"],
     read: false,
     hasAnalysis: true
+  },
+  {
+    id: 9,
+    title: "CritiqueCrew: Orchestrating Multi-Perspective Conversational Design Critique",
+    relevance: "<em>Multi-agent design critique</em> from different expert perspectives — maps directly to Seena's multi-agent research pipeline architecture.",
+    pdf: "https://arxiv.org/pdf/2602.01796",
+    arxiv: "https://arxiv.org/abs/2602.01796",
+    tags: ["agents", "seena"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 10,
+    title: "Perspectra: Choosing Your Experts Enhances Critical Thinking in Multi-Agent Research Ideation",
+    relevance: "User-configurable <em>expert agent selection</em> improves critical thinking — informs how Seena lets researchers choose which analytical lenses agents apply.",
+    pdf: "https://arxiv.org/pdf/2509.20553",
+    arxiv: "https://arxiv.org/abs/2509.20553",
+    tags: ["agents", "seena"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 11,
+    title: "Hear You in Silence: Designing for Active Listening in Human Interaction with Conversational Agents Using Context-Aware Pacing",
+    relevance: "Context-aware <em>conversational pacing</em> that makes agents feel like active listeners — core interaction design for Seena's voice-based research interviews.",
+    pdf: "https://arxiv.org/pdf/2602.06134",
+    arxiv: "https://arxiv.org/abs/2602.06134",
+    tags: ["interviews", "seena"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 12,
+    title: "PointAloud: An Interaction Suite for AI-Supported Pointer-Centric Think-Aloud Computing",
+    relevance: "AI-supported <em>think-aloud methodology</em> in real time — essential reference for Seena's upcoming think-aloud research tool.",
+    pdf: "https://arxiv.org/pdf/2602.09296",
+    arxiv: "https://arxiv.org/abs/2602.09296",
+    tags: ["interviews", "seena"],
+    read: false,
+    hasAnalysis: false,
+    note: "Key reference for Seena's think-aloud tool — study how they handle real-time AI augmentation of think-aloud protocols."
+  },
+  {
+    id: 13,
+    title: "Feedback by Design: Understanding and Overcoming User Feedback Barriers in Conversational Agents",
+    relevance: "Why users struggle to give <em>useful feedback to AI agents</em> and how to design around it — critical for both Seena's AI interviewer and Brain Space's personal AI.",
+    pdf: "https://arxiv.org/pdf/2602.01405",
+    arxiv: "https://arxiv.org/abs/2602.01405",
+    tags: ["agents", "seena", "brainspace"],
+    read: false,
+    hasAnalysis: false,
+    essential: true
+  },
+  {
+    id: 14,
+    title: "Scaffolded Vulnerability: Chatbot-Mediated Reciprocal Self-Disclosure and Need-Supportive Interaction in Couples",
+    relevance: "Chatbot-mediated <em>vulnerability between partners</em> — validates the original 3rd Brain thesis and directly informs Brain Space's shared spaces feature.",
+    pdf: "https://arxiv.org/pdf/2602.07508",
+    arxiv: "https://arxiv.org/abs/2602.07508",
+    tags: ["brainspace"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 15,
+    title: "Cocoa: Co-Planning and Co-Execution with AI Agents",
+    relevance: "<em>Human-AI co-planning and co-execution</em> — maps directly onto Brain Space's AI-assisted task management and Seena's agent orchestration patterns.",
+    pdf: "https://arxiv.org/pdf/2412.10999",
+    arxiv: "https://arxiv.org/abs/2412.10999",
+    tags: ["agents", "seena", "brainspace"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 16,
+    title: "Scaffolding Metacognition with GenAI: Design Opportunities to Support Task Management for University Students with ADHD",
+    relevance: "GenAI scaffolding <em>executive function and task management</em> — overlaps Brain Space's core value prop of 'making brain space' and connects to NYU accessibility work.",
+    pdf: "https://arxiv.org/pdf/2602.09381",
+    arxiv: "https://arxiv.org/abs/2602.09381",
+    tags: ["brainspace"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 17,
+    title: "Prototyping Digital Social Spaces through Metaphor-Driven Design",
+    relevance: "Designing <em>digital social spaces using spatial metaphors</em> — Brain Space is literally organized around 'spaces' as areas of life. This explores the design vocabulary you're building with.",
+    pdf: "https://arxiv.org/pdf/2510.02759",
+    arxiv: "https://arxiv.org/abs/2510.02759",
+    tags: ["brainspace"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 18,
+    title: "RELATE-Sim: Leveraging Turning Point Theory and LLM Agents to Predict Long-Term Relationship Dynamics",
+    relevance: "LLM agents simulating <em>long-term relationship evolution</em> — future Seena application for simulating user-company relationship dynamics over time.",
+    pdf: "https://arxiv.org/pdf/2510.00414",
+    arxiv: "https://arxiv.org/abs/2510.00414",
+    tags: ["agents", "seena"],
+    read: false,
+    hasAnalysis: false,
+    note: "Future Seena direction — could we simulate a person's relationship to a company or product over time?"
+  },
+  {
+    id: 19,
+    title: "The AI Memory Gap: Users Misremember What They Created With AI or Without",
+    relevance: "People can't accurately <em>remember which parts they wrote vs. the AI</em> — rich implications for authorship, agency, and what 'your work' means in an AI era.",
+    pdf: "https://arxiv.org/pdf/2509.11851",
+    arxiv: "https://arxiv.org/abs/2509.11851",
+    tags: ["eid"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 20,
+    title: "AI Personalization Paradox: Personalized AI Increases Superficial Engagement in Reading while Undermines Autonomy and Ownership in Writing",
+    relevance: "<em>Personalization helps reading but hurts writing</em> — a design tension to unpack, especially as Brain Space personalizes AI to individual users.",
+    pdf: "https://arxiv.org/pdf/2601.17846",
+    arxiv: "https://arxiv.org/abs/2601.17846",
+    tags: ["eid"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 21,
+    title: "The AI Genie Phenomenon and Three Types of AI Chatbot Addiction: Escapist Roleplays, Pseudosocial Companions, and Epistemic Rabbit Holes",
+    relevance: "Taxonomy of <em>chatbot addiction patterns</em> — provocative design ethics angle and consideration for any AI-forward product you're building.",
+    pdf: "https://arxiv.org/pdf/2601.13348",
+    arxiv: "https://arxiv.org/abs/2601.13348",
+    tags: ["eid"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 22,
+    title: "Relational Dissonance in Human-AI Interactions: The Case of Knowledge Work",
+    relevance: "The tension when <em>AI relationships don't fit existing social categories</em> — you live this daily across both ventures. Strong content angle.",
+    pdf: "https://arxiv.org/pdf/2509.15836",
+    arxiv: "https://arxiv.org/abs/2509.15836",
+    tags: ["eid"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 23,
+    title: "Exploring The Impact Of Proactive Generative AI Agent Roles In Time-Sensitive Collaborative Problem-Solving",
+    relevance: "What happens when <em>AI agents take initiative</em> vs. waiting for instructions — relevant to Brain Space's proactive task management and Seena's agent orchestration.",
+    pdf: "https://arxiv.org/pdf/2602.17864",
+    arxiv: "https://arxiv.org/abs/2602.17864",
+    tags: ["agents", "eid"],
+    read: false,
+    hasAnalysis: false
+  },
+  {
+    id: 24,
+    title: "AI and My Values: User Perceptions of LLMs' Ability to Extract, Embody, and Explain Human Values from Casual Conversations",
+    relevance: "Can an LLM <em>understand your values from how you talk</em>? Connects to Brain Space's on-device AI learning about users and to the NAVP design framework (Needs, Abilities, Values, Preferences).",
+    pdf: "https://arxiv.org/pdf/2601.22440",
+    arxiv: "https://arxiv.org/abs/2601.22440",
+    tags: ["valuesensitive"],
+    read: false,
+    hasAnalysis: false,
+    note: "Potential connection to NAVP (Needs, Abilities, Values, Preferences) design framework — how might value extraction inform the V in NAVP?"
+  },
+  {
+    id: 25,
+    title: "Who Does What? Archetypes of Roles Assigned to LLMs During Human-AI Decision-Making",
+    relevance: "Maps the <em>different roles people assign to LLMs</em> (advisor, executor, collaborator) — directly informs Seena's agent mode design and strong 'Everything is Designed' content.",
+    pdf: "https://arxiv.org/pdf/2602.11924",
+    arxiv: "https://arxiv.org/abs/2602.11924",
+    tags: ["agents", "seena", "eid"],
+    read: false,
+    hasAnalysis: false
   }
 ];
 
@@ -1745,6 +1968,7 @@ function saveState() {
 function updateStats() {
   const readCount = papers.filter(p => p.read).length;
   document.getElementById('readCount').textContent = readCount;
+  document.getElementById('totalCount').textContent = papers.length;
   document.getElementById('progressFill').style.width = `${(readCount / papers.length) * 100}%`;
 }
 
@@ -1769,7 +1993,11 @@ function renderPapers() {
     qual: ['tag-qual', 'Qual Analysis'],
     behavior: ['tag-behavior', 'Behavior'],
     agents: ['tag-agents', 'Agents'],
-    bias: ['tag-bias', 'LLM Bias']
+    bias: ['tag-bias', 'LLM Bias'],
+    seena: ['tag-seena', 'Seena Labs'],
+    brainspace: ['tag-brainspace', 'Brain Space'],
+    eid: ['tag-eid', 'Everything is Designed'],
+    valuesensitive: ['tag-valuesensitive', 'Value-Sensitive Design']
   };
 
   list.innerHTML = filtered.map((p, i) => {
@@ -1792,9 +2020,10 @@ function renderPapers() {
         <div class="paper-top">
           <span class="paper-number">${String(p.id).padStart(2, '0')}</span>
           <div class="paper-content">
-            <div class="paper-title">${p.title}</div>
+            <div class="paper-title">${p.title}${p.essential ? '<span class="essential-badge">Essential</span>' : ''}</div>
             <div class="paper-relevance">${p.relevance}</div>
             <div class="paper-tags">${tags}</div>
+            ${p.note ? '<div class="paper-note">📌 ' + p.note + '</div>' : ''}
           </div>
         </div>
         <div class="paper-actions">
