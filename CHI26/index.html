@@ -1426,6 +1426,225 @@ const paper7Analysis = `
 </div>
 `;
 
+const paper6Analysis = `
+<div class="analysis-panel open" id="analysisPanel6">
+  <div class="analysis-header">
+    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~14 min listen</div>
+  </div>
+
+  <div class="tts-controls" id="ttsControls">
+    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks<br>
+    <strong>Authors:</strong> Jieyu Zhou, Aryan Roy, Sneh Gupta, Daniel Weitekamp, Christopher J. MacLellan<br>
+    <strong>Venue:</strong> CHI 2026<br>
+    <strong>One-liner:</strong> A decision-theoretic framework that uses dynamic programming to calculate optimal checkpoint placement in multi-step AI agent tasks — proving that intermediate confirmations reduce task time by 13.54% and are overwhelmingly preferred by users.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you've ever used an AI agent to do something multi-step — shopping online, editing images, booking travel — you've probably faced the awkward question: do I let it run to the end and hope for the best, or do I check in constantly and micromanage? This paper formalizes that question mathematically and proves there's a sweet spot. Researchers at Georgia Tech ran a formative study with eight participants using three real AI agents — Manus, ChatGPT Agent, and Browser Use — across five everyday tasks. They discovered a recurring behavior pattern they call CDCR: Confirmation, Diagnosis, Correction, Redo. When users find an error, they first confirm something went wrong, then diagnose which step failed, then correct the mistake, then redo everything from that point forward.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">The key finding: seven out of eight participants were dissatisfied with the standard confirm-at-the-end approach.</span> So the researchers built a decision-theoretic model that uses dynamic programming to calculate exactly where in a multi-step task you should place confirmation checkpoints. They validated this with forty-eight participants across three task domains — shopping, image editing, and an Overcooked cooking game. The results are clear: <span class="highlight">eighty-one percent of participants preferred intermediate confirmation, and task completion time dropped by 13.54 percent</span> compared to end-only checking. This isn't just a nice theoretical result — it's a deployable scheduling algorithm that any agentic system could adopt tomorrow.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you're building anything with AI agents — and increasingly everyone is — this paper gives you the math to decide when humans should be in the loop. Not just "sometimes," but precisely when.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Contribution</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary contribution is <span class="highlight">methodological</span>: a formal decision-theoretic model that treats confirmation scheduling as a stochastic optimization problem, solved via dynamic programming. There's a strong secondary <span class="highlight">empirical contribution</span> from the two-phase evaluation — a formative study with eight participants and a controlled experiment with forty-eight — and a valuable <span class="highlight">conceptual contribution</span> in the CDCR interaction pattern they identified.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Let me unpack the model because the formulation is elegant. Each multi-step agent task is represented as a sequence of steps, where each step has a probability of success. At each step, the system faces a binary decision: execute the next action, or pause and ask the user to verify. The model tracks four time costs per step — time to confirm, time to diagnose an error, time to correct it, and time to redo subsequent work. The optimization minimizes total expected time using backward induction dynamic programming, producing an optimal checkpoint schedule before the task even begins.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">What makes this especially clever is the Beta-Bernoulli belief model for online adaptation. The system doesn't require knowing the exact per-step accuracy in advance. It starts with a prior estimate and updates it as the user confirms or corrects steps, dynamically adjusting future checkpoint placement. If early steps keep failing, the model becomes more conservative and checks more often. If everything's going smoothly, it backs off. That's exactly the adaptive behavior you'd want in a production system.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd classify the contribution strength as <span class="highlight">significant</span>. It transforms a vague design intuition — "check in sometimes but not too much" — into a rigorous, implementable framework. The connection between operations research concepts like preventive maintenance scheduling and human-AI interaction is novel and opens a new design space for agentic interfaces. Current benchmarks show agents achieve only around thirty percent accuracy on multi-step tasks, making this work immediately relevant.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The biggest strength is the <span class="highlight">rigor of the experimental design</span>. The evaluation study used a three-by-six Williams counterbalanced design with forty-eight participants across three distinct task domains — shopping with eight steps and eighty-seven point five percent per-step accuracy, image editing with twelve steps and ninety-one percent accuracy, and Overcooked with sixteen steps and ninety-three percent accuracy. This systematic variation across task lengths and error rates provides robust evidence that the model generalizes. The quantitative results are compelling: task time reductions of 17.44 percent for shopping, 7.46 percent for image editing, and 15.64 percent for Overcooked, all statistically significant.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second major strength is the <span class="highlight">CDCR interaction pattern</span> emerging from the formative study. This isn't imposed by the researchers — it's observed behavior. One hundred percent of participants entered the Confirmation phase, eighty-seven point five percent proceeded to Diagnosis, and eighty-two point five percent executed Correction. Having a descriptive model of how users actually behave when they encounter agent errors, not just how designers assume they behave, grounds the formal model in real interaction patterns.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The qualitative findings add depth. The participant who compared the AI to a new employee — "I wouldn't trust it to do the task right all the way to the end" — captures a powerful mental model. And the finding that seventy-seven percent of participants felt intermediate checkpoints did not disrupt their task flow directly addresses the main concern about interruption fatigue.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is that the evaluation used a <span class="highlight">simulated agent environment</span> rather than real AI agents executing real tasks. Participants reviewed pre-computed action sequences with injected errors, which means the study measures user behavior with confirmation interfaces but doesn't capture the full messiness of real agent failures — partial successes, ambiguous errors, cascading mistakes. The authors acknowledge this, and it's a reasonable trade for experimental control, but it limits ecological validity. I'd also note that the model currently optimizes purely for time, whereas real users weigh time against task importance, error severity, and emotional cost — a point the discussion section thoughtfully addresses but the model doesn't yet capture.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Similar Reading</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's own references, the most relevant related works are these. Tennenhouse's foundational 2000 paper on proactive computing sets the trajectory that this work advances — the shift from reactive to proactive human-AI collaboration. Lee and Seo's 2004 paper on trust in automation provides the theoretical backdrop for understanding why users want intermediate checkpoints — it's about calibrated trust, not just efficiency. Barlow and Hunter's 1960 work on optimum preventive maintenance policies is the operations research ancestor of the scheduling algorithm, showing how inspection timing problems have been studied for decades in other domains. Epperson and colleagues' 2025 paper on interactive debugging and steering of multi-agent systems represents the most direct contemporary comparison in the agentic AI space. And Horvitz's 1999 paper on mixed-initiative user interfaces remains the definitive framing for the broader design challenge of balancing user control with agent autonomy.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Seena Labs Relevance</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper has direct implications for how Seena structures its multi-agent pipeline.</span> Seena's detection agents, interview agents, and synthesis agents operate in a sequential workflow where errors compound. If a detection agent misidentifies a behavioral pattern, the interview agent asks the wrong questions, and the synthesis agent produces flawed insights. The CDCR framework maps directly: at what points in Seena's pipeline should the system pause and surface intermediate results for human review?</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The decision-theoretic model could be adapted for Seena's use case. Rather than optimizing for time, Seena could optimize for insight quality — placing confirmations where the expected cost of an undetected error (in terms of degraded research output) exceeds the cost of asking a product manager to verify an intermediate finding. For example, the model might recommend always confirming the behavioral pattern detected before launching an interview, but allowing the synthesis agent to run without interruption if the evidence chain is strong.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The Beta-Bernoulli adaptive component is especially interesting. Seena could track per-step reliability across projects — learning that its detection agent is highly reliable for certain behavioral categories but less so for others — and dynamically adjust where it asks for human confirmation. Over time, as Seena builds a track record with a specific user, it could reduce confirmation frequency for well-understood domains while remaining cautious in novel territory. That's the kind of adaptive trust calibration that would differentiate Seena from simpler automation tools.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is dense with citable numbers. The headline: <span class="highlight">forty-eight participants, within-subjects design, intermediate confirmation reduced task completion time by 13.54 percent (t(143) = 5.52, p less than 0.001)</span>. The breakdown by domain: 17.44 percent for shopping (t(47) = 5.25, p less than 0.001), 7.46 percent for image editing (t(47) = 2.34, p = 0.024), and 15.64 percent for Overcooked (t(40) = 2.14, p = 0.044). That gives you domain-specific evidence to cite depending on your context.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">Eighty-one percent of participants (thirty-nine out of forty-eight) preferred intermediate confirmation</span> versus only fifteen percent preferring end confirmation. The CDCR pattern numbers: one hundred percent entered Confirmation, eighty-seven point five percent proceeded to Diagnosis, eighty-two point five percent executed Correction. <span class="highlight">Average time per confirmation decreased by thirty-eight percent</span> with intermediate checkpoints compared to end-only, because users only needed to check recent steps rather than the entire history. And for the broader AI agent context: <span class="highlight">current multi-step agent benchmarks achieve only approximately thirty percent end-to-end accuracy</span>, making human-in-the-loop confirmation not just nice but essential. The early-error benefit is also worth noting: time savings were approximately twenty-nine percent when errors occurred early in the task, versus a slight four-point-five percent increase for late errors.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">AI agents today are like interns who work fast but make mistakes — and the worst thing you can do is let them finish the whole project before checking their work.</span> These researchers proved mathematically that checking in at strategic moments — not too often, not too rarely — saves time and catches errors before they cascade. The magic number? Intermediate checkpoints cut task time by nearly fourteen percent and were preferred by eighty-one percent of users. The design lesson: the future of AI isn't fully autonomous. It's strategically supervised.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for LinkedIn: "Every company building AI agents is asking the same question: how much autonomy should we give them? This research proves it's the wrong question. The right question is: when should we check in? Not whether to supervise, but where to place the checkpoints. They literally solved this with dynamic programming — turning a vague design instinct into a deployable algorithm." You could frame this as an Everything is Designed piece about the UX of trust calibration — how the best human-AI collaboration isn't about removing humans from the loop, it's about putting them back in at exactly the right moments.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Industry vs. Theory</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is heavily tilted toward industry application with a strong theoretical backbone. The scheduling algorithm is immediately deployable — any agentic system with multi-step tasks could integrate it as a timing layer that decides when to pause, surface progress, and ask for review. The discussion section even describes how it could plug into existing agent architectures as middleware. At the same time, the connection between operations research optimization and human-AI interaction design is a genuine theoretical contribution that reframes how we think about human oversight of autonomous systems. The framing that confirmation should be seen not as a binary autonomy tradeoff but as a <span class="highlight">mixed-initiative design opportunity</span> — integrating efficiency, trust, and interaction design — is an important conceptual shift. For Seena, this is a <span class="highlight">"implement the scheduling algorithm, adopt the CDCR framework, cite the user preference data"</span> paper. The formal model gives you a principled way to decide where human touchpoints belong in an automated insight pipeline, and the empirical evidence gives you ammunition for why those touchpoints make the system better, not just slower.</p>
+  </div>
+</div>
+`;
+
+const paper8Analysis = `
+<div class="analysis-panel open" id="analysisPanel8">
+  <div class="analysis-header">
+    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~14 min listen</div>
+  </div>
+
+  <div class="tts-controls" id="ttsControls">
+    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> Designing Computational Tools for Exploring Causal Relationships in Qualitative Data<br>
+    <strong>Authors:</strong> Han Meng, Qiuyuan Lyu, Peinuan Qin, Yitian Yang, Renwen Zhang, Wen-Chieh Lin, Yi-Chieh Lee<br>
+    <strong>Venue:</strong> CHI 2026<br>
+    <strong>One-liner:</strong> A computational tool that helps qualitative researchers discover causal relationships in their data through a three-level workflow — indicators, concepts, causal networks — revealing that AI scaffolding can overcome analytical inertia while creating tension with established research paradigms.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Causal relationships are the holy grail of qualitative research. Every interview transcript, every field note, every observation contains implicit causal claims — "I stopped using the product because the onboarding was confusing" — but extracting and mapping those relationships systematically is brutally time-consuming. Most researchers either do it manually in spreadsheets and sticky notes, or they don't do it at all. This paper introduces QualCausal, a computational tool that scaffolds the entire process from raw text to causal network visualization.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system works in three levels. First, it extracts indicators — specific phrases from the data that carry causal meaning. Second, users abstract those indicators into higher-level concepts. Third, the system identifies and visualizes causal relationships between concepts as interactive network diagrams. <span class="highlight">The team validated this through a rigorous three-phase study: a formative workshop with fifteen researchers, system development informed by their feedback, and a feedback study with another fifteen participants.</span> The technical evaluation is solid — indicator extraction hit eighty-six percent precision and ninety-four percent recall, and concept creation achieved an inter-annotator agreement kappa of 0.92.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">But the most fascinating finding isn't about accuracy. It's about what happens to researchers' analytical practices when you give them AI scaffolding. Some felt liberated — the tool overcame their analytical inertia and helped them see patterns they would have missed. Others felt domesticated — the structured workflow pushed them into a "data labeler" mentality that conflicted with their interpretive traditions. <span class="highlight">That tension between computational efficiency and epistemological integrity is the real story here.</span></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Contribution</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary contribution is an <span class="highlight">artifact</span>: QualCausal itself, an open-source system built with Vue.js, D3.js, Django, and GPT-4.1 for the LLM components. There's a strong secondary <span class="highlight">empirical contribution</span> from the three-phase study, and a meaningful <span class="highlight">theoretical contribution</span> in the design implications about how computational tools restructure analytical cognition.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system architecture deserves attention because it embodies a specific theory of how causal analysis should be scaffolded. There are three coordinated views. The Indicator View shows a network visualization of extracted causal indicators at the data level — individual phrases from transcripts linked by causal relationships the LLM has identified. The Concept View abstracts those indicators into higher-level conceptual categories and shows causal relationships between concepts, letting researchers see the forest rather than just the trees. The Node View provides a localized subnetwork focused on a single concept and its immediate causal neighborhood. Plus there's a Details and Concepts Panel for drilling into source text.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The design goals emerged from the formative workshop, where fifteen researchers identified three core challenges: the difficulty of keyword-based coding for causal content, the challenge of distinguishing correlation from causation in qualitative data, and the interpretive complexity of building causal narratives from fragmentary evidence. The system addresses each: automated indicator extraction replaces keyword search, explicit causal relationship modeling forces researchers to specify direction and strength, and multi-level visualization supports moving between evidence and interpretation.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd classify the contribution strength as <span class="highlight">significant</span>. While individual components — LLM-based extraction, network visualization, concept mapping — exist separately in prior work, the integrated pipeline from raw qualitative data to causal network is novel. More importantly, the feedback study reveals design tensions that anyone building AI tools for analytical work needs to understand. The open-source release on GitHub makes this a genuinely reusable contribution.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the <span class="highlight">depth of the qualitative feedback study</span>. Fifteen participants worked through a real analysis task using a mental health stigma interview dataset, followed by in-depth interviews about their experience. The richness of the participant quotes reveals genuine analytical tensions that surveys would never capture. When participant P9 says the system "turns interpretation into a classification task" and describes how extracted indicators rather than raw text now drive their analytical attention, that's a profound observation about how tools reshape thinking.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the <span class="highlight">technical evaluation across two independent datasets</span>. They tested indicator extraction on both their own MHStigmaInterview-20 corpus and the SemEval 2010 Task 8 benchmark, comparing against co-occurrence networks and causal-cue heuristics. QualCausal outperformed both baselines, achieving eighty point six percent precision and eighty-three percent recall for causal relationship extraction on the interview dataset, with ninety-eight point two percent directionality accuracy. That last number matters — getting the direction of causation right is crucial for qualitative research claims.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The third strength is the honesty about <span class="highlight">paradigmatic tensions</span>. The paper doesn't shy away from the fact that some participants — particularly those trained in interpretivist and post-positivist traditions — fundamentally questioned whether computational causal discovery belongs in qualitative research at all. Participant P9's comment that "no qualitative research dares claim they found causation" and participant F4's observation that "I'm not sure if machines can really teach such deep complex perspectives to AI just through text" are not weaknesses the paper hides but findings it foregrounds. That epistemic honesty elevates the contribution.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is the evaluation's scope. <span class="highlight">All participants worked with the same pre-selected dataset</span> in a one-hour session. Real qualitative research involves weeks of immersion in data the researcher collected themselves. The system's value for causal discovery might look very different when researchers have deep contextual knowledge versus encountering unfamiliar data. I'd also flag that the within-sentence limitation — the system only identifies causal relationships expressed within single sentences — misses cross-sentence and discourse-level causation, which the authors acknowledge is a significant boundary. Real causal narratives in qualitative data often span paragraphs.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Similar Reading</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's extensive reference list, the most relevant works are these. Braun and Clarke's foundational work on thematic analysis in psychology provides the methodological context for how qualitative coding traditions inform tool design. Spirtes, Glymour, and Scheines' work on causation, prediction, and search gives the theoretical underpinning for computational approaches to causal discovery. Gao and team's CollabCoder from 2024 is the most direct system comparison, addressing collaborative qualitative coding with AI though without the causal focus. Xiao and colleagues' 2020 exploratory causal analysis approach represents prior work on visual analytics for causal relationships in data. And Wan and team's 2024 survey on bridging causal discovery and large language models maps the broader landscape of LLM-powered causal reasoning that QualCausal inhabits.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Seena Labs Relevance</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper is deeply relevant to Seena's synthesis layer.</span> Seena's pipeline moves from behavioral detection to user interviews to insight synthesis. The missing piece in that pipeline is causal reasoning — not just "users did X" but "users did X because of Y, which led to Z." QualCausal's three-level architecture — indicators, concepts, causal networks — maps almost perfectly to a potential Seena synthesis workflow: behavioral signals become indicators, patterns across users become concepts, and the relationships between patterns become causal hypotheses that product teams can act on.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The coordinated visualization approach is especially instructive. Seena could adopt a similar multi-level view: a detail level showing individual user quotes and behavioral evidence, a pattern level showing abstracted themes across users, and a causal level showing hypothesized cause-effect relationships between patterns. The ability to drill from a high-level causal claim all the way down to the specific user quote that supports it is exactly the evidence traceability that builds trust in AI-generated insights.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">But the paradigmatic tensions are the real warning. If fifteen qualitative researchers couldn't agree on whether computational causal discovery is epistemologically valid, product managers receiving Seena's causal claims will have similar trust questions. The paper's recommendation that tools position causal relationships as exploratory hypotheses rather than definitive claims should be a design principle for Seena. The framing matters: "our analysis suggests X may contribute to Y" is defensible in a product review; "X causes Y" is not. QualCausal's concept of preserving interpretive autonomy — letting users modify, reject, and reinterpret AI-generated relationships — should also inform how Seena presents synthesis results.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The technical numbers are strong. <span class="highlight">Indicator extraction: precision eighty-six point five percent, recall ninety-four point three percent</span> on the MHStigmaInterview-20 dataset. <span class="highlight">Concept creation: inter-annotator agreement kappa of 0.92</span>, indicating near-perfect consistency. <span class="highlight">Causal relationship extraction: precision eighty point six percent, recall eighty-three percent, directionality accuracy ninety-eight point two percent.</span> Those directionality numbers are especially important — getting the arrow of causation right matters enormously for research validity.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The comparison numbers contextualize the achievement. Co-occurrence networks achieved only thirty-eight point five percent precision on causal extraction versus QualCausal's eighty point six percent. Causal-cue heuristics managed just twenty-two point six percent precision with ten point eight percent recall. Those baselines represent the current standard tools — NVivo's query features and basic co-occurrence methods — so the improvement is substantial and practical. From the formative study: <span class="highlight">fifteen participants identified three core challenges in the two-hour workshop</span> — keyword coding difficulty, correlation-causation confusion, and interpretive complexity. And the finding that participants experienced the system as a "research assistant" creating a "partnership" rather than a replacement tool is a powerful adoption signal worth citing in any pitch about human-AI analytical collaboration.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">Researchers built a tool that helps you find the "why" hiding in qualitative data — not just patterns, but cause-and-effect relationships — and then maps them as interactive networks you can explore.</span> Think of it as turning interview transcripts into a causal map of human behavior. The twist: when they gave it to researchers, some felt empowered and others felt the tool was changing how they think. One researcher said it felt like having a coding partner. Another said it turned interpretation into classification. Same tool, radically different experiences — because the design of analytical tools doesn't just affect efficiency, it affects epistemology.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook: "The most interesting finding in this paper isn't about the technology. It's that giving researchers an AI tool for causal analysis made some of them think differently about their own data — and not always in ways they were comfortable with. One researcher noticed they'd stopped reading the original text and started reading AI-extracted indicators instead. That's not a bug or a feature. It's a design consequence we need to take seriously." You could frame this as an Everything is Designed piece about the epistemology of tools — how every analytical tool embeds assumptions about what counts as evidence, what counts as a valid inference, and what the researcher's role should be. The design question isn't just "does it work" but "what kind of thinking does it produce?"</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Industry vs. Theory</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper straddles both worlds with a slight lean toward theory. The system is fully implemented and open-sourced, which gives it practical weight. But the most lasting contributions are theoretical: the observation that computational tools restructure analytical cognition, the concept of "cognitive scaffolding overcoming analytical inertia," the tension between sequential presentation and holistic processing, and the paradigmatic boundary issues when computational tools enter interpretive traditions. These are design principles, not just system features. For industry, the three-level causal analysis pipeline — indicators to concepts to networks — is a reusable architectural pattern. For theory, the finding that tools can shift researchers from "passive acceptance" to "proactive cognitive exploration" while simultaneously risking turning them into "data labelers" is a genuine contribution to understanding human-AI analytical collaboration. For Seena, this is a <span class="highlight">"adopt the visualization architecture, heed the epistemological warnings, cite the technical benchmarks"</span> paper. The causal network visualization could directly inspire Seena's insight presentation layer, while the paradigmatic tensions should inform how Seena positions its analytical outputs — as hypotheses to explore, not conclusions to accept.</p>
+  </div>
+</div>
+`;
+
+
 const papers = [
   {
     id: 1,
@@ -1484,7 +1703,8 @@ const papers = [
     pdf: "https://arxiv.org/pdf/2510.05307",
     arxiv: "https://arxiv.org/abs/2510.05307",
     tags: ["agents", "behavior"],
-    read: false
+    read: false,
+    hasAnalysis: true
   },
   {
     id: 7,
@@ -1503,7 +1723,8 @@ const papers = [
     pdf: "https://arxiv.org/pdf/2602.06506",
     arxiv: "https://arxiv.org/abs/2602.06506",
     tags: ["qual", "behavior"],
-    read: false
+    read: false,
+    hasAnalysis: true
   }
 ];
 
@@ -1563,7 +1784,7 @@ function renderPapers() {
          </button>`
       : '';
 
-    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis, 4: paper4Analysis, 5: paper5Analysis, 7: paper7Analysis };
+    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis, 4: paper4Analysis, 5: paper5Analysis, 6: paper6Analysis, 7: paper7Analysis, 8: paper8Analysis };
     const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisMap[p.id] || '') : '';
 
     return `
