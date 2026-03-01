@@ -3,8 +3,8 @@
 ## What This Repo Is
 A personal reading list and synthesis tool. The owner sends you a URL to an article (arxiv paper, blog post, newsletter, etc.) and you:
 1. Read the article
-2. Synthesize it into a TTS-optimized analysis
-3. Add it to the reading list HTML
+2. Synthesize it into a TTS-optimized analysis (Markdown)
+3. Add the paper metadata to `papers.json` and create a `.md` analysis file
 4. Commit and push
 
 ## Two Workflows
@@ -23,11 +23,10 @@ When processing the queue:
 When the user gives you a URL directly:
 
 1. **Fetch and read the article** using WebFetch or by downloading the PDF
-2. **Determine the next paper ID** — look at the `papers` array in `CHI26/index.html` and find the highest existing `id`, then use `id + 1`
-3. **Write the analysis** as a template literal `const paper{N}Analysis = \`...\`;` — insert it right before the `// ── Papers Data ──` comment
-4. **Add the paper to the `papers` array** at the end (before the closing `];`)
-5. **Update the `analysisMap`** object to include the new paper ID and analysis variable
-6. **Commit and push** to `main`
+2. **Determine the next paper ID** — look at `CHI26/papers.json` and find the highest existing `id`, then use `id + 1`
+3. **Add the paper to `papers.json`** — append a new entry to the JSON array
+4. **Write the analysis as a Markdown file** — create `CHI26/papers/{NNN}.md` (zero-padded to 3 digits, e.g. `027.md`)
+5. **Commit and push** to `main`
 
 ## File Structure
 
@@ -35,122 +34,104 @@ When the user gives you a URL directly:
 index.html              ← Password gate (entry point for GitHub Pages)
 queue.md                ← URL queue — add URLs here to trigger processing
 CHI26/
-  index.html            ← THE reading list (single-file HTML app, ~215KB)
+  index.html            ← Reading list UI (static shell, loads data dynamically)
+  papers.json           ← Paper metadata array (title, tags, URLs, etc.)
+  papers/               ← Individual analysis files (one .md per paper)
+    001.md
+    002.md
+    ...
+    026.md
   notes/                ← Exported reading notes (markdown)
   notes.md              ← Notes stub
 CHI26_Curated_Papers.md ← Reference list of CHI'26 preprints
 README.md               ← Project overview
+CLAUDE.md               ← These instructions
 .github/workflows/
   process-queue.yml     ← GitHub Action that triggers Claude Code on queue changes
 ```
 
-The only file you need to edit is **`CHI26/index.html`** (and `queue.md` when processing the queue).
+The files you edit are:
+- **`CHI26/papers.json`** — add new paper metadata
+- **`CHI26/papers/{NNN}.md`** — create new analysis markdown file
+- **`queue.md`** — when processing the queue (move URLs from Pending to Processed)
 
-## How to Edit `CHI26/index.html`
+You do NOT need to edit `CHI26/index.html` — it loads data dynamically.
 
-### Step 1: Add the analysis variable
+## How to Add a Paper
 
-Find the line `// ── State ──` (around line 2641). Insert your new analysis BEFORE that line:
+### Step 1: Add to papers.json
 
-```js
-const paper{N}Analysis = `
-<div class="analysis-panel open">
-  <!-- analysis HTML here -->
-</div>
-`;
+Open `CHI26/papers.json` and add a new entry at the end of the array:
 
-// ── State ──
+```json
+{
+  "id": 27,
+  "title": "Full Article Title",
+  "relevance": "One-sentence <em>relevance description</em> with key phrase emphasized.",
+  "pdf": "https://...",
+  "arxiv": "https://...",
+  "tags": ["tag1", "tag2"],
+  "hasAnalysis": true
+}
 ```
 
-### Step 2: Add to the papers array
+Fields:
+- `id` — next sequential integer
+- `title` — full article title
+- `relevance` — one sentence, use `<em>` for key phrases
+- `pdf` — direct PDF link or article URL
+- `arxiv` — arxiv abs link (omit if not applicable)
+- `tags` — array of tag strings (see Tag Reference below)
+- `hasAnalysis` — `true` if you're writing an analysis file
+- `note` — (optional) editorial note
+- `essential` — (optional) `true` to flag as essential reading
 
-Find the `const papers = [` array. Add your new entry at the end:
+### Step 2: Write the analysis Markdown file
 
-```js
-  {
-    id: {N},
-    title: "Full Article Title",
-    relevance: "One-sentence <em>relevance description</em> with key phrase emphasized.",
-    pdf: "https://...",       // direct PDF link if available, otherwise article URL
-    arxiv: "https://...",     // arxiv abs link if applicable, otherwise omit
-    tags: ["tag1", "tag2"],   // see Tag Reference below
-    read: false,
-    hasAnalysis: true
-  }
-```
+Create `CHI26/papers/{NNN}.md` where NNN is the zero-padded paper ID (e.g., `027.md`).
 
-### Step 3: Update the analysisMap
-
-Find the `const analysisMap = {` line and add the new entry:
-
-```js
-const analysisMap = { 1: paper1Analysis, ..., {N}: paper{N}Analysis };
-```
-
-## Analysis HTML Template
+## Analysis Markdown Template
 
 Every analysis must follow this structure. Write in **conversational prose** optimized for text-to-speech (~12-15 min listen). No bullet points in the body — use flowing paragraphs.
 
-```html
-<div class="analysis-panel open">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~{X} min listen</div>
-  </div>
+```markdown
+*HCI Paper Analysis · TTS Optimized · ~{X} min listen*
 
-  <div class="tts-controls">
-    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status">Click any paragraph to start</span>
-  </div>
+**Title:** {title}
+**Authors:** {authors}
+**Source:** {venue/publication/blog}
+**One-liner:** {single sentence summary}
 
-  <div class="tts-vitals">
-    <strong>Title:</strong> {title}<br>
-    <strong>Authors:</strong> {authors}<br>
-    <strong>Source:</strong> {venue/publication/blog}<br>
-    <strong>One-liner:</strong> {single sentence summary}
-  </div>
+---
 
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">...</p>
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">...</p>
-  </div>
+## TL;DR — Why You Should Care
 
-  <div class="divider"></div>
+Here's the core insight... (2-3 paragraphs, hook + summary)
 
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">...</p>
-  </div>
+---
 
-  <div class="divider"></div>
+## The Core Contribution
 
-  <div class="tts-section">
-    <div class="tts-section-title">Key Insights and Evaluation</div>
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">...</p>
-    <!-- Use <span class="highlight">...</span> for key insights -->
-    <!-- Use <span class="stat-highlight">...</span> for statistics -->
-  </div>
+This paper makes... (methodology, contribution type, strength rating)
 
-  <div class="divider"></div>
+---
 
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">...</p>
-    <!-- This is the MOST IMPORTANT section — be specific about implications -->
-    <!-- If not relevant to Seena, rename to "Why This Matters" -->
-  </div>
+## Key Insights and Evaluation
 
-  <div class="divider"></div>
+The strongest aspect... Use **bold** for key insights.
 
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">...</p>
-    <!-- Write the "dinner party version" — how you'd explain this over drinks -->
-  </div>
-</div>
+---
+
+## Seena Labs Relevance
+
+This is directly relevant... (MOST IMPORTANT section — be specific)
+If not relevant to Seena, rename to "## Why This Matters"
+
+---
+
+## Everything is Designed — Social Media Angle
+
+Here's the dinner party version... (how you'd explain this over drinks)
 ```
 
 ### Section Guide
@@ -172,15 +153,19 @@ For **blog posts / articles / non-academic content**, use a lighter structure:
 4. **Seena Labs Relevance** (or **Why This Matters** if not Seena-specific)
 5. **Everything is Designed — Social Media Angle**
 
+For the first line (badge), use:
+- `*HCI Paper Analysis · TTS Optimized · ~{X} min listen*` for academic papers
+- `*Article Analysis · TTS Optimized · ~{X} min listen*` for blog posts/articles
+
 ## Writing Style
 
 - Conversational, second-person ("you") prose — like explaining to a smart friend
 - Optimized for TTS listening — spell out numbers, avoid acronym soup
-- No bullet points in analysis body
-- Use `<span class="highlight">key insight here</span>` for important ideas
-- Use `<span class="stat-highlight">42% improvement</span>` for citable numbers
-- Every `<p>` gets `class="tts-paragraph" onclick="ttsSpeak(this)"`
-- Escape backticks in the analysis text since it lives inside a JS template literal (use `\``)
+- No bullet points in analysis body — use flowing paragraphs
+- Use `**bold text**` for key insights and important ideas
+- Use `---` between sections as dividers
+- Use `## Section Title` for section headers
+- Every paragraph should be its own block (separated by blank lines)
 
 ## Tag Reference
 
