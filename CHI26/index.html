@@ -2476,6 +2476,187 @@ const paper26Analysis = `
 </div>
 `;
 
+const paper27Analysis = `
+<div class="analysis-panel open">
+  <div class="analysis-header">
+    <div class="analysis-badge">Article Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~10 min listen</div>
+  </div>
+
+  <div class="tts-controls">
+    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> Pentagon vs. Anthropic: The AI Safety Standoff That Changed Everything<br>
+    <strong>Authors:</strong> The Verge Policy Team<br>
+    <strong>Source:</strong> The Verge, February 2026<br>
+    <strong>One-liner:</strong> Anthropic refused Pentagon demands to remove AI safety guardrails, Trump blacklisted the company, and OpenAI immediately swooped in with a deal — accepting the same terms Anthropic had requested.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This is the story of what happens when an AI company actually holds the line on safety, and the answer is: the government punishes them for it. Anthropic had a two hundred million dollar contract with the Pentagon. The Defense Department wanted unrestricted use of Claude for "all lawful purposes." Anthropic said no — specifically, they wanted written guarantees that Claude would not be used for fully autonomous weapons or mass domestic surveillance of American citizens. The Pentagon called that unacceptable. Defense Secretary Pete Hegseth gave Anthropic a deadline of five-oh-one p.m. on Friday, February twenty-seventh. Anthropic refused to budge. Trump ordered every federal agency to immediately stop using Anthropic's products. And then Hegseth did something extraordinary: he designated Anthropic a "supply chain risk to national security" — a label usually reserved for Chinese companies like Huawei.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here is the twist that makes this story genuinely strange. Within hours of Trump banning Anthropic, OpenAI announced a deal with the Pentagon. And OpenAI's deal included <span class="highlight">the exact same two restrictions Anthropic had requested</span> — no autonomous weapons, no mass domestic surveillance. The government accepted those terms from OpenAI but not from Anthropic. The official explanation is that Anthropic had been seen as too focused on AI safety, too concerned, too cautious. The unofficial read is that this was about punishing a company that dared to negotiate.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Argument</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The Verge frames this as a clash between two visions of what AI companies owe the government that contracts with them. The Pentagon's position is that any company receiving federal dollars must agree to allow their technology to be used for any lawful purpose, full stop. No company gets to impose ethical restrictions on how the military uses tools it is paying for. Anthropic's position is the opposite: that there are uses so dangerous — truly autonomous lethal systems, or systems used to surveil American citizens at scale — that no amount of money should buy unconditional access to their AI. Dario Amodei, Anthropic's CEO, said in a statement that the Defense Department's "threats do not change our position: we cannot in good conscience accede to their request."</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The stakes are real and specific. Anthropic's Claude was, at the time of this standoff, the only AI model deployed on the military's classified networks. The article notes it had been used in the operation to capture Nicolás Maduro. There are reportedly discussions of using it in potential military operations in Iran. This is not a hypothetical debate about future autonomous weapons — it is a live question about AI systems already operating at the classified level of the United States government. Anthropic wanted to know what those systems were being used for and have some say in the limits. The Pentagon said that is not how government contracting works.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Key Insights and Evaluation</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The most telling detail in this story is the supply chain risk designation. This label, under federal law, is typically used to block foreign adversaries from infiltrating defense supply chains — the kind of thing you use against Huawei or ZTE. Applying it to an American AI company is, as Anthropic put it, "legally unsound" and sets a dangerous precedent. It means every contractor working with the Pentagon now has to demonstrate they do not touch Anthropic in their work with the military. <span class="stat-highlight">Anthropic's valuation is around three hundred eighty billion dollars</span>, so losing a two hundred million dollar contract is not existential. But the supply chain designation could poison Anthropic's entire enterprise business — because many large enterprises also have Pentagon contracts.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The article raises a question it does not fully answer: why did the government accommodate OpenAI and not Anthropic? Both companies ended up with essentially the same restrictions in their contracts. The difference seems to be political — Anthropic has been more publicly associated with the AI safety movement, has been more vocal about the risks of AI, and apparently had been building to this confrontation for months. Government officials had been criticizing Anthropic for being "overly concerned with AI safety" long before the deadline. This was not purely a contract dispute. It was a signal about which companies the current administration considers ideologically aligned and which it does not.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Why This Matters</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you are building any kind of AI product, this story is a master class in what "maintaining ethical guardrails" actually costs in the real world. Anthropic did not waver on their safety commitments — and they paid for it with a government blacklisting. The irony is profound: the company that made Claude, the AI that the Pentagon had chosen because it was trusted in classified environments, was then punished for caring too much about how that trust was used. The broader implication for the AI industry is that we are in a moment where the market may actively reward companies that are willing to remove safety restrictions, and punish those that are not. That is a dangerous equilibrium.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">For anyone thinking about AI governance, product ethics, or how to design AI systems responsibly, this story provides a concrete test case. <span class="highlight">Safety guardrails are not just technical constraints — they are business bets</span>. Anthropic bet that the government would respect their limits. They lost that bet with this administration. OpenAI made a different calculation and got the contract. What this means for the long arc of AI safety norms in government contracting is still being worked out, but Anthropic has announced it will challenge the supply chain designation in court, which means this story is far from over.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here is the dinner party version. Anthropic spent years positioning itself as the "safety-first" AI company. They built their entire brand around the idea that they would not compromise on responsible AI development, no matter what. Then the Pentagon said: remove your restrictions or lose the contract. And Anthropic said no. And they lost the contract. And then OpenAI, who said yes to basically the same restrictions Anthropic had requested, got the contract. So the "safety-first" company got punished for its safety commitments, and its less safety-focused competitor got rewarded for being more flexible. The content hook: <span class="highlight">"The company that refused to weaponize its AI got blacklisted. The one that said 'sure' got the deal."</span> That is the state of AI governance in America right now.</p>
+  </div>
+</div>
+`;
+
+const paper28Analysis = `
+<div class="analysis-panel open">
+  <div class="analysis-header">
+    <div class="analysis-badge">Article Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~9 min listen</div>
+  </div>
+
+  <div class="tts-controls">
+    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> A User's Guide to Midlife<br>
+    <strong>Authors:</strong> NYT Well section (multiple contributors)<br>
+    <strong>Source:</strong> The New York Times, Well section — June 24, 2024<br>
+    <strong>One-liner:</strong> An interactive guide to the real, measurable physical changes that happen to the human body in midlife — and what you can actually do about them.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The NYT Well section does not usually publish interactive guides unless a topic is both important and genuinely complicated. Midlife body changes qualify on both counts. Most of what people think they know about aging in their forties and fifties is either wrong, exaggerated, or missing the part where you actually have agency. This guide is essentially a systems-level explainer for your body — here is what is changing, here is why it is changing, and here is the evidence on what moves the needle. The framing is not fatalistic. It is optimistic in a specific way: you cannot stop biological aging, but you have far more influence over how it manifests than most people realize.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The guide was published in June 2024 as a live interactive piece, which means the NYT updated it over time with reader questions and new research. That format itself is interesting — treating health guidance as a living document rather than a static article. Susan Roberts, the senior associate dean of foundational research at the Geisel School of Medicine at Dartmouth, is one of the key experts quoted. She makes a point that runs through the whole piece: <span class="highlight">the brain is an underappreciated driver of midlife physical changes</span>, not just a bystander to what is happening in the muscles and joints.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Argument</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The guide covers several interconnected systems. Muscles are the foundation — you begin losing muscle mass in your thirties and the rate accelerates in midlife, which is not just a fitness issue but a metabolic and structural one. Muscle mass is what carries your body weight and protects your joints. As muscles weaken, joints compensate, and joints are not designed for that role — they stiffen, develop scar tissue, and become painful. The solution is not complicated: resistance training works, it is well-evidenced, and most people do not do nearly enough of it in midlife because they think cardio is the primary thing.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Metabolism is the other major theme. The popular belief is that metabolism slows dramatically after forty. The research is more nuanced — <span class="highlight">inactivity is actually a stronger predictor of weight gain in midlife than aging itself</span>. People become less active, lose muscle mass, and that combination slows their metabolic rate. The aging is real but it is less deterministic than the narrative suggests. Hormonal shifts — particularly the transition through perimenopause and menopause for women — do genuinely change fat distribution and energy levels, but the guide argues these shifts interact with lifestyle factors rather than simply overriding them. Sleep is also central: disruptions in sleep quality are nearly universal in midlife and they cascade into every other system, affecting mood, weight, cognitive function, and immune response.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Key Insights and Evaluation</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">What makes this guide worth reading rather than just another wellness explainer is the specificity. It does not just say "exercise more" — it distinguishes between what types of exercise target which systems. It does not just say "sleep is important" — it addresses the specific mechanisms by which sleep architecture changes in midlife and what that means for the kind of rest you actually need. The interactive format also allows the guide to be genuinely useful as a reference — you can find the section relevant to what you are experiencing right now rather than reading a linear article that may not match your specific situation.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The brain angle is the most underappreciated insight. Roberts's point is that cognitive engagement, purpose, and mental health are not separate from physical health in midlife — they are deeply intertwined. People who remain cognitively active and socially engaged maintain physical function better than people who disengage. The brain signals to the body that it is still needed, and the body responds. This is a more integrated picture of midlife health than most people carry around, and it has practical implications for how you structure your forties and fifties if you want your sixties and seventies to be functional.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Why This Matters</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">For Seena and Brain Space, this article is interesting less for its content than for its format and approach. The NYT built an interactive, updatable, expert-backed guide to a topic that is personally urgent for a large audience. It is essentially a structured knowledge base that meets people where they are — addressing their specific concerns in a way that feels personalized even if it is not literally so. That is a design problem Seena is working on too: how do you surface relevant insights to the right person at the right moment without requiring them to do a lot of navigation work? The NYT's live interactive format is one answer to that question.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">There is also a behavioral research angle here. Midlife is a period of significant behavioral change — people are renegotiating their relationship with their bodies, their work, their identity, and their habits. The guide implicitly maps what triggers those behavioral changes and what kinds of interventions actually work. For any platform trying to understand how people behave and what motivates change, midlife is a particularly rich period to study because the stakes feel real and the feedback loops are compressed. <span class="highlight">People in midlife are not just changing habits — they are updating their mental model of who they are.</span> That is exactly the kind of inflection point that creates research-worthy behavioral signals.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here is the dinner party version. Everyone in their forties has the same conversation: "I used to be able to eat anything and now I look at bread and gain weight." And the frustrating thing is that it is true — something does change. But what changes is not quite what people think. The metabolism story is real but overstated. The muscle story is real and massively understated. The sleep story is real and almost nobody talks about it correctly. The brain story is real and almost nobody knows it exists. The NYT guide is essentially a corrective to a decade of fitness industry mythology, written by people who read the actual research. The content hook: <span class="highlight">"The thing that is making you feel old in your forties is probably not what you think it is — and the fix is simpler than you have been sold."</span></p>
+  </div>
+</div>
+`;
+
+const paper29Analysis = `
+<div class="analysis-panel open">
+  <div class="analysis-header">
+    <div class="analysis-badge">Article Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~11 min listen</div>
+  </div>
+
+  <div class="tts-controls">
+    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> What Exactly Are AI Companies Trying to Build? Here's a Guide.<br>
+    <strong>Authors:</strong> New York Times Technology section<br>
+    <strong>Source:</strong> The New York Times — September 16, 2025<br>
+    <strong>One-liner:</strong> A plain-English breakdown of the six competing visions driving the AI investment boom — from better search to artificial general intelligence — and why profitability remains stubbornly elusive across all of them.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you have ever tried to explain what "AI companies are actually doing" to someone outside the industry, you know how hard that question is to answer cleanly. The AI boom has produced an almost comical variety of things being built — chatbots, drug discovery platforms, autonomous weapons systems, AI friends, voice assistants, coding tools — and none of the standard descriptions quite capture the full picture. This NYT piece is one of the better attempts to map the territory. It identifies six distinct visions that different companies are pursuing, explains the economic logic (and illogic) behind each, and is honest about the fact that most of them are not yet profitable.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The numbers in this piece are worth sitting with. <span class="stat-highlight">Amazon, Google, Meta, Microsoft, and OpenAI plan to spend more than three hundred twenty-five billion dollars combined on data centers in 2025</span> — that is one hundred billion dollars more than the annual budget of Belgium. OpenAI charges twenty dollars per month for ChatGPT, and according to the company, that subscription price at least covers the cost of delivering it — but <span class="stat-highlight">paying subscribers account for fewer than six percent of ChatGPT users</span>. The free version is still losing money. Eight in ten businesses have started using generative AI, but just as many report "no significant bottom-line impact," according to McKinsey. The gap between investment and returns is staggering, and the article does not pretend otherwise.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Argument</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The article maps six visions. First: better search engines. Companies are building chatbots that give you a plain English answer instead of a list of blue links. The problem is that search works as a business because of advertising — users click links, advertisers pay for clicks, money flows. A chatbot that just answers your question removes the click. The economic model for AI search has not been solved. Second: workplace productivity tools. AI for writing code, summarizing meetings, drafting emails, and running software applications. This is the most commercially promising near-term vision and the most aggressively sold to enterprise customers. The challenge is that "impressive demo" to "real productivity gain" is a long road.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Third: universal digital assistants embedded everywhere — in glasses, phones, voice devices, cars. Meta is adding AI to smart glasses for real-time translation and landmark identification. Amazon wants Alexa to be everything. The problem is that <span class="highlight">Alexa has been around for a decade and has never been profitable</span>. Making a great assistant and making money from it are different problems. Fourth: AI companions — virtual friends, emotional support bots, relationship simulations. Character AI, Meta's social platform integrations, and others are building this. It exists, people use it, and it is generating controversy about whether it helps isolated people connect or whether it substitutes for real human relationships in harmful ways. Fifth: scientific breakthroughs. Google's AlphaFold has already delivered a Nobel Prize in Chemistry by predicting protein structures. Anthropic's CEO claims AI will solve cancer and poverty within years. Sixth: artificial general intelligence — human-level AI — the endgame that no one can clearly define but that almost everyone is racing toward.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Key Insights and Evaluation</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The article's most useful insight is about the attention economy angle. If you use a digital assistant embedded in your phone or glasses or home speaker, the company behind that assistant gets more access to your attention, your behavior, and ultimately your purchasing decisions than any website ever did. A search engine shows you links. A digital assistant has a conversation with you. That conversation is vastly more valuable from an advertising and targeting standpoint. So the investment in AI assistants is not just a bet on productivity — it is a bet on <span class="highlight">owning the interface through which people experience the internet</span>. Whoever controls the assistant controls the experience. That is why every major tech company is building one even though none of them are profitable yet.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">A researcher at Hugging Face is quoted making a point that deserves to be highlighted: "The amount of money being spent is not proportionate to the money that's coming in." That is a remarkable thing to say about a technology receiving three hundred twenty-five billion dollars in investment in a single year. The article takes that tension seriously rather than dismissing it. The honest read is that the companies doing the spending believe — or need to believe — that the returns are coming, they are just lagged. The optimistic case is that the internet also burned cash for years before transforming the global economy. The pessimistic case is that this time might be different.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Seena Labs Relevance</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This article maps the landscape in which Seena operates, which makes it essential reading for positioning. Seena sits at the intersection of the workplace productivity vision (AI tools that help researchers do their jobs better) and something more specific: AI that helps companies understand their users rather than just process information faster. That distinction matters because most of the visions described in this article are about AI doing things. Seena is about AI understanding things — specifically, understanding the human beings behind the behavioral data. That is a harder and more differentiated position.</p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The McKinsey finding is directly relevant to Seena's pitch. <span class="stat-highlight">Eight in ten businesses have adopted generative AI, but just as many report no significant bottom-line impact.</span> That gap exists because most businesses are using AI to do their existing work faster, not to do fundamentally better work. Seena's bet is that the real value is not in faster research — it is in deeper research. Not in summarizing what you already have — but in surfacing what you did not know to ask. That is the antidote to "research slop" and it is also the answer to why companies are spending on AI but not seeing returns: they are automating the wrong layer. <span class="highlight">Speed is not the constraint on good product decisions. Understanding is.</span></p>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The AI companions section is also worth flagging for Brain Space. The question of whether AI relationships help or harm people is one that touches on mental health, social connection, and the design of human-AI interaction. Brain Space is building in adjacent territory — an AI that supports cognitive health and mental performance. The ethical and design questions being raised about AI companions (does this substitute for human connection or supplement it? does it create dependency?) are questions Brain Space will face too. Knowing the landscape of how these questions are being asked publicly gives you vocabulary for answering them preemptively.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here is the dinner party version. Companies are spending three hundred twenty-five billion dollars this year on AI data centers. That number is hard to visualize, so try this: it is more than the GDP of most countries on Earth. And the honest answer to "what are they building?" is: six different bets on what the future of the internet looks like, none of which are profitable yet, one of which involves making AI your best friend, and one of which involves solving cancer. The wildest part is that all of these visions are being pursued simultaneously, by the same handful of companies, because nobody actually knows which one will win. The content hook: <span class="highlight">"AI companies are spending more money than most countries have, on technology they admit is not yet profitable, to build something they cannot clearly define. And they might be right to."</span></p>
+  </div>
+</div>
+`;
+
 // ── Papers Data ──
 const papers = [
 
@@ -2739,6 +2920,33 @@ const papers = [
     relevance: "Names the central risk for AI research platforms like Seena — <em>surface-level AI-generated insights</em> replacing genuine understanding. Both a warning and a design brief.",
     pdf: "https://genpurpose.substack.com/p/research-slop",
     tags: ["seena", "qual", "eid"],
+    read: false,
+    hasAnalysis: true
+  },
+  {
+    id: 27,
+    title: "Pentagon vs. Anthropic: The AI Safety Standoff That Changed Everything",
+    relevance: "The real-world cost of <em>holding the line on AI safety guardrails</em> — Anthropic refused Pentagon demands, got blacklisted, and OpenAI took the contract accepting the same terms.",
+    pdf: "https://www.theverge.com/policy/886489/pentagon-anthropic-trump-dod",
+    tags: ["agents", "seena", "eid", "bias"],
+    read: false,
+    hasAnalysis: true
+  },
+  {
+    id: 28,
+    title: "A User's Guide to Midlife",
+    relevance: "NYT interactive explainer on <em>real physical changes in midlife</em> — muscles, metabolism, joints, sleep, hormones — and what the evidence actually supports for intervention.",
+    pdf: "https://www.nytimes.com/interactive/2024/06/24/well/live/midlife-health-body-changes-guide.html",
+    tags: ["behavior", "eid"],
+    read: false,
+    hasAnalysis: true
+  },
+  {
+    id: 29,
+    title: "What Exactly Are AI Companies Trying to Build? Here's a Guide.",
+    relevance: "Maps the <em>six competing visions driving the AI investment boom</em> — with hard numbers on why none of them are profitable yet and what each vision means for the future of human-computer interaction.",
+    pdf: "https://www.nytimes.com/2025/09/16/technology/what-exactly-are-ai-companies-trying-to-build-heres-a-guide.html",
+    tags: ["agents", "seena", "eid"],
     read: false,
     hasAnalysis: true
   }
@@ -3271,7 +3479,7 @@ function renderPapers() {
          </button>`
       : '';
 
-    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis, 4: paper4Analysis, 5: paper5Analysis, 6: paper6Analysis, 7: paper7Analysis, 8: paper8Analysis, 26: paper26Analysis };
+    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis, 4: paper4Analysis, 5: paper5Analysis, 6: paper6Analysis, 7: paper7Analysis, 8: paper8Analysis, 26: paper26Analysis, 27: paper27Analysis, 28: paper28Analysis, 29: paper29Analysis };
     const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisMap[p.id] || '') : '';
 
     const noteCount = getNotes().filter(n => n.paperId === p.id).length;
