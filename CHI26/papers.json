@@ -342,5 +342,17 @@
       "eid"
     ],
     "hasAnalysis": true
+  },
+  {
+    "id": 30,
+    "title": "Microsoft Copilot Tasks: The To-Do List That Does Itself",
+    "relevance": "Microsoft's consumer AI agent launch reveals the design patterns behind <em>agentic task automation at mass scale</em> \u2014 consent flows, cloud infrastructure, and human-in-the-loop architecture.",
+    "pdf": "https://www.theverge.com/tech/885741/microsoft-copilot-tasks-ai",
+    "tags": [
+      "agents",
+      "brainspace",
+      "eid"
+    ],
+    "hasAnalysis": true
   }
 ]
