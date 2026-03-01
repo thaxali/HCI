@@ -7,13 +7,24 @@ A personal reading list and synthesis tool. The owner sends you a URL to an arti
 3. Add it to the reading list HTML
 4. Commit and push
 
-## Quick Workflow
+## Two Workflows
 
-When the user gives you a URL:
+### Workflow 1: Queue (automated via GitHub Action)
+The owner adds URLs to `queue.md` under `## Pending` (one per line). A GitHub Action detects the change and runs Claude Code to process them.
+
+When processing the queue:
+1. Read `queue.md` and find all URLs under `## Pending`
+2. For each URL, follow the steps in Workflow 2 below
+3. After each article is successfully added, move its URL from `## Pending` to `## Processed` in `queue.md`, prefixed with the paper number (e.g., `- #27 https://example.com`)
+4. If a URL cannot be fetched, leave it in Pending with a note: `- https://... (fetch failed — retry later)`
+5. Commit after each article
+
+### Workflow 2: Direct (user gives you a URL)
+When the user gives you a URL directly:
 
 1. **Fetch and read the article** using WebFetch or by downloading the PDF
 2. **Determine the next paper ID** — look at the `papers` array in `CHI26/index.html` and find the highest existing `id`, then use `id + 1`
-3. **Write the analysis** as a template literal `const paper{N}Analysis = \`...\`;` — insert it right before the `// ── State ──` comment
+3. **Write the analysis** as a template literal `const paper{N}Analysis = \`...\`;` — insert it right before the `// ── Papers Data ──` comment
 4. **Add the paper to the `papers` array** at the end (before the closing `];`)
 5. **Update the `analysisMap`** object to include the new paper ID and analysis variable
 6. **Commit and push** to `main`
@@ -22,15 +33,18 @@ When the user gives you a URL:
 
 ```
 index.html              ← Password gate (entry point for GitHub Pages)
+queue.md                ← URL queue — add URLs here to trigger processing
 CHI26/
   index.html            ← THE reading list (single-file HTML app, ~215KB)
   notes/                ← Exported reading notes (markdown)
   notes.md              ← Notes stub
 CHI26_Curated_Papers.md ← Reference list of CHI'26 preprints
 README.md               ← Project overview
+.github/workflows/
+  process-queue.yml     ← GitHub Action that triggers Claude Code on queue changes
 ```
 
-The only file you need to edit is **`CHI26/index.html`**.
+The only file you need to edit is **`CHI26/index.html`** (and `queue.md` when processing the queue).
 
 ## How to Edit `CHI26/index.html`
 
