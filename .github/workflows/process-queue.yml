@@ -13,6 +13,7 @@ jobs:
     # Only run if queue.md has pending URLs (not just processed moves)
     permissions:
       contents: write
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -37,7 +38,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          prompt: |
+          direct_prompt: |
             Read queue.md and find all URLs under the "## Pending" section.
 
             For each pending URL:
