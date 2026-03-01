@@ -1,0 +1,64 @@
+name: Process Reading Queue
+
+on:
+  push:
+    paths:
+      - 'queue.md'
+    branches:
+      - main
+
+jobs:
+  process-queue:
+    runs-on: ubuntu-latest
+    # Only run if queue.md has pending URLs (not just processed moves)
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for pending URLs
+        id: check
+        run: |
+          # Extract lines between ## Pending and ## Processed that look like URLs
+          PENDING=$(sed -n '/^## Pending$/,/^## Processed$/p' queue.md | grep -E '^- https?://' || true)
+          if [ -z "$PENDING" ]; then
+            echo "has_pending=false" >> "$GITHUB_OUTPUT"
+            echo "No pending URLs found"
+          else
+            echo "has_pending=true" >> "$GITHUB_OUTPUT"
+            echo "Found pending URLs:"
+            echo "$PENDING"
+          fi
+
+      - name: Process queue with Claude Code
+        if: steps.check.outputs.has_pending == 'true'
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Read queue.md and find all URLs under the "## Pending" section.
+
+            For each pending URL:
+            1. Fetch and read the article using WebFetch
+            2. Follow the instructions in CLAUDE.md to add it to the reading list (CHI26/index.html)
+            3. After successfully adding it, move the URL from "## Pending" to "## Processed" in queue.md, prefixed with the paper number: e.g., "- #27 https://example.com"
+
+            Process URLs one at a time, committing after each one.
+            Commit message format: "Add paper #{N}: {Short Title}"
+
+            If a URL cannot be fetched, leave it in Pending and add a note: "- https://... (fetch failed — retry later)"
+          allowed_tools: |
+            Read
+            Write
+            Edit
+            WebFetch
+            WebSearch
+            Bash(git add)
+            Bash(git commit)
+            Bash(git push)
+            Bash(git status)
+            Bash(git diff)
+            Bash(git log)
+          timeout_minutes: 30
