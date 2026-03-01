@@ -1,8 +1,8 @@
 # CHI 2026 — Reading Notes
 
-> Auto-generated summary. Last synced: 2/28/2026, 11:17:58 PM
+> Auto-generated summary. Last synced: 2/28/2026, 11:37:55 PM
 
-**Progress:** 0/26 papers read
+**Progress:** 0/30 papers read
 
 ## Papers
 
@@ -34,6 +34,10 @@
 | P24 | AI and My Values: User Perceptions of LLMs' Ability to Extra... | — | — | — |
 | P25 | Who Does What? Archetypes of Roles Assigned to LLMs During H... | — | — | — |
 | P26 | Research Slop | — | — | — |
+| P27 | Pentagon vs. Anthropic: The AI Safety Standoff That Changed ... | — | — | — |
+| P28 | A User's Guide to Midlife | — | — | — |
+| P29 | What Exactly Are AI Companies Trying to Build? Here's a Guid... | — | — | — |
+| P30 | Microsoft Copilot Tasks: The To-Do List That Does Itself | — | — | — |
 
 ---
 
