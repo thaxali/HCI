@@ -1,8 +1,8 @@
 # CHI 2026 — Reading Notes
 
-> Auto-generated summary. Last synced: 2/28/2026, 10:20:31 PM
+> Auto-generated summary. Last synced: 2/28/2026, 11:17:58 PM
 
-**Progress:** 0/25 papers read
+**Progress:** 0/26 papers read
 
 ## Papers
 
@@ -33,6 +33,7 @@
 | P23 | Exploring The Impact Of Proactive Generative AI Agent Roles ... | — | — | — |
 | P24 | AI and My Values: User Perceptions of LLMs' Ability to Extra... | — | — | — |
 | P25 | Who Does What? Archetypes of Roles Assigned to LLMs During H... | — | — | — |
+| P26 | Research Slop | — | — | — |
 
 ---
 
