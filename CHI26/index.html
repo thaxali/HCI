@@ -2378,6 +2378,83 @@ const paper8Analysis = `
 
 
 
+const paper26Analysis = `
+<div class="analysis-panel open">
+  <div class="analysis-header">
+    <div class="analysis-badge">Article Analysis · TTS Optimized</div>
+    <div class="analysis-meta">~11 min listen</div>
+  </div>
+
+  <div class="tts-controls">
+    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
+    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
+    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
+    <span class="tts-status">Click any paragraph to start</span>
+  </div>
+
+  <div class="tts-vitals">
+    <strong>Title:</strong> Research Slop<br>
+    <strong>Author:</strong> Jess Holbrook (Head of UX Research, Microsoft AI)<br>
+    <strong>Source:</strong> General Purpose (Substack), November 2025<br>
+    <strong>One-liner:</strong> The rise of AI-powered research tools is flooding organizations with surface-level "insights" that give the appearance of understanding without the substance — and the incentives driving adoption are making it worse.
+  </div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">TL;DR — Why You Should Care</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Jess Holbrook, who leads UX research at Microsoft AI, coined a term that should make anyone building AI research tools deeply uncomfortable: <span class="highlight">research slop</span>. You know "AI slop" — the low-quality, mass-produced content that floods the internet when people use generative AI without taste or editing. Holbrook argues the same thing is now happening inside organizations, specifically in user research. Teams are using AI-powered research platforms to churn out "insights" and "research reports" that are surface-level, unsurprising, and minimally filtered before being distributed across the organization.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">What makes this piece sharp is that Holbrook is not anti-tool. His own team at Microsoft has adopted these platforms and is expanding their use. The argument is not "stop using AI for research." It is that <span class="highlight">there are structural incentives pushing AI research tool adoption toward producing slop instead of genuine understanding</span>, and unless we name those incentives and actively resist them, the default trajectory is a race to the bottom. The result is organizations that feel like they are doing research, feel like they are learning continuously, but are actually just accumulating what he calls "blurry, AI-shaped objects" that do not further any legitimate goal.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">The Core Argument</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Holbrook's central thesis is deceptively simple. Nobody intends to produce research slop. People using these tools have perfectly reasonable goals — they want to rapidly explore ideas, build quick prototypes, or create a culture of continuous learning. The problem is what actually comes out the other end. Instead of insight, you get a summarized dashboard. Instead of understanding people, you get themes that anyone could have guessed. Instead of organizational learning, you get the performance of organizational learning.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">He draws a critical distinction between <span class="highlight">knowing numbers or headline insights versus having a thoughtful understanding of people and data</span>. Research slop gives you the former while creating the illusion of the latter. It is like looking at a metrics dashboard and calling it qualitative research. The headline number is technically "an insight," but it strips away all the context, nuance, and human judgment that makes research actually useful for product and business decisions.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The democratization angle is particularly interesting. These tools are not just used by people with "researcher" in their title. They are increasingly used by product managers, designers, marketers — the whole constellation of "people who do research" across an organization. More people doing more research sounds great in theory. In practice, it means more people producing more outputs with less methodological grounding and less accountability for the conclusions. <span class="highlight">The volume goes up. The depth goes down. And the organization cannot tell the difference.</span></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Key Insights and Evaluation</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest part of Holbrook's argument is the accountability framing. When a human researcher produces a finding, they are putting their professional reputation behind it. They sign off on conclusions and accept the consequences if they are wrong. When an AI tool produces a thematic summary, nobody is on the hook. The tool does not have a reputation to protect. The person who clicked "generate insights" may not have the expertise to evaluate whether the output is actually good. And the stakeholder who receives the report has no way to distinguish a deeply considered finding from a superficial pattern match. <span class="highlight">Standards slip when accountability is missing</span>, and AI research tools structurally remove accountability from the process.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The piece sparked a rich discourse in the UX research community. Noam Segal responded with a counterpoint titled "Research Slop Is Human Slop," arguing that Holbrook's framing lets humans off the hook. Segal's point is that research slop has always existed — sloppy surveys, confirmation-biased interview guides, cherry-picked findings. AI just makes existing human failures more visible and more scalable. It is not a technology problem; it is a people problem that technology amplifies. Meanwhile, the AI research platform Marvin published its own response, arguing the opposite — that research slop is specifically a technology problem, because people are using generic, unspecialized AI when they should be using purpose-built research tools with proper data pipelines.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">All three perspectives have merit, and the fact that the piece provoked this triangulation is itself a sign that Holbrook hit something real. The weakness of the original piece is that it stays at the level of naming the problem without prescribing specific solutions beyond "understand the incentives and resist them." But naming is powerful. Once you have a term for research slop, you can point at it in a meeting and say "this is slop" — and that is sometimes all you need to shift an organization's quality bar.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Seena Labs Relevance</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">This article is both a warning and an opportunity for Seena, and you need to take both seriously. <span class="highlight">Seena is literally one of the "AI-powered research platforms" Holbrook is describing.</span> If you build the default version of an AI research tool — one that prioritizes speed, volume, and accessibility over depth, accountability, and methodological rigor — you will be a research slop factory. That is the gravity well, and Holbrook is telling you exactly where it leads.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">But flip it around, and the opportunity is enormous. If Seena can be the AI research tool that structurally resists research slop — one that builds in accountability, forces methodological rigor, and produces outputs that a trained researcher would actually stand behind — that is a genuine competitive moat. Here is what that might look like concretely. First, <span class="highlight">every Seena output should have an explicit accountability chain</span> — who configured the study, what methodology was chosen and why, and who reviewed the findings before distribution. Second, the analysis pipeline should surface not just themes but the evidence trail behind them, so a stakeholder can trace any claim back to specific participant responses. Third, Seena should actively resist the "dashboard insights" trap by presenting findings in narrative form that preserves context and nuance rather than reducing everything to bullet points and percentages.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The democratization tension is also directly relevant. Seena will be used by non-researchers — product managers, founders, designers. Holbrook's piece suggests that the answer is not to gatekeep but to scaffold. The tool itself should guide users toward rigor, flag when sample sizes are too small for the conclusions being drawn, push back when interview questions are leading, and make it structurally difficult to produce slop even when the user does not know what good research looks like. <span class="highlight">Think of it as building the methodology into the tool rather than assuming the user brings it.</span> That is Seena's biggest design challenge and its biggest differentiator.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="tts-section">
+    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here is the dinner party version. You know how the internet got flooded with AI-generated articles, images, and videos that are technically "content" but nobody actually wants? The head of UX research at Microsoft just pointed out that the exact same thing is happening inside companies, but with research. Teams are using AI tools to pump out "insights" that look like research, feel like research, get presented in meetings as research — but are actually just sophisticated summaries that tell you what you already knew. He calls it research slop. And the scariest part is that nobody in the organization can tell the difference between the slop and the real thing.</p>
+
+    <p class="tts-paragraph" onclick="ttsSpeak(this)">The content hook for Everything is Designed: <span class="highlight">"Your company thinks it understands its users. It doesn't. It has research slop."</span> That is a post that will resonate with every product person, researcher, and designer who has sat in a meeting watching someone present AI-generated "findings" with total confidence. The engagement angle is the tension between speed and depth — everyone wants faster research, but what if faster research is not actually research anymore?</p>
+  </div>
+</div>
+`;
+
 // ── Papers Data ──
 const papers = [
 
@@ -2634,6 +2711,15 @@ const papers = [
     tags: ["agents", "seena", "eid"],
     read: false,
     hasAnalysis: false
+  },
+  {
+    id: 26,
+    title: "Research Slop",
+    relevance: "Names the central risk for AI research platforms like Seena — <em>surface-level AI-generated insights</em> replacing genuine understanding. Both a warning and a design brief.",
+    pdf: "https://genpurpose.substack.com/p/research-slop",
+    tags: ["seena", "qual", "eid"],
+    read: false,
+    hasAnalysis: true
   }
 
 ];
@@ -3164,7 +3250,7 @@ function renderPapers() {
          </button>`
       : '';
 
-    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis, 4: paper4Analysis, 5: paper5Analysis, 6: paper6Analysis, 7: paper7Analysis, 8: paper8Analysis };
+    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis, 4: paper4Analysis, 5: paper5Analysis, 6: paper6Analysis, 7: paper7Analysis, 8: paper8Analysis, 26: paper26Analysis };
     const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisMap[p.id] || '') : '';
 
     const noteCount = getNotes().filter(n => n.paperId === p.id).length;
