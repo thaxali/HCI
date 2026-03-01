@@ -56,7 +56,10 @@ jobs:
 
           For each pending URL:
           1. Fetch and read the article using WebFetch
-          2. Follow the instructions in CLAUDE.md to add it to the reading list (CHI26/index.html)
+          2. Follow the instructions in CLAUDE.md to add it to the reading list:
+             - Read CHI26/papers.json to find the next paper ID
+             - Add a new entry to CHI26/papers.json
+             - Create a new analysis file at CHI26/papers/{NNN}.md (zero-padded, e.g. 027.md)
           3. After successfully adding it, move the URL from '## Pending' to '## Processed' in queue.md, prefixed with the paper number (e.g., '- #27 https://example.com')
 
           Process URLs one at a time, committing after each one.

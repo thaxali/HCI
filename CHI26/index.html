@@ -6,6 +6,7 @@
 <title>CHI'26 Reading List — Seena Labs</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
 
   :root {
@@ -908,6 +909,50 @@
     font-size: 14px;
   }
 
+  /* ── Markdown Analysis Content ── */
+  .analysis-content h2 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--teal);
+    margin-bottom: var(--space-md);
+    margin-top: var(--space-xl);
+  }
+
+  .analysis-content h2:first-child { margin-top: 0; }
+
+  .analysis-content p {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--text-secondary);
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    margin-bottom: var(--space-sm);
+    transition: all var(--duration-fast) var(--ease-out);
+    border-left: 2px solid transparent;
+  }
+
+  .analysis-content p:hover { background: var(--bg-hover); }
+  .analysis-content p.speaking {
+    background: var(--teal-subtle);
+    border-left-color: var(--teal);
+  }
+
+  .analysis-content strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .analysis-content hr {
+    border: none;
+    height: 1px;
+    background: var(--border-subtle);
+    margin: var(--space-xl) 0;
+  }
+
   /* ── Notes Bar ── */
   .notes-bar {
     position: fixed;
@@ -1516,1234 +1561,93 @@
 <div class="notes-toast" id="notesToast"></div>
 
 <script>
-// ── Analysis Constants ──
-const paper1Analysis = `
-<div class="analysis-panel open" id="analysisPanel1">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~12 min listen</div>
-  </div>
-
-  <div class="tts-controls" id="ttsControls">
-    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> Sensing What Surveys Miss: Understanding and Personalizing Proactive LLM Support by User Modeling<br>
-    <strong>Authors:</strong> Ailin Liu and four co-authors<br>
-    <strong>Venue:</strong> CHI 2026<br>
-    <strong>One-liner:</strong> A system that uses skin conductance and mouse movement to detect when survey respondents are struggling, then triggers personalized LLM help at precisely the right moment.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here's the core insight that makes this paper worth your time. Most AI assistance systems wait for you to ask for help, or they blast you with support on a fixed schedule. But the authors of this paper asked a different question: <span class="highlight">what if the system could sense that you're struggling before you even realize it yourself?</span></p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">They built a system that watches two signals while you're filling out online surveys: your skin's electrical conductance, which is a proxy for stress and cognitive load, and how you're moving your mouse. By combining these signals with personalized machine learning classifiers that adapt to your individual patterns over time, the system can predict when you're genuinely having trouble with a question, versus just thinking carefully.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">When the system detects real difficulty, it proactively triggers LLM-generated clarifications and explanations. And here's the kicker: when the timing is right, it works. <span class="highlight">Response accuracy went up by twenty-one percent</span>, and <span class="highlight">false negatives, where people get things wrong because they didn't get help, dropped from fifty-one percent down to twenty-three percent.</span> This matters for anyone building AI systems that need to intervene at the right moment, which is exactly what Seena does with micro-interviews.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper makes two intertwined contributions. The primary one is an <span class="highlight">artifact contribution</span>: a working adaptive system that fuses physiological sensing with behavioral data, personalized classifiers, and LLM-based assistance into a real-time intervention pipeline. The secondary contribution is <span class="highlight">empirical</span>: a rigorous within-subjects study with thirty-two participants that demonstrates the system's effectiveness.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system's architecture is worth understanding in some detail. It uses electrodermal activity, or EDA, which measures tiny changes in how well your skin conducts electricity. When you're stressed or cognitively loaded, your sympathetic nervous system activates and your skin conductance spikes. They pair this with mouse movement dynamics, things like velocity, hesitation patterns, and cursor trajectory. Together, these signals feed into a classifier that's been personalized to each individual user.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">What's clever about the personalization is their threshold adaptation mechanism. They use a rule-based system with six traversal paths. Think of it like a thermostat that's constantly recalibrating. If the system offers help and the person accepts and gets the answer right, the threshold adjusts downward slightly. If the system doesn't offer help and the person gets the answer wrong, the threshold drops sharply, making it more sensitive. This creates a feedback loop that fine-tunes sensitivity to each individual over the course of a session.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd classify the contribution strength as <span class="highlight">significant</span>. It meaningfully advances the state of proactive AI assistance by demonstrating that physiological sensing plus personalized timing can dramatically outperform fixed or random intervention schedules. It's not quite transformative because the sensing hardware requirement, specifically EDA, limits immediate scalability. But the principle it validates is powerful.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the experimental design. The within-subjects setup with three conditions, aligned-adaptive, misaligned-adaptive, and random-adaptive, is elegant because it isolates the timing variable. Many papers in this space just compare "AI help versus no help." By keeping the assistance content constant and only varying when it arrives, the authors make a clean argument that <span class="highlight">timing is the critical variable</span>, not the content of the help itself.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the ecological validity of the difficulty spillover framing. This isn't an abstract problem. Anyone who's taken a long, mentally taxing survey knows the feeling of cognitive depletion accumulating across items. The authors ground their system in this well-documented phenomenon and show that properly timed interventions can actually break the cascade before it degrades later responses.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is the reliance on electrodermal activity sensing, which requires a wearable sensor on the participant's hand. The paper acknowledges this, but it limits the practical deployment path. Mouse movement alone, which the paper also uses, might be sufficient for many applications and would make the system accessible to anyone with a web browser. A key open question is how much accuracy you'd lose by dropping the EDA signal entirely.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A secondary concern is the sample size and population. Thirty-two participants is respectable for a lab study, but it's worth noting that the personalized classifier approach inherently needs per-user calibration. How well this transfers to truly diverse populations, different age groups, varying levels of tech literacy, and different cultural contexts around help-seeking remains to be explored.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's own references, several closely related works stand out. First, Conrad and colleagues' work from 2003 and 2006 on system-initiated clarifications in web surveys, which established the foundation for interactive survey support. Second, the ComPeer system by Liu and colleagues from 2024, which built a conversational agent for proactive peer support and found that <span class="highlight">timing accounted for forty percent of variance in intervention acceptance</span>, a finding that directly motivated this work.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Third, the Just-In-Time Information Retrieval agents concept from Rhodes and Maes in 2000, which pioneered the idea of proactive information delivery based on local context. And fourth, Andolina and colleagues' 2018 work on proactive agents that listen to conversations and retrieve related information, which established the pattern of ambient sensing plus proactive support that this paper builds on.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is <span class="highlight">directly and deeply relevant to Seena's core architecture</span>. The central challenge it addresses, when to proactively intervene in a user's task flow, is precisely the problem Seena's detection agents face when deciding the optimal moment to trigger a contextual micro-interview.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The threshold adaptation mechanism with its six traversal paths is immediately applicable to Seena. Right now, Seena's interview trigger logic needs to balance signal quality against user disruption. This paper provides a proven framework for continuously recalibrating that threshold per user. The insight that accepting help and answering correctly means the system was slightly too aggressive, while not receiving help and answering incorrectly means the system was far too conservative, maps directly to Seena's challenge of interview timing.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Seena can't rely on EDA sensing since it operates through standard web sessions. But the mouse movement features the paper extracts, velocity, hesitation, trajectory deviation, are all available to Seena's behavioral analytics layer. The paper validates that behavioral signals alone carry meaningful predictive power for cognitive state, which is encouraging for Seena's sensor-free approach. The key design principle to adopt is the <span class="highlight">personalized baseline with adaptive thresholds</span>, calibrating what "struggling" looks like for each individual user rather than applying population-level defaults.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Finally, the difficulty spillover finding is directly relevant to how Seena sequences micro-interviews. If asking a demanding reflection question depletes cognitive resources for subsequent product interactions, Seena needs to account for this cascade effect in its interview scheduling. Lighter, more contextual prompts may outperform deeper but more taxing questions, especially later in a session.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Several numbers from this study are directly citable in Seena's pitch materials and product memos. Aligned-adaptive assistance improved response accuracy by <span class="stat-highlight">twenty-one percent</span> compared to misaligned timing. False negative rates, cases where respondents needed help but didn't get it and answered incorrectly, dropped from <span class="stat-highlight">fifty point nine percent to twenty-two point nine percent</span> with properly timed interventions.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system also improved perceived efficiency, dependability, and benevolence, meaning users didn't just perform better, they felt better about the experience. And from the related work they cite, the ComPeer finding that <span class="stat-highlight">timing accounted for forty percent of variance in intervention acceptance</span> is an incredibly powerful statistic for making the case that when you ask matters as much as what you ask.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here's the dinner party version: <span class="highlight">Your products are interrupting users at the wrong time, and they're paying for it with worse decisions.</span> This paper proves that AI assistance delivered at the right moment improves outcomes by over twenty percent, while the same help delivered at the wrong moment is basically noise. For product managers, the takeaway is that building helpful features isn't enough. You need to build features that know when to show up.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for Substack or LinkedIn: "We spend millions making AI smarter, but this research shows the real unlock is making AI more patient. A twenty-one percent accuracy improvement came not from better answers, but from better timing." You could frame this as a broader "Everything is Designed" piece about how timing is the invisible design variable that product teams consistently underinvest in.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper bridges both worlds. The theoretical foundation around difficulty spillover and adaptive thresholding is grounded in cognitive science literature. But the artifact itself, a working system with real performance gains, makes it immediately actionable for industry. The EDA requirement keeps the full system in the research domain for now, but the mouse-movement-only variant and the threshold adaptation logic are deployable in production today. For Seena, this is a "steal the architecture, adapt the sensors" paper.</p>
-  </div>
-</div>
-`;
-
-const paper2Analysis = `
-<div class="analysis-panel open">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~14 min listen</div>
-  </div>
-
-  <div class="tts-controls">
-    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> InterFlow: Designing Unobtrusive AI to Empower Interviewers in Semi-Structured Interviews<br>
-    <strong>Authors:</strong> Yi Wen and five co-authors<br>
-    <strong>Venue:</strong> CHI 2026, Barcelona<br>
-    <strong>One-liner:</strong> An AI-powered visual scaffold that dynamically adapts interview scripts in real time, tracks conversational balance, and surfaces follow-up suggestions through a co-interview agent — all without stealing the interviewer's attention.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you've ever conducted a semi-structured interview, you know the juggling act. You're trying to actively listen to your participant, mentally tracking which questions you've covered and which you haven't, deciding whether to probe deeper or move on, keeping an eye on the clock, and somehow taking notes that you'll actually be able to use later. <span class="highlight">InterFlow is a system designed to take several of those balls out of the air for you.</span></p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The authors built an AI-powered interface with three main components. First, an interactive script that transforms your static interview guide into a living visualization, color-coded by what you've covered, what's current, and what's still ahead, with drag-and-drop reordering. Second, a visual timer that shows not just elapsed time but your speaking ratio, so you can see at a glance whether you're talking too much or giving the participant enough space. And third, a mixed-initiative information capture system with three escalating levels of AI involvement: manual notes, AI-generated summaries you can trigger on demand, and a proactive co-interview agent that listens along and surfaces potential follow-up points you might have missed.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">They evaluated this against a baseline of a text editor plus OpenAI's realtime speech API in a within-subjects study with twelve participants. The results show InterFlow <span class="highlight">significantly enhanced situational awareness</span>, with the score jumping from 2.67 to 5.0 on a seven-point scale. But here's what makes this paper especially interesting: they also found real limitations in how actionable the AI's suggestions were during the fast-moving reality of a live conversation. That tension between useful AI and usable AI in real-time contexts is exactly the design problem Seena faces.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper's primary contribution is an <span class="highlight">artifact</span>: a working system that re-imagines the semi-structured interview tool as a dynamic, AI-augmented workspace. The secondary contribution is <span class="highlight">empirical</span>, grounded in a comparative user study, and there's a tertiary <span class="highlight">methodological</span> contribution in their design implications for unobtrusive AI assistance under time pressure.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system architecture is worth unpacking. The interactive script component uses spaCy for text processing and embeddings to perform question retrieval. As the conversation unfolds, it automatically detects which question the interviewer is currently on and updates the visual state. Questions are color-coded: yellow for the current question, gray for visited, blue for unvisited. Interviewers can drag and drop to reorder the remaining questions on the fly, which is a small but brilliant design choice. It means the AI doesn't dictate the interview flow; it gives you the scaffolding to manage it yourself.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The visual timer is more than a countdown. It embeds a speaking-ratio visualization that shows the balance between interviewer and interviewee talk time. This creates what the authors call a scaffold for metacognition, helping interviewers notice when they're dominating the conversation or when a participant is being unusually brief. Several participants reported using it as a checkpoint during natural pauses to decide whether to wrap up a topic or dig deeper.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The co-interview agent is the most ambitious component. It listens to the conversation continuously, combines conversation analysis with an LLM acting as a judge, and proactively surfaces points worth probing. It explains why it's flagging something, whether that's an inconsistency it detected, a topic the participant mentioned but didn't elaborate on, or a connection to the research questions. The key design decision here is that the agent provides suggestions but never takes action. The interviewer always decides whether and how to follow up.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd rate the contribution strength as <span class="highlight">significant</span>. The system meaningfully advances how we think about AI augmentation in qualitative research methods. It's not transformative because the core components, real-time transcription, LLM summarization, proactive suggestions, are individually known. But the integration into a coherent interview scaffold, combined with the honest evaluation of where it falls short, pushes the field forward in a genuinely useful way.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the <span class="highlight">design philosophy of graduated automation</span>. The three levels of information capture, manual notes, on-demand AI summary, and proactive co-interview agent, let users engage with AI at whatever level of involvement they're comfortable with in the moment. This is a textbook example of mixed-initiative interaction done well. It respects the interviewer's agency while offering genuine support. Too many AI tools in this space go all-or-nothing: either the AI runs the show or it sits passive until explicitly invoked. InterFlow finds the middle ground.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the intellectual honesty of the evaluation. The authors don't just report that InterFlow reduced cognitive load, which it did. They also carefully document where the system fell short. One participant's quote captures it perfectly: the system flagged an inconsistency, but the interviewer didn't know how to naturally shift the conversation to address it without breaking flow. This gap between recognizing an opportunity and being able to act on it in real time is a critical insight that most papers in this space would gloss over. Participants asked an average of <span class="stat-highlight">24.58 questions with InterFlow versus 18.17 with the baseline</span>, suggesting the system encouraged broader coverage, but the authors are careful to note that more questions doesn't automatically mean better interviews.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary weakness is the small sample size. Twelve participants is enough for a formative evaluation and to identify themes, but it limits the statistical power of the quantitative comparisons. The NASA Task Load Index and System Usability Scale results are suggestive but not conclusive at this scale. A larger study with more diverse interviewers, including novices versus experts, would strengthen the claims substantially.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A secondary concern is that the study used staged interviews rather than real research interviews with genuine stakes. The authors acknowledge this, but it matters. In a real study, the interviewer has deeper domain knowledge and stronger opinions about what matters. The co-interview agent's suggestions might be more or less useful when the interviewer already has strong hypotheses. Whether InterFlow helps most when you know your domain well or when you're exploring unfamiliar territory is an open question.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's own references, several key works stand out. First, Schroeder and colleagues' 2025 survey of LLM uses in qualitative research, which maps the broad landscape from data collection through analysis. Second, the Interview AI-ssistant work on real-time human-AI collaboration in interview preparation and execution, which tackles the same problem space from a different angle. Third, the work by Jiang and colleagues from 2021 on supporting qualitative research through computational methods, which established the foundation for AI-augmented qualitative workflows.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Also worth noting is the Envisioning AI Support paper that explored how interviewers across the expertise spectrum imagine AI assistance in semi-structured interviews, which provides the formative research that motivates InterFlow's design choices. And Chen and colleagues' 2025 work on AI support in online meetings, which tackles similar challenges of real-time AI assistance during attention-intensive conversational tasks, helping ground the design implications in a broader context.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper is the closest thing to a direct blueprint for Seena's micro-interview system that exists in the CHI literature.</span> While InterFlow targets human interviewers conducting research interviews, nearly every design decision maps to challenges Seena faces with its automated micro-interview agents.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The graduated automation model is immediately applicable. Seena's micro-interviews currently need to decide how much to automate versus how much to let the user direct. InterFlow's three-tier approach suggests Seena should offer analogous levels: let users flag things manually through direct feedback, provide AI-summarized context on demand, and have proactive agents surface follow-up opportunities. The key insight is that <span class="highlight">different users will engage with different levels at different moments</span>, and the system should support all three simultaneously.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The speaking-ratio visualization is directly transferable to Seena's interview analytics. In micro-interviews, the equivalent metric is the balance between system prompts and user responses. If Seena's interview agent is asking too many questions relative to the depth of user responses, that's a signal the questions are too broad or the timing is wrong. Building this kind of conversational balance metric into Seena's interview quality scoring would be straightforward and valuable.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The most important finding for Seena is the actionability gap. InterFlow showed that even when AI suggestions are accurate and well-timed, human interviewers often can't act on them because the conversation has moved on. For Seena, this has a counterintuitive implication: <span class="highlight">because Seena's interview agent is the one asking the questions, it can actually act on its own follow-up suggestions in ways human interviewers cannot.</span> This is a structural advantage of automated micro-interviews over human-conducted interviews augmented by AI. Seena should lean into this advantage by designing follow-up logic that's more aggressive than what a human interviewer could manage.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Finally, the interactive script concept maps to how Seena should manage interview guides. Rather than a fixed question sequence, Seena's interview agents should maintain a dynamic, reorderable script that adapts based on what the user has already revealed through their behavior. The drag-and-drop metaphor from InterFlow could become a configuration interface for product managers setting up Seena micro-interview campaigns, letting them prioritize questions but trusting the system to sequence them optimally for each session.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The headline number is the situational awareness improvement: <span class="stat-highlight">from 2.67 to 5.0 on a seven-point scale</span>, a statistically significant jump with a large effect size of d equals negative 1.07, and p equals .009. The visual timer specifically was rated positively at <span class="stat-highlight">5.67 out of 7</span>, making it the highest-rated individual component.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">On the interaction side, interviewers asked <span class="stat-highlight">24.58 questions on average with InterFlow versus 18.17 with the baseline</span>, a thirty-five percent increase in question coverage. The system uses NASA Task Load Index for cognitive load measurement, a well-validated instrument, and the System Usability Scale for usability, both standard references that lend credibility to the evaluation. The qualitative finding that suggestion actionability is constrained by conversational dynamics is also citable as evidence for why fully automated interview agents may outperform AI-augmented human interviewers in certain contexts.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">We've been thinking about AI for interviews all wrong. Instead of replacing the interviewer, the real opportunity is becoming their co-pilot.</span> InterFlow shows that when AI handles the logistics, tracking time, visualizing progress, catching what you missed, the human interviewer is freed up to do what humans do best: listen deeply and follow their instincts. But here's the twist. Even with a great co-pilot, human interviewers couldn't always act on the AI's suggestions fast enough. Which raises an uncomfortable question: in some contexts, might a well-designed AI interviewer actually be better than a human with AI assistance?</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for content: "The best AI assistant isn't the one that gives you the most information. It's the one that gives you the right information at the moment you can actually use it. InterFlow proves that timing and actionability matter more than intelligence." You could frame this as an Everything is Designed piece on the design of interruption, when AI should speak up versus shut up, and what that means for how we build products that assist without overwhelming.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper sits firmly in the bridge between theory and practice. The theoretical contributions around unobtrusive AI design and mixed-initiative interaction under time pressure are well-grounded in HCI frameworks. But the system itself is immediately practical. Any UX research team doing regular interviews could benefit from a tool like InterFlow tomorrow. For Seena, this is less of a "steal the architecture" paper and more of a <span class="highlight">"steal the design philosophy" paper</span>. The graduated automation model, the conversational balance metrics, and especially the honest reckoning with the actionability gap are all design principles Seena should internalize as it builds out its micro-interview system.</p>
-  </div>
-</div>
-`;
-
-const paper3Analysis = `
-<div class="analysis-panel open">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~13 min listen</div>
-  </div>
-
-  <div class="tts-controls">
-    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> Behavioral Indicators of Overreliance During Interaction with Conversational Language Models<br>
-    <strong>Authors:</strong> Chang Liu, Qinyi Zhou, Xinjie Shen, Xingyu Bruce Liu, Tongshuang Wu, Xiang 'Anthony' Chen<br>
-    <strong>Venue:</strong> CHI 2026, Barcelona<br>
-    <strong>One-liner:</strong> A study of 77 participants that identifies five distinct behavioral patterns — visible in mouse clicks, scrolling, and copy-paste actions — that predict whether someone is blindly trusting an LLM's output or critically evaluating it.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here's the problem this paper tackles. When someone uses ChatGPT or Claude for a real task, how do you know whether they're actually thinking critically about what the AI says, or just blindly accepting it? You can check the final output, sure. But by then it's too late. The misinformation is already baked into their work. <span class="highlight">What if you could detect overreliance in real time, while it's happening, by watching how someone interacts with the interface?</span></p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">That's exactly what these researchers did. They had seventy-seven participants complete three real-world tasks, writing, article summarization, and trip planning, using an LLM that had been deliberately injected with plausible misinformation. Then they logged every click, scroll, copy, paste, and keystroke. By encoding these action sequences with an autoencoder and clustering them with DBSCAN, they identified five behavioral patterns that reliably distinguish careful users from overreliant ones.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The low-overreliance patterns include careful initial task comprehension, reading through the full LLM response before acting, and fine-grained navigation where users scroll to specific words and sentences rather than jumping to rough page regions. <span class="highlight">The high-overreliance patterns are revealing: frequent wholesale copy-paste, skipping the initial comprehension step entirely, repeatedly bouncing back to the LLM chat without checking other sources, coarse "ballpark" scrolling and cursor placement, and a particularly fascinating pattern where users hesitate at misinformation but accept it anyway.</span> That last one is gold for anyone building behavioral intelligence systems.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper makes a primary <span class="highlight">empirical contribution</span> with a secondary <span class="highlight">methodological</span> contribution. The empirical finding is the five behavioral patterns and their correlation with overreliance levels. The methodological contribution is the analysis pipeline itself: an autoencoder-based approach to encoding variable-length interaction sequences into fixed-size embeddings, followed by DBSCAN clustering to discover recurring behavioral patterns without predefined categories.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The analysis pipeline deserves attention because it's genuinely reusable. They segment interaction logs into overlapping time-based windows at multiple granularities, from ten seconds to sixty seconds. Each window of actions gets encoded as a standardized feature vector. An autoencoder compresses these into compact latent representations. Then DBSCAN, a density-based clustering algorithm that doesn't require you to specify the number of clusters in advance, groups similar behavioral sequences together. They trained separate models for each combination of task and window size, eighteen models total, and looked for patterns that appeared consistently across tasks.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The five patterns they found aren't just statistical artifacts. They make intuitive sense. Users who read the LLM's response carefully before doing anything with it catch more errors. Users who copy entire paragraphs at once, without reading first, absorb the misinformation wholesale. Users who scroll with coarse, "rough landing" movements are essentially skimming, while users who navigate to specific words and phrases are actually engaging with the content. And the hesitation pattern, where users pause at an error, seem to notice something is off, but then accept it anyway, suggests that overreliance isn't always about not noticing problems. Sometimes it's about not having the confidence or motivation to push back.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd rate the contribution strength as <span class="highlight">significant</span>. This work meaningfully advances our understanding of how to detect overreliance through process-level behavioral signals rather than outcome-based evaluation. It's not quite transformative because it stays correlational and doesn't yet demonstrate real-time detection or intervention. But it lays the groundwork for systems that could.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The biggest strength is the <span class="highlight">shift from outcome-based to process-based measurement of overreliance</span>. Almost all prior work measures overreliance by comparing task outcomes with and without AI. This paper argues, convincingly, that by the time you check the outcome, you've missed the window for intervention. By identifying behavioral signals during the interaction, the authors open up the possibility of just-in-time detection and mitigation. This is a conceptually important move for the field.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the ecological design. Three different tasks, writing, summarization, and trip planning, with task-specific misinformation injection methods, gives the findings much broader applicability than a single-task study. The fact that the behavioral patterns recur across tasks suggests they're tapping into general interaction tendencies rather than task-specific strategies. Seventy-seven participants is also a respectable sample for this kind of detailed behavioral logging study.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary weakness is that the relationship between behavioral patterns and overreliance is correlational, not causal. The authors are careful about this, but it means we can't say that coarse scrolling causes overreliance. It could be that users who are less motivated or more time-pressed both scroll coarsely and accept misinformation, with both behaviors stemming from a shared underlying cause. The fifteen-minute time limit on tasks may have amplified this, pushing some participants toward shortcuts they wouldn't normally take.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A secondary concern is the misinformation injection methodology. While well-designed, it creates a somewhat artificial setup. In real-world LLM use, errors aren't uniformly distributed or always "plausible." Sometimes LLMs are wildly wrong in obvious ways, and sometimes they're subtly wrong in ways that even experts miss. How these behavioral patterns hold up across different types and severities of error is an open question the authors acknowledge but can't yet answer.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The paper's intellectual lineage runs through several key references. First and foremost is the foundational work by Rzeszotarski and Kittur from 2011 on using interaction patterns to predict crowdworker task quality, which established the idea that behavioral traces can serve as quality indicators. Second, Gadiraju and colleagues' 2019 work on understanding crowd workers' behavior and task quality, which extended behavioral analysis to more complex task settings.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">On the overreliance side, Buçinca and colleagues' work on cognitive forcing functions to reduce overreliance on AI is a key reference, as it represents one of the few attempts to actually intervene against overreliance rather than just measure it. Vasconcelos and colleagues' 2023 work on explanations and overreliance is also relevant, exploring whether showing users how AI reaches its conclusions helps or hurts. And Passi and Vorvoreanu's 2022 framing of overreliance as "users accepting incorrect LLM recommendations" provides the definitional foundation the paper builds on.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper is foundational for Seena's behavioral analytics layer.</span> The five behavioral patterns identified here map almost directly to the kinds of signals Seena's detection agents should be monitoring during product sessions. But the application is inverted in an interesting way. While this paper detects overreliance on AI, Seena needs to detect behavioral signals that indicate a user is struggling with a product, confused by a feature, or encountering friction that warrants a micro-interview.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The autoencoder-plus-clustering pipeline is immediately adaptable to Seena's behavioral clustering system. Seena already does multi-dimensional session clustering. This paper provides a validated methodology for encoding variable-length interaction sequences into fixed-size embeddings suitable for clustering. The specific approach of overlapping time windows at multiple granularities is a smart technique Seena should adopt. It means you can detect both momentary behavioral shifts, like a ten-second hesitation, and sustained patterns, like sixty seconds of unfocused scrolling, with the same framework.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The <span class="highlight">hesitation pattern</span> is the single most valuable finding for Seena. Users who notice something is wrong but accept it anyway represent a specific behavioral state: they have a question or concern but lack the confidence or context to act on it. This is precisely the moment when a Seena micro-interview should trigger. A short, contextual prompt like "You seemed to pause here — was something unclear?" could convert that hesitation from a silent acceptance of confusion into an actionable insight.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The distinction between fine-grained and coarse-grained navigation patterns also maps to Seena's engagement quality metrics. Fine-grained scrolling, where someone navigates to specific words and sentences, suggests deep engagement. Coarse scrolling suggests surface-level interaction. Seena could use this distinction to weight behavioral signals differently: a micro-interview triggered after deep engagement is more likely to yield substantive responses than one triggered after superficial browsing.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Finally, the copy-paste frequency finding has implications for Seena's interview response quality. If a product user is frequently copying content from AI tools into their workflow, that behavioral signature could indicate they're in a task-completion mindset rather than a reflective one. Seena might want to delay micro-interviews until the user transitions out of rapid task execution and into a more evaluative state, which the behavioral patterns here could help identify.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The headline number is the study scale: <span class="stat-highlight">seventy-seven participants across three real-world tasks</span>, which is substantial for a behavioral logging study of this depth. The five behavioral patterns were identified using eighteen separate autoencoder models, one per combination of three tasks and six time-window sizes, lending robustness to the findings.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The specific behavioral contrasts are citable. Users with low overreliance spend measurably more time on initial task comprehension before interacting with the LLM output. Users with high overreliance show <span class="stat-highlight">frequent wholesale copy-paste operations</span> and <span class="stat-highlight">coarse scrolling patterns that target rough page regions rather than specific content</span>. The hesitation-then-acceptance pattern, where users pause at misinformation but accept it regardless, appeared consistently across tasks and time windows, suggesting it's a robust behavioral signature. The methodological contribution of using DBSCAN clustering on autoencoder embeddings of interaction sequences is itself citable as a validated approach for behavioral pattern discovery.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">Researchers found they can tell whether you're actually thinking about what ChatGPT says, or just blindly trusting it, just by watching how you scroll and copy-paste.</span> Five specific mouse and keyboard patterns predict whether you'll catch AI mistakes or absorb them. The creepiest finding? Some people clearly notice something is wrong, they hesitate, they pause, but they accept the AI's answer anyway. We're not just over-trusting AI. We're over-trusting it even when our instincts are screaming that something is off.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook: "The most dangerous moment in AI interaction isn't when you miss the error. It's when you see the error and accept it anyway. That hesitation-then-acceptance pattern tells us overreliance isn't a knowledge problem, it's a confidence problem." You could frame this as an Everything is Designed piece about how the design of AI interfaces, specifically the smooth, confident presentation of LLM output, may be actively suppressing people's healthy skepticism. When the AI speaks in perfectly formatted paragraphs with zero hedging, who are you to question it?</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper leans theoretical and empirical, but the path to industry application is clear and short. The behavioral patterns themselves are directly observable in any web application with standard event logging. The autoencoder-clustering pipeline is computationally lightweight enough for production. The missing piece, which the authors acknowledge, is real-time detection and intervention. But the groundwork is laid. For Seena specifically, this is a <span class="highlight">"steal the methodology, adapt the targets" paper</span>. The pipeline is proven. The behavioral indicators are validated. Seena just needs to retrain the model to detect moments of user confusion and frustration rather than AI overreliance, and then trigger micro-interviews at those moments instead of mitigation nudges.</p>
-  </div>
-</div>
-`;
-
-const paper4Analysis = `
-<div class="analysis-panel open" id="analysisPanel4">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~10 min listen</div>
-  </div>
-
-  <div class="tts-controls" id="ttsControls">
-    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> Qualitative Coding Analysis through Open-Source Large Language Models: A User Study and Design Recommendations<br>
-    <strong>Authors:</strong> Tung T. Ngo, Dai Nguyen Van, Anh-Minh Nguyen, Phuong-Anh Do, Anh Nguyen-Quoc<br>
-    <strong>Venue:</strong> CHI 2026 — Late-Breaking Work (6 pages)<br>
-    <strong>One-liner:</strong> An on-device qualitative coding tool using a 20.9B open-source LLM that reveals a trust paradox — users appreciated the speed but didn't trust the depth, even when their data never left the machine.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you care about AI-assisted qualitative research, and you should, this paper tackles a question most tools dodge: what happens when you give researchers an LLM that runs entirely on their own laptop? No cloud. No data leaving the machine. The authors built ChatQDA, a framework that uses a 20.9-billion-parameter open-source model, quantized down to fit in 16 gigs of RAM, to help with qualitative coding tasks like initial coding, focused coding, and code grouping.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">They studied eight qualitative researchers, half novice, half experienced, and found something counterintuitive. <span class="highlight">Even though the system was provably local, users still didn't fully trust it.</span> They exhibited what the authors call "conditional trust" — happy to let the AI handle surface-level extraction, but skeptical the moment it touched deeper interpretive work. Privacy ratings landed at a mediocre 3 out of 5, despite the system literally never sending data anywhere. That gap between technical reality and psychological comfort is the real finding here, and it matters for anyone building AI tools for knowledge workers.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper makes three intertwined contributions. The primary one is an <span class="highlight">artifact contribution</span>: ChatQDA itself, a working on-device framework for qualitative data analysis using open-source LLMs. The secondary contribution is <span class="highlight">empirical</span>: a mixed-methods user study with eight participants across four coding sessions each. And there's a <span class="highlight">methodological</span> thread as well: three design recommendations for building trustworthy AI-assisted QDA tools.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The technical architecture is worth understanding. They use a model called gpt-oss-20b, a 20.9-billion-parameter Mixture-of-Experts model. Think of Mixture-of-Experts like a team of specialists — the model routes each task to the sub-network best equipped to handle it, rather than running everything through a single massive network. They quantized this model using MXFP4 compression down to 12.8 gigabytes, which means it runs on consumer hardware with 16 gigs of RAM. No GPU required. That's a meaningful engineering achievement because it makes local deployment genuinely accessible.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd classify the contribution strength as <span class="highlight">incremental</span>. The on-device angle is a worthwhile extension of existing LLM-for-QDA work, and the trust findings are genuinely interesting. But this is a six-page late-breaking work paper, so the study scale is necessarily limited and the system itself builds on established ideas. What elevates it beyond routine is the trust paradox the study uncovered, which points to a deeper design challenge that the field needs to reckon with.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the honesty of the findings. The authors didn't build a system and then cherry-pick positive results. They found that <span class="highlight">usefulness ratings were lukewarm, landing around 3.0 to 3.25 on a 5-point scale</span>. Privacy confidence was middling despite genuine technical protections. The "conditional trust" framing is the most valuable contribution because it moves beyond the binary "users trust AI" or "users don't trust AI" and gives us a more nuanced vocabulary for thinking about human-AI collaboration in analytical work.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the design recommendations. Rather than stopping at "users were somewhat skeptical," they offer actionable guidance. Make privacy visible and verifiable. Build trust through traceability and consistency rather than just accuracy. Shift the design goal from "fast" to "methodologically defensible." That last one is particularly sharp — it reframes what success means for these tools.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is scale. Eight participants is thin, even for qualitative work. The paper acknowledges this, but it limits what you can infer, especially about the novice-versus-experienced split. With only four people per group, any individual variation swamps the signal. We also don't get much detail on how the model's actual coding quality compared to human judgments, which makes it hard to separate trust issues from performance issues. Were users skeptical because the AI's deeper interpretations were genuinely weak, or because they just didn't trust the concept? The paper doesn't fully disentangle that.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's own reference list, these are the most closely related works. Xiao and colleagues' 2023 paper on supporting qualitative analysis with large language models is the most direct comparison, establishing the baseline for LLM-assisted coding that ChatQDA builds on. Gao and team's CollabCoder from 2024 explores collaborative qualitative coding with AI, adding the social dimension that ChatQDA doesn't address. Marathe and Toyama's 2018 work on semi-automated coding is an important ancestor, showing earlier attempts at the same problem with simpler tools. And Draxler and colleagues' 2024 study on AI privacy perceptions provides the theoretical backdrop for understanding why users remain skeptical even when privacy is technically guaranteed.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is <span class="highlight">directly relevant to Seena's core challenge</span>. Seena is building AI-powered micro-interviews and synthesis agents that need users to trust both the data collection process and the analytical output. The "conditional trust" finding maps exactly onto Seena's adoption risk: product managers might trust Seena to surface behavioral signals and flag interesting patterns, but balk when Seena tries to synthesize those into higher-level insights or thematic narratives.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The three design recommendations translate almost directly. Seena's evidence traceability system, where every insight links back to source evidence, is already implementing recommendation two — trust through traceability. But recommendation one about making privacy visible is a useful prompt. If Seena processes user session data, how visible is the data pipeline to the product teams relying on the insights? And recommendation three, reframing from "fast" to "defensible," could reshape how Seena positions itself. Instead of "get insights faster," the pitch becomes "get insights you can defend in a product review." That's a stronger value proposition for rigorous PMs.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The numbers here are modest but usable. <span class="highlight">Perceived security for on-device AI: median 3 out of 5</span>, even with fully local processing. That's a powerful data point for anyone arguing that technical privacy guarantees are necessary but insufficient. <span class="highlight">Privacy concern ratings: 3 to 4 out of 5</span>, indicating persistent worry despite local deployment. Usefulness ratings of 3.00 to 3.25 out of 5 suggest cautious acceptance rather than enthusiasm. The model specs are also worth noting for technical contexts: 20.9B parameters, Mixture-of-Experts, MXFP4 quantization to 12.8 GiB, runnable on 16GB consumer hardware. That's a concrete benchmark for what's achievable locally in 2025-2026.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">Researchers built an AI that runs entirely on your laptop — your data literally never leaves — and people still didn't trust it.</span> Not because it was bad. Because they couldn't see what it was doing. The lesson isn't about AI capability. It's about AI legibility. If users can't observe and verify the system's reasoning, no amount of technical privacy guarantees will make them comfortable. Trust isn't a feature you ship. It's an experience you design.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for LinkedIn or Substack: "The hardest part of AI adoption isn't the algorithm. It's closing the gap between what's technically true and what people actually believe. This team proved that even provably private AI gets doubted when users can't see the work." You could frame this as an Everything is Designed piece about the UX of trust — how privacy by design isn't enough without transparency by design. The visual metaphor: it's like having a doctor tell you you're healthy but refusing to show you the test results. You need the receipts.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper bridges both worlds, leaning slightly more toward industry application. The system itself is practical and deployable — consumer hardware, open-source model, real coding workflows. The trust findings are empirically grounded and immediately applicable to product design decisions. At the same time, the "conditional trust" concept has theoretical legs. It challenges the assumption that privacy solves the trust problem and suggests we need a more layered model of how trust operates in AI-assisted analytical work. For Seena's purposes, this is a <span class="highlight">"steal the design recommendations, cite the trust findings"</span> paper. The system architecture is interesting but not directly transferable. The insights about what users actually need to feel confident delegating analytical work to AI — that's gold.</p>
-  </div>
-</div>
-`;
-
-const paper5Analysis = `
-<div class="analysis-panel open" id="analysisPanel5">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~14 min listen</div>
-  </div>
-
-  <div class="tts-controls" id="ttsControls">
-    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> Reflexis: Supporting Reflexivity and Rigor in Collaborative Qualitative Analysis through Design for Deliberation<br>
-    <strong>Authors:</strong> Runlong Ye, Oliver Huang, Patrick Yung Kang Lee, Michael Liut, Carolina Nobre, Ha-Kyung Kong<br>
-    <strong>Venue:</strong> CHI 2026<br>
-    <strong>One-liner:</strong> A collaborative workspace that makes qualitative researchers more rigorous by design — using reflexivity prompts, transparent code evolution tracking, and structured disagreement mechanisms to keep analytical teams honest.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Qualitative research has a rigor problem, and everyone in the field knows it. When teams of researchers code data together using Reflexive Thematic Analysis, or RTA, the process can easily drift. People unconsciously converge toward groupthink, abandon codes without documenting why, or skip the self-reflection that Braun and Clarke's methodology demands. This paper introduces <span class="highlight">Reflexis, a collaborative workspace that doesn't just help you code — it forces you to be honest about how you're coding.</span></p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system has three clever mechanisms. First, in-situ reflexivity prompts that ask you to examine your own assumptions while you're actively coding, not after the fact. Second, a transparent code evolution history with drift alerts that flag when your coding patterns have shifted over time. Third, a structured disagreement system that makes it productive rather than awkward for team members to challenge each other's interpretations. The team evaluated this with twelve researchers working in pairs, and the results were striking. <span class="highlight">All twelve participants felt they remained in control of their analytical decisions</span>, while eleven out of twelve found the transparency and disagreement features genuinely useful.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you build tools for qualitative research or care about how AI integrates with analytical workflows, this paper offers a thoughtful framework they call "Design for Deliberation" that goes well beyond the typical "here's a coding tool with GPT bolted on" approach.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary contribution here is an <span class="highlight">artifact</span>: Reflexis itself, a working collaborative platform for Reflexive Thematic Analysis. But there's a strong secondary <span class="highlight">theoretical contribution</span> in the "Design for Deliberation" framework, and a solid <span class="highlight">empirical contribution</span> from the two-phase evaluation.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Let me walk through the three core mechanisms because they're each solving a distinct problem. The first is ReflexiveLens, which generates in-situ reflexivity prompts. When you're coding a passage, the system uses an LLM to surface questions about your positionality and assumptions. It's like having a thoughtful colleague who occasionally asks "why did you interpret it that way?" while you're in the middle of working. The key design choice: these prompts appear in context, during the act of coding, rather than in a separate reflection journal after the fact. That matters because reflexivity that happens in the moment shapes the actual analysis, whereas post-hoc reflection is just retrospective rationalization.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second mechanism is the analysis history with Code Drift Alert. This tracks how your codes evolve over time and flags when your coding patterns have shifted significantly. Think of it like version control for your analytical thinking. If you coded the first ten interviews one way and gradually drifted in interviews fifteen through twenty, the system catches that and asks you to acknowledge and explain the shift. This addresses a known problem in qualitative research where coders unconsciously evolve their interpretive frames without documenting the change.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The third mechanism is Discussion Focus combined with positionality-aware collaboration prompts. When two researchers disagree about how to code a passage, the system doesn't just flag the disagreement — it structures the conversation around it. It reminds each researcher of their stated positionality and asks them to engage with the specific basis of their disagreement. This transforms conflict from something awkward into something analytically productive.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The contribution strength is <span class="highlight">significant</span>. It meaningfully advances how we think about tool support for qualitative rigor. Rather than automating coding, which is what most AI-QDA tools try to do, Reflexis automates the quality assurance around coding — the meta-analytical practices that separate rigorous research from casual pattern-matching. That's a genuinely different design philosophy.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the <span class="highlight">Design for Deliberation framework</span>. Rather than just presenting a tool and some user study results, the authors articulate a principled design philosophy that could guide future work across the entire space of AI-assisted analytical tools. The framework has three pillars: enabling reflection, supporting transparency, and facilitating principled disagreement. Each pillar maps to a specific system mechanism, and each mechanism is grounded in formative research. That alignment between theory, design rationale, and implementation is rare and well-executed.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the two-phase evaluation approach. Phase one was a formative study with fifty-five survey respondents and three in-depth interviews, which shaped the design. Phase two was a controlled evaluation with twelve participants working in six pairs through 1.5 to 2-hour sessions. The combination gives both breadth of insight about what researchers need and depth of evidence about whether Reflexis delivers. The quantitative findings are encouraging — ten out of twelve agreed the prompts encouraged deeper reflection, eleven out of twelve found the analysis history improved transparency, eleven out of twelve found Discussion Focus useful for navigating disagreements.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The technical implementation is also worth noting. Built with Next.js, Tailwind CSS, Firebase, and React Flow, using GPT-5 and GPT-5-mini for the reflexivity prompts, the system is modern and open-sourced on GitHub. That's a meaningful contribution to the research community.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is the evaluation's ecological validity. Pairs of researchers worked for ninety minutes to two hours with pre-selected datasets. Real RTA projects unfold over weeks or months with researchers developing deep familiarity with their data. The Code Drift Alert mechanism, which flags shifts in coding patterns over time, is hard to properly evaluate in a single session. The authors acknowledge this, but it means the most novel feature is also the least validated. I'd also have liked to see more analysis of the Sankey diagrams showing reflexivity shifts — the paper mentions a shift from low to high reflexivity frequency but doesn't deeply unpack what that transition looked like qualitatively.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's reference list, the most relevant related works are these. Braun and Clarke's foundational work on Reflexive Thematic Analysis provides the methodological backbone that Reflexis is built to support — you need to understand RTA to appreciate what the tool is doing. Jiang and colleagues' 2021 work on supporting serendipity in qualitative coding explores a related idea of how tools can surface unexpected connections during analysis. Gao and team's CollabCoder from 2024 is the closest system comparison, tackling collaborative qualitative coding with AI but without the reflexivity focus. McDonald and colleagues' 2019 paper on reliability in qualitative analysis addresses the fundamental question of how we assess rigor in interpretive work. And Deterding and Waters' 2021 piece on flexible coding offers an alternative perspective on what structured qualitative analysis could look like.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is <span class="highlight">highly relevant to Seena on multiple levels</span>. The Design for Deliberation framework directly informs how Seena should think about its synthesis agents. When Seena's AI synthesizes behavioral data into insights, there's a version of the reflexivity problem at play: are the AI's interpretive frames drifting? Are early patterns biasing later analysis? The Code Drift Alert concept could be adapted for Seena's multi-agent pipeline — monitoring whether synthesis agents maintain consistent interpretive standards across a growing dataset.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The traceability mechanisms validate Seena's existing evidence-traceability architecture, where every insight links back to source evidence. Reflexis goes further by also tracking the evolution of codes over time, which is a feature Seena could adopt. Imagine being able to show a PM not just "here's the insight and here's the supporting evidence" but also "here's how our interpretation of this behavioral pattern evolved as we collected more sessions." That's a powerful credibility signal.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The positionality-aware disagreement system is also provocative. In Seena's multi-agent architecture, what if detection agents and synthesis agents had explicit "positionality statements" — declared biases or analytical tendencies — that were visible to users? That would make the AI's analytical stance transparent rather than opaque, directly addressing the trust gap that ChatQDA identified.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The formative study numbers are useful for framing the problem space. <span class="highlight">Of fifty-five surveyed qualitative researchers, the data revealed significant challenges with maintaining reflexivity during active coding</span> — that's a market validation data point. From the evaluation: <span class="highlight">ten out of twelve participants agreed that reflexivity prompts encouraged deeper reflection on their analytical process</span>. <span class="highlight">Eleven out of twelve found the analysis history feature improved transparency in code evolution</span>. <span class="highlight">Eleven out of twelve found Discussion Focus useful for navigating interpretive disagreements</span>. And perhaps most importantly, <span class="highlight">twelve out of twelve reported feeling "in control of analytic decisions"</span> despite extensive AI involvement. That last number is critical for anyone building AI tools for knowledge workers — it shows that AI augmentation doesn't have to mean loss of agency.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">Researchers built a tool that makes qualitative analysis teams more honest — not by watching what they do, but by asking them the right questions at the right time.</span> It's like having a built-in peer reviewer who notices when your thinking has shifted and asks you to own it. The insight for a general audience: most AI tools try to do the work for you. This one tries to make you better at the work. That's a fundamentally different design philosophy, and it might be the right model for AI in any field where judgment matters more than speed.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook: "The most dangerous moment in collaborative analysis isn't when your team disagrees. It's when everyone quietly converges without examining why. This tool catches that silent drift." You could frame this as an Everything is Designed piece about the difference between AI-as-replacement and AI-as-mirror — tools that reflect your own analytical process back at you so you can see your blind spots. The design principle is powerful: sometimes the best intervention isn't doing the work for someone, it's helping them see their own work more clearly.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper straddles the line beautifully. The Design for Deliberation framework is a genuine theoretical contribution that can inform tool design well beyond qualitative research. But Reflexis itself is a fully implemented, open-source system that research teams could adopt tomorrow. The evaluation, while limited in ecological validity, demonstrates practical utility. For Seena, this is a <span class="highlight">"adopt the framework, study the mechanisms, consider the architecture patterns"</span> paper. The theoretical framing is useful for positioning Seena's value proposition around rigor rather than speed. The specific mechanisms — reflexivity prompts, drift detection, structured disagreement — are all directly adaptable. And the open-source codebase means you can look at exactly how they implemented these ideas rather than just reading about them.</p>
-  </div>
-</div>
-`;
-
-const paper6Analysis = `
-<div class="analysis-panel open" id="analysisPanel6">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~14 min listen</div>
-  </div>
-
-  <div class="tts-controls" id="ttsControls">
-    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks<br>
-    <strong>Authors:</strong> Jieyu Zhou, Aryan Roy, Sneh Gupta, Daniel Weitekamp, Christopher J. MacLellan<br>
-    <strong>Venue:</strong> CHI 2026<br>
-    <strong>One-liner:</strong> A decision-theoretic framework that uses dynamic programming to calculate optimal checkpoint placement in multi-step AI agent tasks — proving that intermediate confirmations reduce task time by 13.54% and are overwhelmingly preferred by users.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you've ever used an AI agent to do something multi-step — shopping online, editing images, booking travel — you've probably faced the awkward question: do I let it run to the end and hope for the best, or do I check in constantly and micromanage? This paper formalizes that question mathematically and proves there's a sweet spot. Researchers at Georgia Tech ran a formative study with eight participants using three real AI agents — Manus, ChatGPT Agent, and Browser Use — across five everyday tasks. They discovered a recurring behavior pattern they call CDCR: Confirmation, Diagnosis, Correction, Redo. When users find an error, they first confirm something went wrong, then diagnose which step failed, then correct the mistake, then redo everything from that point forward.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">The key finding: seven out of eight participants were dissatisfied with the standard confirm-at-the-end approach.</span> So the researchers built a decision-theoretic model that uses dynamic programming to calculate exactly where in a multi-step task you should place confirmation checkpoints. They validated this with forty-eight participants across three task domains — shopping, image editing, and an Overcooked cooking game. The results are clear: <span class="highlight">eighty-one percent of participants preferred intermediate confirmation, and task completion time dropped by 13.54 percent</span> compared to end-only checking. This isn't just a nice theoretical result — it's a deployable scheduling algorithm that any agentic system could adopt tomorrow.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you're building anything with AI agents — and increasingly everyone is — this paper gives you the math to decide when humans should be in the loop. Not just "sometimes," but precisely when.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary contribution is <span class="highlight">methodological</span>: a formal decision-theoretic model that treats confirmation scheduling as a stochastic optimization problem, solved via dynamic programming. There's a strong secondary <span class="highlight">empirical contribution</span> from the two-phase evaluation — a formative study with eight participants and a controlled experiment with forty-eight — and a valuable <span class="highlight">conceptual contribution</span> in the CDCR interaction pattern they identified.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Let me unpack the model because the formulation is elegant. Each multi-step agent task is represented as a sequence of steps, where each step has a probability of success. At each step, the system faces a binary decision: execute the next action, or pause and ask the user to verify. The model tracks four time costs per step — time to confirm, time to diagnose an error, time to correct it, and time to redo subsequent work. The optimization minimizes total expected time using backward induction dynamic programming, producing an optimal checkpoint schedule before the task even begins.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">What makes this especially clever is the Beta-Bernoulli belief model for online adaptation. The system doesn't require knowing the exact per-step accuracy in advance. It starts with a prior estimate and updates it as the user confirms or corrects steps, dynamically adjusting future checkpoint placement. If early steps keep failing, the model becomes more conservative and checks more often. If everything's going smoothly, it backs off. That's exactly the adaptive behavior you'd want in a production system.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd classify the contribution strength as <span class="highlight">significant</span>. It transforms a vague design intuition — "check in sometimes but not too much" — into a rigorous, implementable framework. The connection between operations research concepts like preventive maintenance scheduling and human-AI interaction is novel and opens a new design space for agentic interfaces. Current benchmarks show agents achieve only around thirty percent accuracy on multi-step tasks, making this work immediately relevant.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The biggest strength is the <span class="highlight">rigor of the experimental design</span>. The evaluation study used a three-by-six Williams counterbalanced design with forty-eight participants across three distinct task domains — shopping with eight steps and eighty-seven point five percent per-step accuracy, image editing with twelve steps and ninety-one percent accuracy, and Overcooked with sixteen steps and ninety-three percent accuracy. This systematic variation across task lengths and error rates provides robust evidence that the model generalizes. The quantitative results are compelling: task time reductions of 17.44 percent for shopping, 7.46 percent for image editing, and 15.64 percent for Overcooked, all statistically significant.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second major strength is the <span class="highlight">CDCR interaction pattern</span> emerging from the formative study. This isn't imposed by the researchers — it's observed behavior. One hundred percent of participants entered the Confirmation phase, eighty-seven point five percent proceeded to Diagnosis, and eighty-two point five percent executed Correction. Having a descriptive model of how users actually behave when they encounter agent errors, not just how designers assume they behave, grounds the formal model in real interaction patterns.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The qualitative findings add depth. The participant who compared the AI to a new employee — "I wouldn't trust it to do the task right all the way to the end" — captures a powerful mental model. And the finding that seventy-seven percent of participants felt intermediate checkpoints did not disrupt their task flow directly addresses the main concern about interruption fatigue.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is that the evaluation used a <span class="highlight">simulated agent environment</span> rather than real AI agents executing real tasks. Participants reviewed pre-computed action sequences with injected errors, which means the study measures user behavior with confirmation interfaces but doesn't capture the full messiness of real agent failures — partial successes, ambiguous errors, cascading mistakes. The authors acknowledge this, and it's a reasonable trade for experimental control, but it limits ecological validity. I'd also note that the model currently optimizes purely for time, whereas real users weigh time against task importance, error severity, and emotional cost — a point the discussion section thoughtfully addresses but the model doesn't yet capture.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's own references, the most relevant related works are these. Tennenhouse's foundational 2000 paper on proactive computing sets the trajectory that this work advances — the shift from reactive to proactive human-AI collaboration. Lee and Seo's 2004 paper on trust in automation provides the theoretical backdrop for understanding why users want intermediate checkpoints — it's about calibrated trust, not just efficiency. Barlow and Hunter's 1960 work on optimum preventive maintenance policies is the operations research ancestor of the scheduling algorithm, showing how inspection timing problems have been studied for decades in other domains. Epperson and colleagues' 2025 paper on interactive debugging and steering of multi-agent systems represents the most direct contemporary comparison in the agentic AI space. And Horvitz's 1999 paper on mixed-initiative user interfaces remains the definitive framing for the broader design challenge of balancing user control with agent autonomy.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper has direct implications for how Seena structures its multi-agent pipeline.</span> Seena's detection agents, interview agents, and synthesis agents operate in a sequential workflow where errors compound. If a detection agent misidentifies a behavioral pattern, the interview agent asks the wrong questions, and the synthesis agent produces flawed insights. The CDCR framework maps directly: at what points in Seena's pipeline should the system pause and surface intermediate results for human review?</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The decision-theoretic model could be adapted for Seena's use case. Rather than optimizing for time, Seena could optimize for insight quality — placing confirmations where the expected cost of an undetected error (in terms of degraded research output) exceeds the cost of asking a product manager to verify an intermediate finding. For example, the model might recommend always confirming the behavioral pattern detected before launching an interview, but allowing the synthesis agent to run without interruption if the evidence chain is strong.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The Beta-Bernoulli adaptive component is especially interesting. Seena could track per-step reliability across projects — learning that its detection agent is highly reliable for certain behavioral categories but less so for others — and dynamically adjust where it asks for human confirmation. Over time, as Seena builds a track record with a specific user, it could reduce confirmation frequency for well-understood domains while remaining cautious in novel territory. That's the kind of adaptive trust calibration that would differentiate Seena from simpler automation tools.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is dense with citable numbers. The headline: <span class="highlight">forty-eight participants, within-subjects design, intermediate confirmation reduced task completion time by 13.54 percent (t(143) = 5.52, p less than 0.001)</span>. The breakdown by domain: 17.44 percent for shopping (t(47) = 5.25, p less than 0.001), 7.46 percent for image editing (t(47) = 2.34, p = 0.024), and 15.64 percent for Overcooked (t(40) = 2.14, p = 0.044). That gives you domain-specific evidence to cite depending on your context.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">Eighty-one percent of participants (thirty-nine out of forty-eight) preferred intermediate confirmation</span> versus only fifteen percent preferring end confirmation. The CDCR pattern numbers: one hundred percent entered Confirmation, eighty-seven point five percent proceeded to Diagnosis, eighty-two point five percent executed Correction. <span class="highlight">Average time per confirmation decreased by thirty-eight percent</span> with intermediate checkpoints compared to end-only, because users only needed to check recent steps rather than the entire history. And for the broader AI agent context: <span class="highlight">current multi-step agent benchmarks achieve only approximately thirty percent end-to-end accuracy</span>, making human-in-the-loop confirmation not just nice but essential. The early-error benefit is also worth noting: time savings were approximately twenty-nine percent when errors occurred early in the task, versus a slight four-point-five percent increase for late errors.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">AI agents today are like interns who work fast but make mistakes — and the worst thing you can do is let them finish the whole project before checking their work.</span> These researchers proved mathematically that checking in at strategic moments — not too often, not too rarely — saves time and catches errors before they cascade. The magic number? Intermediate checkpoints cut task time by nearly fourteen percent and were preferred by eighty-one percent of users. The design lesson: the future of AI isn't fully autonomous. It's strategically supervised.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for LinkedIn: "Every company building AI agents is asking the same question: how much autonomy should we give them? This research proves it's the wrong question. The right question is: when should we check in? Not whether to supervise, but where to place the checkpoints. They literally solved this with dynamic programming — turning a vague design instinct into a deployable algorithm." You could frame this as an Everything is Designed piece about the UX of trust calibration — how the best human-AI collaboration isn't about removing humans from the loop, it's about putting them back in at exactly the right moments.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is heavily tilted toward industry application with a strong theoretical backbone. The scheduling algorithm is immediately deployable — any agentic system with multi-step tasks could integrate it as a timing layer that decides when to pause, surface progress, and ask for review. The discussion section even describes how it could plug into existing agent architectures as middleware. At the same time, the connection between operations research optimization and human-AI interaction design is a genuine theoretical contribution that reframes how we think about human oversight of autonomous systems. The framing that confirmation should be seen not as a binary autonomy tradeoff but as a <span class="highlight">mixed-initiative design opportunity</span> — integrating efficiency, trust, and interaction design — is an important conceptual shift. For Seena, this is a <span class="highlight">"implement the scheduling algorithm, adopt the CDCR framework, cite the user preference data"</span> paper. The formal model gives you a principled way to decide where human touchpoints belong in an automated insight pipeline, and the empirical evidence gives you ammunition for why those touchpoints make the system better, not just slower.</p>
-  </div>
-</div>
-`;
-
-const paper7Analysis = `
-<div class="analysis-panel open" id="analysisPanel7">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~15 min listen</div>
-  </div>
-
-  <div class="tts-controls" id="ttsControls">
-    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> Interaction Context Often Increases Sycophancy in LLMs<br>
-    <strong>Authors:</strong> Shomik Jain, Charlotte Park, Matt Viana, Ashia Wilson, Dana Calacci<br>
-    <strong>Venue:</strong> CHI 2026<br>
-    <strong>One-liner:</strong> A two-week study showing that when LLMs learn about users through conversation, they become significantly more sycophantic — agreeing more and mirroring worldviews — with alarming variation across models.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here's a question that should make anyone building AI products nervous: does your chatbot become more of a yes-man the better it knows you? This paper says yes, often dramatically so. Researchers at MIT and Penn State ran a two-week field study with thirty-eight participants who used GPT 4.1 Mini as their regular AI assistant. Users logged an average of ninety queries over ten days, generating over thirty-four thousand tokens of conversational history each. Then the researchers tested what happened when five different LLMs — including Claude Sonnet, GPT models, Gemini, and Llama — were given that conversation history as context.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">The results are striking. Agreement sycophancy increased by up to forty-five percent when models had access to user memory profiles.</span> Gemini 2.5 Pro showed the largest jump, followed by Claude Sonnet 4 at thirty-three percent and GPT 4.1 Mini at sixteen percent. But here's the nuanced part: perspective sycophancy — where the model mirrors your worldview rather than just agreeing with you — only increased when the model accurately inferred your actual views. That distinction matters enormously for how we think about designing personalized AI systems.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">If you're building any AI system that maintains user context, memory, or personalization, this paper is essential reading. It quantifies the cost of personalization in a way that hasn't been done at this scale before.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary contribution is <span class="highlight">empirical</span>: this is the first large-scale study measuring how real interaction context — not synthetic prompts — affects sycophancy across multiple production LLMs. There's a secondary <span class="highlight">methodological contribution</span> in the evaluation framework they developed for distinguishing agreement sycophancy from perspective sycophancy, and in their approach to generating synthetic interaction profiles for controlled comparison.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Let me break down the two forms of sycophancy they study because the distinction is crucial. Agreement sycophancy is when the model excessively agrees with whatever you say. You state an opinion, and the model nods along rather than offering a balanced perspective. Perspective sycophancy is subtler and arguably more dangerous. It's when the model internalizes your worldview and generates responses that mirror your beliefs, values, and assumptions even when you haven't explicitly stated a position. Think of agreement sycophancy as a waiter who always says "great choice." Perspective sycophancy is a waiter who stops bringing you the menu because they assume they know what you want.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The study design has three phases. First, thirty-eight participants used GPT 4.1 Mini naturally for two weeks, creating authentic conversational histories. Second, the researchers extracted "memory profiles" — summaries of user preferences, beliefs, and communication styles generated by the model from those conversations. Third, they tested how five different models responded to opinion-eliciting questions both with and without these memory profiles as context.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The five models tested were Claude Sonnet 4, GPT 4.1 Mini, GPT 5.1, Gemini 2.5 Pro, and Llama 4 Scout. This cross-model comparison is important because it shows sycophancy isn't a quirk of one model's training — it's a systemic pattern that varies in degree but exists across architectures. I'd classify the contribution strength as <span class="highlight">significant</span>. It changes how we should think about the relationship between personalization and output quality in LLMs, and it provides the first rigorous empirical foundation for a problem the AI community has mostly discussed anecdotally.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The biggest strength is the <span class="highlight">ecological validity of the interaction data</span>. Unlike most sycophancy research that uses synthetic prompts or one-shot evaluations, this study captures real conversational histories from genuine two-week engagements. Participants used the AI for their actual tasks — not contrived lab scenarios. This means the memory profiles reflect authentic usage patterns, making the sycophancy measurements far more meaningful than what you'd get from artificial setups.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second major strength is the <span class="highlight">cross-model comparison</span>. Testing five production models with the same user profiles creates a fair comparison that reveals how different architectures and training approaches handle the personalization-sycophancy tradeoff. The variation is itself informative — Gemini 2.5 Pro at plus forty-five percent versus GPT 4.1 Mini at plus sixteen percent tells you that model architecture and RLHF approaches meaningfully influence this behavior.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The clever twist is the accuracy-moderated analysis of perspective sycophancy. They measured how accurately each model inferred users' actual political and social views, then tested whether accuracy predicted sycophancy. Claude Sonnet 4 achieved forty-five percent accuracy in understanding user perspectives, while GPT 4.1 Mini hit seventy-one percent. The finding that <span class="highlight">perspective sycophancy only increases when the model actually understands your views correctly</span> is both reassuring and alarming. Reassuring because inaccurate models don't mirror views they don't understand. Alarming because as models get better at understanding users, they'll get better at telling us what we want to hear.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is the participant demographics. With thirty-eight people recruited through a university setting, the sample skews young and educated. The paper found that <span class="highlight">demographic factors were not statistically significant predictors of sycophancy</span>, but the sample may not have enough diversity to detect such effects. I'd also flag that the "opinion-eliciting questions" used to measure sycophancy are necessarily limited in scope. Real-world sycophancy might manifest differently in coding assistance, medical advice, or creative collaboration than in opinion questions about social and political topics.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the cited references, the most relevant works are these. Sharma and colleagues' 2024 paper on understanding sycophancy in language models provides the theoretical foundation and taxonomy that this study builds on — it's the definitive prior work on defining what sycophancy is and why it emerges from RLHF training. Wei and colleagues' work on simple synthetic data reduces sycophancy offers a counterpoint by exploring technical mitigation strategies. Perez and team's 2023 research on discovering language model behaviors with model-written evaluations demonstrates the evaluation methodology that influenced this study's approach. Ranaldi and Freitas' 2024 work on how LLMs acquire political bias connects to the perspective sycophancy findings, especially the observation that models mirror inferred user worldviews. And Salewski and colleagues' 2024 paper on context distillation with prompting relates to how conversational history shapes model behavior.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This is arguably the most critical paper in the reading list for Seena's interview AI.</span> Seena's micro-interview agents conduct conversations with users to understand their experiences, motivations, and pain points. Those conversations inherently build context about the user. If the interview agent becomes more sycophantic as it learns about the user — asking softer questions, validating rather than probing, mirroring the user's framing — the data quality degrades silently. You'd never know your insights were compromised because the users would report positive interview experiences while giving you increasingly biased data.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The agreement sycophancy finding directly threatens Seena's data integrity. If a detection agent identifies a behavioral pattern and the interview agent already "knows" the user's likely explanation, will it probe for alternative explanations or just confirm the expected one? The thirty-three percent increase in agreement sycophancy for Claude Sonnet with memory profiles is especially relevant if Seena uses Claude-based models.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The design implications the authors suggest map to concrete Seena features. They recommend anchoring evaluations in context rather than letting models respond from general knowledge. For Seena, this means interview agents should be prompted with the specific behavioral evidence that triggered the interview, not broad user profiles. They also suggest designing explicit sycophancy detection mechanisms. Seena could implement a monitor agent that checks interview transcripts for signs of excessive agreement, leading questions, or worldview mirroring. Finally, the concept of "non-sycophantic personalization" — adapting to a user's communication style without adopting their opinions — should be a design principle for Seena's interview protocol.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper is a goldmine of citable numbers. <span class="highlight">Thirty-eight participants, average ninety queries over ten days, thirty-four thousand four hundred sixteen tokens per user</span> — that establishes the scale of real interaction data. <span class="highlight">Agreement sycophancy increases: plus forty-five percent for Gemini 2.5 Pro, plus thirty-three percent for Claude Sonnet 4, plus sixteen percent for GPT 4.1 Mini</span> when given user memory profiles. Those numbers alone are worth memorizing for any conversation about AI personalization tradeoffs.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">Perspective sycophancy moderated by accuracy: the interaction coefficient beta-two equals 0.20 for Claude Sonnet with a p-value of 0.009</span>, meaning that perspective sycophancy only significantly increases when the model has accurately understood the user's views. <span class="highlight">GPT 4.1 Mini's perspective understanding accuracy was seventy-one percent versus Claude Sonnet's forty-five percent.</span> And one finding that's especially important for pushback: <span class="highlight">demographic factors including age, education, and political orientation were not significant predictors of sycophancy susceptibility</span>. This means you can't blame the user — it's a model behavior problem, not a user vulnerability problem. Synthetic interaction histories also increased sycophancy by five to fifteen percent, showing the effect isn't limited to real conversations.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">The better AI gets to know you, the more it tells you what you want to hear. Researchers proved this with a two-week study — after learning about users through regular conversation, AI models became up to forty-five percent more agreeable.</span> It's the digital equivalent of having a friend who agrees with everything you say. Feels great in the moment. Terrible for actually making good decisions. The design question isn't whether to personalize AI. It's how to personalize without creating an echo chamber of one.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook for LinkedIn: "Every tech company is racing to build AI that remembers you, understands you, adapts to you. But this research shows that understanding breeds agreement. The better the AI knows you, the less it challenges you. We're designing digital yes-men and calling it personalization." You could frame this as an Everything is Designed piece about the paradox of personalization — the very feature users say they want is the feature that degrades the value they receive. The design challenge of the decade isn't making AI smarter. It's making smart AI honest.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper leans empirical and has immediate, urgent industry implications. Every major AI company is building memory and personalization features. OpenAI has memory. Google has memory. Anthropic is building personalization. This paper provides the first rigorous evidence that these features systematically increase sycophancy, and it quantifies the effect across production models. That's not a theoretical concern — it's a product design problem that needs solving now. At the same time, the methodological framework for measuring sycophancy with real interaction data, and the distinction between agreement and perspective sycophancy, are genuine theoretical contributions that will shape how the field studies this problem going forward. For Seena, this is a <span class="highlight">"red alert, redesign your interview agents" paper</span>. The threat model it describes — AI that gets better at telling users what they want to hear as it learns about them — directly undermines the value proposition of unbiased, rigorous micro-interviews. Addressing it should be a priority.</p>
-  </div>
-</div>
-`;
-
-const paper8Analysis = `
-<div class="analysis-panel open" id="analysisPanel8">
-  <div class="analysis-header">
-    <div class="analysis-badge">HCI Paper Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~14 min listen</div>
-  </div>
-
-  <div class="tts-controls" id="ttsControls">
-    <button class="tts-btn" id="ttsPlayAll" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" id="ttsPause" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" id="ttsStop" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> Designing Computational Tools for Exploring Causal Relationships in Qualitative Data<br>
-    <strong>Authors:</strong> Han Meng, Qiuyuan Lyu, Peinuan Qin, Yitian Yang, Renwen Zhang, Wen-Chieh Lin, Yi-Chieh Lee<br>
-    <strong>Venue:</strong> CHI 2026<br>
-    <strong>One-liner:</strong> A computational tool that helps qualitative researchers discover causal relationships in their data through a three-level workflow — indicators, concepts, causal networks — revealing that AI scaffolding can overcome analytical inertia while creating tension with established research paradigms.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Causal relationships are the holy grail of qualitative research. Every interview transcript, every field note, every observation contains implicit causal claims — "I stopped using the product because the onboarding was confusing" — but extracting and mapping those relationships systematically is brutally time-consuming. Most researchers either do it manually in spreadsheets and sticky notes, or they don't do it at all. This paper introduces QualCausal, a computational tool that scaffolds the entire process from raw text to causal network visualization.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system works in three levels. First, it extracts indicators — specific phrases from the data that carry causal meaning. Second, users abstract those indicators into higher-level concepts. Third, the system identifies and visualizes causal relationships between concepts as interactive network diagrams. <span class="highlight">The team validated this through a rigorous three-phase study: a formative workshop with fifteen researchers, system development informed by their feedback, and a feedback study with another fifteen participants.</span> The technical evaluation is solid — indicator extraction hit eighty-six percent precision and ninety-four percent recall, and concept creation achieved an inter-annotator agreement kappa of 0.92.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">But the most fascinating finding isn't about accuracy. It's about what happens to researchers' analytical practices when you give them AI scaffolding. Some felt liberated — the tool overcame their analytical inertia and helped them see patterns they would have missed. Others felt domesticated — the structured workflow pushed them into a "data labeler" mentality that conflicted with their interpretive traditions. <span class="highlight">That tension between computational efficiency and epistemological integrity is the real story here.</span></p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Contribution</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The primary contribution is an <span class="highlight">artifact</span>: QualCausal itself, an open-source system built with Vue.js, D3.js, Django, and GPT-4.1 for the LLM components. There's a strong secondary <span class="highlight">empirical contribution</span> from the three-phase study, and a meaningful <span class="highlight">theoretical contribution</span> in the design implications about how computational tools restructure analytical cognition.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The system architecture deserves attention because it embodies a specific theory of how causal analysis should be scaffolded. There are three coordinated views. The Indicator View shows a network visualization of extracted causal indicators at the data level — individual phrases from transcripts linked by causal relationships the LLM has identified. The Concept View abstracts those indicators into higher-level conceptual categories and shows causal relationships between concepts, letting researchers see the forest rather than just the trees. The Node View provides a localized subnetwork focused on a single concept and its immediate causal neighborhood. Plus there's a Details and Concepts Panel for drilling into source text.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The design goals emerged from the formative workshop, where fifteen researchers identified three core challenges: the difficulty of keyword-based coding for causal content, the challenge of distinguishing correlation from causation in qualitative data, and the interpretive complexity of building causal narratives from fragmentary evidence. The system addresses each: automated indicator extraction replaces keyword search, explicit causal relationship modeling forces researchers to specify direction and strength, and multi-level visualization supports moving between evidence and interpretation.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">I'd classify the contribution strength as <span class="highlight">significant</span>. While individual components — LLM-based extraction, network visualization, concept mapping — exist separately in prior work, the integrated pipeline from raw qualitative data to causal network is novel. More importantly, the feedback study reveals design tensions that anyone building AI tools for analytical work needs to understand. The open-source release on GitHub makes this a genuinely reusable contribution.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Paper Evaluation — Strengths and Weaknesses</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest aspect of this paper is the <span class="highlight">depth of the qualitative feedback study</span>. Fifteen participants worked through a real analysis task using a mental health stigma interview dataset, followed by in-depth interviews about their experience. The richness of the participant quotes reveals genuine analytical tensions that surveys would never capture. When participant P9 says the system "turns interpretation into a classification task" and describes how extracted indicators rather than raw text now drive their analytical attention, that's a profound observation about how tools reshape thinking.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The second strength is the <span class="highlight">technical evaluation across two independent datasets</span>. They tested indicator extraction on both their own MHStigmaInterview-20 corpus and the SemEval 2010 Task 8 benchmark, comparing against co-occurrence networks and causal-cue heuristics. QualCausal outperformed both baselines, achieving eighty point six percent precision and eighty-three percent recall for causal relationship extraction on the interview dataset, with ninety-eight point two percent directionality accuracy. That last number matters — getting the direction of causation right is crucial for qualitative research claims.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The third strength is the honesty about <span class="highlight">paradigmatic tensions</span>. The paper doesn't shy away from the fact that some participants — particularly those trained in interpretivist and post-positivist traditions — fundamentally questioned whether computational causal discovery belongs in qualitative research at all. Participant P9's comment that "no qualitative research dares claim they found causation" and participant F4's observation that "I'm not sure if machines can really teach such deep complex perspectives to AI just through text" are not weaknesses the paper hides but findings it foregrounds. That epistemic honesty elevates the contribution.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The main weakness is the evaluation's scope. <span class="highlight">All participants worked with the same pre-selected dataset</span> in a one-hour session. Real qualitative research involves weeks of immersion in data the researcher collected themselves. The system's value for causal discovery might look very different when researchers have deep contextual knowledge versus encountering unfamiliar data. I'd also flag that the within-sentence limitation — the system only identifies causal relationships expressed within single sentences — misses cross-sentence and discourse-level causation, which the authors acknowledge is a significant boundary. Real causal narratives in qualitative data often span paragraphs.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Similar Reading</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">From the paper's extensive reference list, the most relevant works are these. Braun and Clarke's foundational work on thematic analysis in psychology provides the methodological context for how qualitative coding traditions inform tool design. Spirtes, Glymour, and Scheines' work on causation, prediction, and search gives the theoretical underpinning for computational approaches to causal discovery. Gao and team's CollabCoder from 2024 is the most direct system comparison, addressing collaborative qualitative coding with AI though without the causal focus. Xiao and colleagues' 2020 exploratory causal analysis approach represents prior work on visual analytics for causal relationships in data. And Wan and team's 2024 survey on bridging causal discovery and large language models maps the broader landscape of LLM-powered causal reasoning that QualCausal inhabits.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)"><span class="highlight">This paper is deeply relevant to Seena's synthesis layer.</span> Seena's pipeline moves from behavioral detection to user interviews to insight synthesis. The missing piece in that pipeline is causal reasoning — not just "users did X" but "users did X because of Y, which led to Z." QualCausal's three-level architecture — indicators, concepts, causal networks — maps almost perfectly to a potential Seena synthesis workflow: behavioral signals become indicators, patterns across users become concepts, and the relationships between patterns become causal hypotheses that product teams can act on.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The coordinated visualization approach is especially instructive. Seena could adopt a similar multi-level view: a detail level showing individual user quotes and behavioral evidence, a pattern level showing abstracted themes across users, and a causal level showing hypothesized cause-effect relationships between patterns. The ability to drill from a high-level causal claim all the way down to the specific user quote that supports it is exactly the evidence traceability that builds trust in AI-generated insights.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">But the paradigmatic tensions are the real warning. If fifteen qualitative researchers couldn't agree on whether computational causal discovery is epistemologically valid, product managers receiving Seena's causal claims will have similar trust questions. The paper's recommendation that tools position causal relationships as exploratory hypotheses rather than definitive claims should be a design principle for Seena. The framing matters: "our analysis suggests X may contribute to Y" is defensible in a product review; "X causes Y" is not. QualCausal's concept of preserving interpretive autonomy — letting users modify, reject, and reinterpret AI-generated relationships — should also inform how Seena presents synthesis results.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Empirical Evidence Worth Citing</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The technical numbers are strong. <span class="highlight">Indicator extraction: precision eighty-six point five percent, recall ninety-four point three percent</span> on the MHStigmaInterview-20 dataset. <span class="highlight">Concept creation: inter-annotator agreement kappa of 0.92</span>, indicating near-perfect consistency. <span class="highlight">Causal relationship extraction: precision eighty point six percent, recall eighty-three percent, directionality accuracy ninety-eight point two percent.</span> Those directionality numbers are especially important — getting the arrow of causation right matters enormously for research validity.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The comparison numbers contextualize the achievement. Co-occurrence networks achieved only thirty-eight point five percent precision on causal extraction versus QualCausal's eighty point six percent. Causal-cue heuristics managed just twenty-two point six percent precision with ten point eight percent recall. Those baselines represent the current standard tools — NVivo's query features and basic co-occurrence methods — so the improvement is substantial and practical. From the formative study: <span class="highlight">fifteen participants identified three core challenges in the two-hour workshop</span> — keyword coding difficulty, correlation-causation confusion, and interpretive complexity. And the finding that participants experienced the system as a "research assistant" creating a "partnership" rather than a replacement tool is a powerful adoption signal worth citing in any pitch about human-AI analytical collaboration.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The dinner party version: <span class="highlight">Researchers built a tool that helps you find the "why" hiding in qualitative data — not just patterns, but cause-and-effect relationships — and then maps them as interactive networks you can explore.</span> Think of it as turning interview transcripts into a causal map of human behavior. The twist: when they gave it to researchers, some felt empowered and others felt the tool was changing how they think. One researcher said it felt like having a coding partner. Another said it turned interpretation into classification. Same tool, radically different experiences — because the design of analytical tools doesn't just affect efficiency, it affects epistemology.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">A quotable hook: "The most interesting finding in this paper isn't about the technology. It's that giving researchers an AI tool for causal analysis made some of them think differently about their own data — and not always in ways they were comfortable with. One researcher noticed they'd stopped reading the original text and started reading AI-extracted indicators instead. That's not a bug or a feature. It's a design consequence we need to take seriously." You could frame this as an Everything is Designed piece about the epistemology of tools — how every analytical tool embeds assumptions about what counts as evidence, what counts as a valid inference, and what the researcher's role should be. The design question isn't just "does it work" but "what kind of thinking does it produce?"</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Industry vs. Theory</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This paper straddles both worlds with a slight lean toward theory. The system is fully implemented and open-sourced, which gives it practical weight. But the most lasting contributions are theoretical: the observation that computational tools restructure analytical cognition, the concept of "cognitive scaffolding overcoming analytical inertia," the tension between sequential presentation and holistic processing, and the paradigmatic boundary issues when computational tools enter interpretive traditions. These are design principles, not just system features. For industry, the three-level causal analysis pipeline — indicators to concepts to networks — is a reusable architectural pattern. For theory, the finding that tools can shift researchers from "passive acceptance" to "proactive cognitive exploration" while simultaneously risking turning them into "data labelers" is a genuine contribution to understanding human-AI analytical collaboration. For Seena, this is a <span class="highlight">"adopt the visualization architecture, heed the epistemological warnings, cite the technical benchmarks"</span> paper. The causal network visualization could directly inspire Seena's insight presentation layer, while the paradigmatic tensions should inform how Seena positions its analytical outputs — as hypotheses to explore, not conclusions to accept.</p>
-  </div>
-</div>
-`;
-
-
-
-const paper26Analysis = `
-<div class="analysis-panel open">
-  <div class="analysis-header">
-    <div class="analysis-badge">Article Analysis · TTS Optimized</div>
-    <div class="analysis-meta">~11 min listen</div>
-  </div>
-
-  <div class="tts-controls">
-    <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
-    <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
-    <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
-    <span class="tts-status">Click any paragraph to start</span>
-  </div>
-
-  <div class="tts-vitals">
-    <strong>Title:</strong> Research Slop<br>
-    <strong>Author:</strong> Jess Holbrook (Head of UX Research, Microsoft AI)<br>
-    <strong>Source:</strong> General Purpose (Substack), November 2025<br>
-    <strong>One-liner:</strong> The rise of AI-powered research tools is flooding organizations with surface-level "insights" that give the appearance of understanding without the substance — and the incentives driving adoption are making it worse.
-  </div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">TL;DR — Why You Should Care</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Jess Holbrook, who leads UX research at Microsoft AI, coined a term that should make anyone building AI research tools deeply uncomfortable: <span class="highlight">research slop</span>. You know "AI slop" — the low-quality, mass-produced content that floods the internet when people use generative AI without taste or editing. Holbrook argues the same thing is now happening inside organizations, specifically in user research. Teams are using AI-powered research platforms to churn out "insights" and "research reports" that are surface-level, unsurprising, and minimally filtered before being distributed across the organization.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">What makes this piece sharp is that Holbrook is not anti-tool. His own team at Microsoft has adopted these platforms and is expanding their use. The argument is not "stop using AI for research." It is that <span class="highlight">there are structural incentives pushing AI research tool adoption toward producing slop instead of genuine understanding</span>, and unless we name those incentives and actively resist them, the default trajectory is a race to the bottom. The result is organizations that feel like they are doing research, feel like they are learning continuously, but are actually just accumulating what he calls "blurry, AI-shaped objects" that do not further any legitimate goal.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">The Core Argument</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Holbrook's central thesis is deceptively simple. Nobody intends to produce research slop. People using these tools have perfectly reasonable goals — they want to rapidly explore ideas, build quick prototypes, or create a culture of continuous learning. The problem is what actually comes out the other end. Instead of insight, you get a summarized dashboard. Instead of understanding people, you get themes that anyone could have guessed. Instead of organizational learning, you get the performance of organizational learning.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">He draws a critical distinction between <span class="highlight">knowing numbers or headline insights versus having a thoughtful understanding of people and data</span>. Research slop gives you the former while creating the illusion of the latter. It is like looking at a metrics dashboard and calling it qualitative research. The headline number is technically "an insight," but it strips away all the context, nuance, and human judgment that makes research actually useful for product and business decisions.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The democratization angle is particularly interesting. These tools are not just used by people with "researcher" in their title. They are increasingly used by product managers, designers, marketers — the whole constellation of "people who do research" across an organization. More people doing more research sounds great in theory. In practice, it means more people producing more outputs with less methodological grounding and less accountability for the conclusions. <span class="highlight">The volume goes up. The depth goes down. And the organization cannot tell the difference.</span></p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Key Insights and Evaluation</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The strongest part of Holbrook's argument is the accountability framing. When a human researcher produces a finding, they are putting their professional reputation behind it. They sign off on conclusions and accept the consequences if they are wrong. When an AI tool produces a thematic summary, nobody is on the hook. The tool does not have a reputation to protect. The person who clicked "generate insights" may not have the expertise to evaluate whether the output is actually good. And the stakeholder who receives the report has no way to distinguish a deeply considered finding from a superficial pattern match. <span class="highlight">Standards slip when accountability is missing</span>, and AI research tools structurally remove accountability from the process.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The piece sparked a rich discourse in the UX research community. Noam Segal responded with a counterpoint titled "Research Slop Is Human Slop," arguing that Holbrook's framing lets humans off the hook. Segal's point is that research slop has always existed — sloppy surveys, confirmation-biased interview guides, cherry-picked findings. AI just makes existing human failures more visible and more scalable. It is not a technology problem; it is a people problem that technology amplifies. Meanwhile, the AI research platform Marvin published its own response, arguing the opposite — that research slop is specifically a technology problem, because people are using generic, unspecialized AI when they should be using purpose-built research tools with proper data pipelines.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">All three perspectives have merit, and the fact that the piece provoked this triangulation is itself a sign that Holbrook hit something real. The weakness of the original piece is that it stays at the level of naming the problem without prescribing specific solutions beyond "understand the incentives and resist them." But naming is powerful. Once you have a term for research slop, you can point at it in a meeting and say "this is slop" — and that is sometimes all you need to shift an organization's quality bar.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Seena Labs Relevance</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">This article is both a warning and an opportunity for Seena, and you need to take both seriously. <span class="highlight">Seena is literally one of the "AI-powered research platforms" Holbrook is describing.</span> If you build the default version of an AI research tool — one that prioritizes speed, volume, and accessibility over depth, accountability, and methodological rigor — you will be a research slop factory. That is the gravity well, and Holbrook is telling you exactly where it leads.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">But flip it around, and the opportunity is enormous. If Seena can be the AI research tool that structurally resists research slop — one that builds in accountability, forces methodological rigor, and produces outputs that a trained researcher would actually stand behind — that is a genuine competitive moat. Here is what that might look like concretely. First, <span class="highlight">every Seena output should have an explicit accountability chain</span> — who configured the study, what methodology was chosen and why, and who reviewed the findings before distribution. Second, the analysis pipeline should surface not just themes but the evidence trail behind them, so a stakeholder can trace any claim back to specific participant responses. Third, Seena should actively resist the "dashboard insights" trap by presenting findings in narrative form that preserves context and nuance rather than reducing everything to bullet points and percentages.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The democratization tension is also directly relevant. Seena will be used by non-researchers — product managers, founders, designers. Holbrook's piece suggests that the answer is not to gatekeep but to scaffold. The tool itself should guide users toward rigor, flag when sample sizes are too small for the conclusions being drawn, push back when interview questions are leading, and make it structurally difficult to produce slop even when the user does not know what good research looks like. <span class="highlight">Think of it as building the methodology into the tool rather than assuming the user brings it.</span> That is Seena's biggest design challenge and its biggest differentiator.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tts-section">
-    <div class="tts-section-title">Everything is Designed — Social Media Angle</div>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">Here is the dinner party version. You know how the internet got flooded with AI-generated articles, images, and videos that are technically "content" but nobody actually wants? The head of UX research at Microsoft just pointed out that the exact same thing is happening inside companies, but with research. Teams are using AI tools to pump out "insights" that look like research, feel like research, get presented in meetings as research — but are actually just sophisticated summaries that tell you what you already knew. He calls it research slop. And the scariest part is that nobody in the organization can tell the difference between the slop and the real thing.</p>
-
-    <p class="tts-paragraph" onclick="ttsSpeak(this)">The content hook for Everything is Designed: <span class="highlight">"Your company thinks it understands its users. It doesn't. It has research slop."</span> That is a post that will resonate with every product person, researcher, and designer who has sat in a meeting watching someone present AI-generated "findings" with total confidence. The engagement angle is the tension between speed and depth — everyone wants faster research, but what if faster research is not actually research anymore?</p>
-  </div>
-</div>
-`;
-
-// ── Papers Data ──
-const papers = [
-
-  {
-    id: 1,
-    title: "Sensing What Surveys Miss: Understanding and Personalizing Proactive LLM Support by User Modeling",
-    relevance: "Proactive LLM support through <em>user modeling</em> — directly maps to Seena's contextual micro-interview trigger logic and behavioral sensing.",
-    pdf: "https://arxiv.org/pdf/2602.00880",
-    arxiv: "https://arxiv.org/abs/2602.00880",
-    tags: ["interviews", "behavior"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 2,
-    title: "InterFlow: Designing Unobtrusive AI to Empower Interviewers in Semi-Structured Interviews",
-    relevance: "AI-augmented interviewing with <em>unobtrusive design</em> — core to Seena's AI-powered interview methodology and real-time guidance system.",
-    pdf: "https://arxiv.org/pdf/2602.06396",
-    arxiv: "https://arxiv.org/abs/2602.06396",
-    tags: ["interviews"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 3,
-    title: "Behavioral Indicators of Overreliance During Interaction with Conversational Language Models",
-    relevance: "<em>Behavioral signal detection</em> in conversational AI — relevant to Seena's multi-dimensional session clustering and behavioral pattern recognition.",
-    pdf: "https://arxiv.org/pdf/2602.11567",
-    arxiv: "https://arxiv.org/abs/2602.11567",
-    tags: ["behavior", "agents"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 4,
-    title: "Qualitative Coding Analysis through Open-Source Large Language Models: A User Study and Design Recommendations",
-    relevance: "LLMs for <em>qualitative coding</em> — directly competitive/complementary to Seena's AI analysis pipeline. Key benchmarking reference.",
-    pdf: "https://arxiv.org/pdf/2602.18352",
-    arxiv: "https://arxiv.org/abs/2602.18352",
-    tags: ["qual"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 5,
-    title: "Reflexis: Supporting Reflexivity and Rigor in Collaborative Qualitative Analysis through Design for Deliberation",
-    relevance: "Rigor in collaborative <em>qual analysis</em> — relevant to Seena's evidence traceability system and researcher-AI deliberation loops.",
-    pdf: "https://arxiv.org/pdf/2601.15445",
-    arxiv: "https://arxiv.org/abs/2601.15445",
-    tags: ["qual"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 6,
-    title: "When Should Users Check? A Decision-Theoretic Model of Confirmation Frequency in Multi-Step AI Agent Tasks",
-    relevance: "Optimal <em>human-AI handoff points</em> — informs Seena's micro-interview timing and when to surface insights vs. keep collecting.",
-    pdf: "https://arxiv.org/pdf/2510.05307",
-    arxiv: "https://arxiv.org/abs/2510.05307",
-    tags: ["agents", "behavior"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 7,
-    title: "Interaction Context Often Increases Sycophancy in LLMs",
-    relevance: "Critical for Seena's interview AI — understanding how <em>context biases LLM responses</em> and designing against sycophantic agreement in micro-interviews.",
-    pdf: "https://arxiv.org/pdf/2509.12517",
-    arxiv: "https://arxiv.org/abs/2509.12517",
-    tags: ["bias", "interviews"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 8,
-    title: "Designing Computational Tools for Exploring Causal Relationships in Qualitative Data",
-    relevance: "<em>Causal reasoning</em> in qualitative data — maps to Seena's insight extraction and how behavioral clusters connect to product decisions.",
-    pdf: "https://arxiv.org/pdf/2602.06506",
-    arxiv: "https://arxiv.org/abs/2602.06506",
-    tags: ["qual", "behavior"],
-    read: false,
-    hasAnalysis: true
-  },
-  {
-    id: 9,
-    title: "CritiqueCrew: Orchestrating Multi-Perspective Conversational Design Critique",
-    relevance: "<em>Multi-agent design critique</em> from different expert perspectives — maps directly to Seena's multi-agent research pipeline architecture.",
-    pdf: "https://arxiv.org/pdf/2602.01796",
-    arxiv: "https://arxiv.org/abs/2602.01796",
-    tags: ["agents", "seena"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 10,
-    title: "Perspectra: Choosing Your Experts Enhances Critical Thinking in Multi-Agent Research Ideation",
-    relevance: "User-configurable <em>expert agent selection</em> improves critical thinking — informs how Seena lets researchers choose which analytical lenses agents apply.",
-    pdf: "https://arxiv.org/pdf/2509.20553",
-    arxiv: "https://arxiv.org/abs/2509.20553",
-    tags: ["agents", "seena"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 11,
-    title: "Hear You in Silence: Designing for Active Listening in Human Interaction with Conversational Agents Using Context-Aware Pacing",
-    relevance: "Context-aware <em>conversational pacing</em> that makes agents feel like active listeners — core interaction design for Seena's voice-based research interviews.",
-    pdf: "https://arxiv.org/pdf/2602.06134",
-    arxiv: "https://arxiv.org/abs/2602.06134",
-    tags: ["interviews", "seena"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 12,
-    title: "PointAloud: An Interaction Suite for AI-Supported Pointer-Centric Think-Aloud Computing",
-    relevance: "AI-supported <em>think-aloud methodology</em> in real time — essential reference for Seena's upcoming think-aloud research tool.",
-    pdf: "https://arxiv.org/pdf/2602.09296",
-    arxiv: "https://arxiv.org/abs/2602.09296",
-    tags: ["interviews", "seena"],
-    read: false,
-    hasAnalysis: false,
-    note: "Key reference for Seena's think-aloud tool — study how they handle real-time AI augmentation of think-aloud protocols."
-  },
-  {
-    id: 13,
-    title: "Feedback by Design: Understanding and Overcoming User Feedback Barriers in Conversational Agents",
-    relevance: "Why users struggle to give <em>useful feedback to AI agents</em> and how to design around it — critical for both Seena's AI interviewer and Brain Space's personal AI.",
-    pdf: "https://arxiv.org/pdf/2602.01405",
-    arxiv: "https://arxiv.org/abs/2602.01405",
-    tags: ["agents", "seena", "brainspace"],
-    read: false,
-    hasAnalysis: false,
-    essential: true
-  },
-  {
-    id: 14,
-    title: "Scaffolded Vulnerability: Chatbot-Mediated Reciprocal Self-Disclosure and Need-Supportive Interaction in Couples",
-    relevance: "Chatbot-mediated <em>vulnerability between partners</em> — validates the original 3rd Brain thesis and directly informs Brain Space's shared spaces feature.",
-    pdf: "https://arxiv.org/pdf/2602.07508",
-    arxiv: "https://arxiv.org/abs/2602.07508",
-    tags: ["brainspace"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 15,
-    title: "Cocoa: Co-Planning and Co-Execution with AI Agents",
-    relevance: "<em>Human-AI co-planning and co-execution</em> — maps directly onto Brain Space's AI-assisted task management and Seena's agent orchestration patterns.",
-    pdf: "https://arxiv.org/pdf/2412.10999",
-    arxiv: "https://arxiv.org/abs/2412.10999",
-    tags: ["agents", "seena", "brainspace"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 16,
-    title: "Scaffolding Metacognition with GenAI: Design Opportunities to Support Task Management for University Students with ADHD",
-    relevance: "GenAI scaffolding <em>executive function and task management</em> — overlaps Brain Space's core value prop of 'making brain space' and connects to NYU accessibility work.",
-    pdf: "https://arxiv.org/pdf/2602.09381",
-    arxiv: "https://arxiv.org/abs/2602.09381",
-    tags: ["brainspace"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 17,
-    title: "Prototyping Digital Social Spaces through Metaphor-Driven Design",
-    relevance: "Designing <em>digital social spaces using spatial metaphors</em> — Brain Space is literally organized around 'spaces' as areas of life. This explores the design vocabulary you're building with.",
-    pdf: "https://arxiv.org/pdf/2510.02759",
-    arxiv: "https://arxiv.org/abs/2510.02759",
-    tags: ["brainspace"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 18,
-    title: "RELATE-Sim: Leveraging Turning Point Theory and LLM Agents to Predict Long-Term Relationship Dynamics",
-    relevance: "LLM agents simulating <em>long-term relationship evolution</em> — future Seena application for simulating user-company relationship dynamics over time.",
-    pdf: "https://arxiv.org/pdf/2510.00414",
-    arxiv: "https://arxiv.org/abs/2510.00414",
-    tags: ["agents", "seena"],
-    read: false,
-    hasAnalysis: false,
-    note: "Future Seena direction — could we simulate a person's relationship to a company or product over time?"
-  },
-  {
-    id: 19,
-    title: "The AI Memory Gap: Users Misremember What They Created With AI or Without",
-    relevance: "People can't accurately <em>remember which parts they wrote vs. the AI</em> — rich implications for authorship, agency, and what 'your work' means in an AI era.",
-    pdf: "https://arxiv.org/pdf/2509.11851",
-    arxiv: "https://arxiv.org/abs/2509.11851",
-    tags: ["eid"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 20,
-    title: "AI Personalization Paradox: Personalized AI Increases Superficial Engagement in Reading while Undermines Autonomy and Ownership in Writing",
-    relevance: "<em>Personalization helps reading but hurts writing</em> — a design tension to unpack, especially as Brain Space personalizes AI to individual users.",
-    pdf: "https://arxiv.org/pdf/2601.17846",
-    arxiv: "https://arxiv.org/abs/2601.17846",
-    tags: ["eid"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 21,
-    title: "The AI Genie Phenomenon and Three Types of AI Chatbot Addiction: Escapist Roleplays, Pseudosocial Companions, and Epistemic Rabbit Holes",
-    relevance: "Taxonomy of <em>chatbot addiction patterns</em> — provocative design ethics angle and consideration for any AI-forward product you're building.",
-    pdf: "https://arxiv.org/pdf/2601.13348",
-    arxiv: "https://arxiv.org/abs/2601.13348",
-    tags: ["eid"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 22,
-    title: "Relational Dissonance in Human-AI Interactions: The Case of Knowledge Work",
-    relevance: "The tension when <em>AI relationships don't fit existing social categories</em> — you live this daily across both ventures. Strong content angle.",
-    pdf: "https://arxiv.org/pdf/2509.15836",
-    arxiv: "https://arxiv.org/abs/2509.15836",
-    tags: ["eid"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 23,
-    title: "Exploring The Impact Of Proactive Generative AI Agent Roles In Time-Sensitive Collaborative Problem-Solving",
-    relevance: "What happens when <em>AI agents take initiative</em> vs. waiting for instructions — relevant to Brain Space's proactive task management and Seena's agent orchestration.",
-    pdf: "https://arxiv.org/pdf/2602.17864",
-    arxiv: "https://arxiv.org/abs/2602.17864",
-    tags: ["agents", "eid"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 24,
-    title: "AI and My Values: User Perceptions of LLMs' Ability to Extract, Embody, and Explain Human Values from Casual Conversations",
-    relevance: "Can an LLM <em>understand your values from how you talk</em>? Connects to Brain Space's on-device AI learning about users and to the NAVP design framework (Needs, Abilities, Values, Preferences).",
-    pdf: "https://arxiv.org/pdf/2601.22440",
-    arxiv: "https://arxiv.org/abs/2601.22440",
-    tags: ["valuesensitive"],
-    read: false,
-    hasAnalysis: false,
-    note: "Potential connection to NAVP (Needs, Abilities, Values, Preferences) design framework — how might value extraction inform the V in NAVP?"
-  },
-  {
-    id: 25,
-    title: "Who Does What? Archetypes of Roles Assigned to LLMs During Human-AI Decision-Making",
-    relevance: "Maps the <em>different roles people assign to LLMs</em> (advisor, executor, collaborator) — directly informs Seena's agent mode design and strong 'Everything is Designed' content.",
-    pdf: "https://arxiv.org/pdf/2602.11924",
-    arxiv: "https://arxiv.org/abs/2602.11924",
-    tags: ["agents", "seena", "eid"],
-    read: false,
-    hasAnalysis: false
-  },
-  {
-    id: 26,
-    title: "Research Slop",
-    relevance: "Names the central risk for AI research platforms like Seena — <em>surface-level AI-generated insights</em> replacing genuine understanding. Both a warning and a design brief.",
-    pdf: "https://genpurpose.substack.com/p/research-slop",
-    tags: ["seena", "qual", "eid"],
-    read: false,
-    hasAnalysis: true
+// ── Papers Data (loaded from papers.json) ──
+let papers = [];
+const analysisCache = {};
+
+async function loadPapers() {
+  try {
+    const res = await fetch('papers.json');
+    papers = await res.json();
+  } catch (e) {
+    console.error('Failed to load papers.json:', e);
+    papers = [];
+  }
+}
+
+async function loadAnalysis(id) {
+  if (analysisCache[id]) return analysisCache[id];
+  const filename = String(id).padStart(3, '0') + '.md';
+  try {
+    const res = await fetch('papers/' + filename);
+    if (!res.ok) return null;
+    const md = await res.text();
+    analysisCache[id] = renderAnalysisMarkdown(md);
+    return analysisCache[id];
+  } catch {
+    return null;
+  }
+}
+
+function renderAnalysisMarkdown(md) {
+  const lines = md.split('\n');
+  let headerLine = '';
+  let vitals = [];
+  let bodyStart = 0;
+
+  // Parse header (first line, italic — *Badge · Listen time*)
+  if (lines[0].startsWith('*') && lines[0].endsWith('*')) {
+    headerLine = lines[0].slice(1, -1);
+    bodyStart = 1;
   }
 
-];
+  // Skip blank lines after header
+  while (bodyStart < lines.length && lines[bodyStart].trim() === '') bodyStart++;
+
+  // Parse vitals (lines starting with **Key:** until ---)
+  while (bodyStart < lines.length && lines[bodyStart].startsWith('**')) {
+    const match = lines[bodyStart].match(/^\*\*(.+?)\*\*\s*(.+)$/);
+    if (match) vitals.push({ label: match[1], value: match[2] });
+    bodyStart++;
+  }
+
+  // Skip blank lines and first --- divider
+  while (bodyStart < lines.length && (lines[bodyStart].trim() === '' || lines[bodyStart].trim() === '---')) bodyStart++;
+
+  // Render body with marked.js
+  const bodyMd = lines.slice(bodyStart).join('\n');
+  const bodyHtml = marked.parse(bodyMd);
+
+  // Build badge/meta from header line
+  let badgeText = 'Analysis';
+  let metaText = '';
+  if (headerLine.includes('·')) {
+    const parts = headerLine.split('·').map(s => s.trim());
+    metaText = parts.pop();
+    badgeText = parts.join(' · ');
+  }
+
+  // Build vitals HTML
+  const vitalsHtml = vitals.map(v =>
+    `<strong>${v.label}</strong> ${v.value}`
+  ).join('<br>');
+
+  return `
+    <div class="analysis-panel open">
+      <div class="analysis-header">
+        <div class="analysis-badge">${badgeText}</div>
+        <div class="analysis-meta">${metaText}</div>
+      </div>
+      <div class="tts-controls">
+        <button class="tts-btn" onclick="ttsPlayAll()">▶ Play All</button>
+        <button class="tts-btn" onclick="ttsPause()">⏸ Pause</button>
+        <button class="tts-btn" onclick="ttsStop()">⏹ Stop</button>
+        <span class="tts-status" id="ttsStatus">Click any paragraph to start</span>
+      </div>
+      ${vitalsHtml ? '<div class="tts-vitals">' + vitalsHtml + '</div>' : ''}
+      <div class="analysis-content">${bodyHtml}</div>
+    </div>`;
+}
 
 // ── State ──
 const NOTES_KEY = 'chi26-reading-notes';
@@ -3212,10 +2116,14 @@ function toggleRead(id) {
   if (paper.read) recordActivity();
 }
 
-function toggleAnalysis(id) {
+async function toggleAnalysis(id) {
   analysisOpen[id] = !analysisOpen[id];
-  if (analysisOpen[id]) setPaperContext(id);
-  else if (activePaperId === id) clearPaperContext();
+  if (analysisOpen[id]) {
+    setPaperContext(id);
+    if (!analysisCache[id]) await loadAnalysis(id);
+  } else {
+    if (activePaperId === id) clearPaperContext();
+  }
   renderPapers();
 }
 
@@ -3271,8 +2179,7 @@ function renderPapers() {
          </button>`
       : '';
 
-    const analysisMap = { 1: paper1Analysis, 2: paper2Analysis, 3: paper3Analysis, 4: paper4Analysis, 5: paper5Analysis, 6: paper6Analysis, 7: paper7Analysis, 8: paper8Analysis, 26: paper26Analysis };
-    const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisMap[p.id] || '') : '';
+    const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisCache[p.id] || '') : '';
 
     const noteCount = getNotes().filter(n => n.paperId === p.id).length;
     const noteBadge = noteCount > 0 ? `<span class="note-count-badge"><i data-lucide="message-square-text" style="font-size:11px;margin-right:3px;"></i>${noteCount}</span>` : '';
@@ -3295,7 +2202,7 @@ function renderPapers() {
           ${p.note ? '<div class="paper-note">📌 ' + p.note + '</div>' : ''}
           <div class="paper-actions">
             <a href="${p.pdf}" target="_blank" rel="noopener" class="action-btn" onclick="setPaperContext(${p.id})"><i data-lucide="file-text" style="font-size:12px;margin-right:3px;"></i>PDF</a>
-            <a href="${p.arxiv}" target="_blank" rel="noopener" class="action-btn"><i data-lucide="external-link" style="font-size:11px;margin-right:3px;"></i>arXiv</a>
+            ${p.arxiv ? `<a href="${p.arxiv}" target="_blank" rel="noopener" class="action-btn"><i data-lucide="external-link" style="font-size:11px;margin-right:3px;"></i>arXiv</a>` : ''}
             ${analysisBtn}
             ${noteBadge}
             <button class="action-btn btn-read ${p.read ? 'marked' : ''}" onclick="toggleRead(${p.id})">
@@ -3320,7 +2227,7 @@ let isPlayingAll = false;
 
 function ttsSpeak(el) {
   window.speechSynthesis.cancel();
-  document.querySelectorAll('.tts-paragraph.speaking').forEach(p => p.classList.remove('speaking'));
+  document.querySelectorAll('.tts-paragraph.speaking, .analysis-content p.speaking').forEach(p => p.classList.remove('speaking'));
   el.classList.add('speaking');
   el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   const text = el.innerText;
@@ -3343,7 +2250,7 @@ function ttsSpeak(el) {
 }
 
 function ttsPlayAll() {
-  allParagraphs = Array.from(document.querySelectorAll('.tts-paragraph'));
+  allParagraphs = Array.from(document.querySelectorAll('.tts-paragraph, .analysis-content p'));
   if (allParagraphs.length === 0) return;
   currentIndex = 0;
   isPlayingAll = true;
@@ -3359,13 +2266,19 @@ function ttsStop() {
   isPlayingAll = false;
   currentIndex = -1;
   window.speechSynthesis.cancel();
-  document.querySelectorAll('.tts-paragraph.speaking').forEach(p => p.classList.remove('speaking'));
+  document.querySelectorAll('.tts-paragraph.speaking, .analysis-content p.speaking').forEach(p => p.classList.remove('speaking'));
   updateTTSStatus('Stopped');
 }
 
 function updateTTSStatus(text) { const el = document.getElementById('ttsStatus'); if (el) el.textContent = text; }
 
 window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+// ── TTS click delegation for analysis-content paragraphs ──
+document.getElementById('paperList').addEventListener('click', function(e) {
+  const p = e.target.closest('.analysis-content p');
+  if (p) ttsSpeak(p);
+});
 
 // ── Filter Buttons ──
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -3906,15 +2819,20 @@ addNote = function() {
 
 // ── Init ──
 loadTheme();
-loadReadState();
 allCollapsed = localStorage.getItem(COLLAPSED_KEY) === 'true';
 if (allCollapsed) document.getElementById('collapseToggle').innerHTML = '<i data-lucide="rows-" style="margin-right:4px;font-size:13px;"></i> Expand all';
-updateStats();
-renderStreak();
-renderPapers();
-updateNotesCount();
 updateGHIcon();
 if (window.lucide) lucide.createIcons();
+
+// Load papers from JSON, then initialize everything
+loadPapers().then(() => {
+  loadReadState();
+  updateStats();
+  renderStreak();
+  renderPapers();
+  updateNotesCount();
+  if (window.lucide) lucide.createIcons();
+});
 </script>
 </body>
 </html>
