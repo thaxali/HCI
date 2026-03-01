@@ -3,6 +3,7 @@
 Add URLs below (one per line). Claude will automatically fetch, synthesize, and add them to the reading list.
 
 ## Pending
+- https://www.theverge.com/tech/885741/microsoft-copilot-tasks-ai
 
 
 ## Processed
