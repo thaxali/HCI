@@ -1,6 +1,6 @@
 # CHI 2026 — Reading Notes
 
-> Auto-generated summary. Last synced: 2/28/2026, 8:34:28 PM
+> Auto-generated summary. Last synced: 2/28/2026, 9:00:54 PM
 
 **Progress:** 0/25 papers read
 
