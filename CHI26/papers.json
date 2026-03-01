@@ -306,5 +306,41 @@
       "eid"
     ],
     "hasAnalysis": true
+  },
+  {
+    "id": 27,
+    "title": "Pentagon vs. Anthropic: The AI Safety Standoff That Changed Everything",
+    "relevance": "The real-world cost of <em>holding the line on AI safety guardrails</em> \u2014 Anthropic refused Pentagon demands, got blacklisted, and OpenAI took the contract accepting the same terms.",
+    "pdf": "https://www.theverge.com/policy/886489/pentagon-anthropic-trump-dod",
+    "tags": [
+      "agents",
+      "seena",
+      "eid",
+      "bias"
+    ],
+    "hasAnalysis": true
+  },
+  {
+    "id": 28,
+    "title": "A User's Guide to Midlife",
+    "relevance": "NYT interactive explainer on <em>real physical changes in midlife</em> \u2014 muscles, metabolism, joints, sleep, hormones \u2014 and what the evidence actually supports for intervention.",
+    "pdf": "https://www.nytimes.com/interactive/2024/06/24/well/live/midlife-health-body-changes-guide.html",
+    "tags": [
+      "behavior",
+      "eid"
+    ],
+    "hasAnalysis": true
+  },
+  {
+    "id": 29,
+    "title": "What Exactly Are AI Companies Trying to Build? Here's a Guide.",
+    "relevance": "Maps the <em>six competing visions driving the AI investment boom</em> \u2014 with hard numbers on why none of them are profitable yet and what each vision means for the future of human-computer interaction.",
+    "pdf": "https://www.nytimes.com/2025/09/16/technology/what-exactly-are-ai-companies-trying-to-build-heres-a-guide.html",
+    "tags": [
+      "agents",
+      "seena",
+      "eid"
+    ],
+    "hasAnalysis": true
   }
 ]
