@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHI'26 Reading List — Seena Labs</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<link href="https://unpkg.com/lucide-static@0.469.0/font/lucide.css" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <style>
 
   :root {
@@ -1330,11 +1330,20 @@
   .gh-connected { opacity: 1 !important; color: var(--green) !important; }
 
   /* ── Lucide Icon Helpers ── */
-  .icon {
+  [data-lucide] {
+    width: 1em;
+    height: 1em;
     display: inline-flex;
     align-items: center;
     vertical-align: middle;
     line-height: 1;
+  }
+  .expand-chevron {
+    color: var(--text-tertiary);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    align-self: center;
   }
 
 </style>
@@ -1349,8 +1358,8 @@
         <span class="seena-wordmark">Seena</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <button class="theme-toggle" id="ghSyncStatus" onclick="openSettings()" title="GitHub sync settings" style="font-size:16px;opacity:0.5;"><i class="icon lucide-github"></i></button>
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode"><i class="icon lucide-sun"></i></button>
+        <button class="theme-toggle" id="ghSyncStatus" onclick="openSettings()" title="GitHub sync settings" style="font-size:16px;opacity:0.5;"><i data-lucide="github"></i></button>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode"><i data-lucide="sun"></i></button>
       </div>
     </div>
     <div class="eyebrow">CHI 2026 · Research Reading List</div>
@@ -1382,7 +1391,7 @@
   </header>
 
   <div class="search-section">
-    <span class="search-icon"><i class="icon lucide-search"></i></span>
+    <span class="search-icon"><i data-lucide="search"></i></span>
     <input type="text" class="search-input" id="searchInput" placeholder="Search papers..." autocomplete="off">
     <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
   </div>
@@ -1405,7 +1414,7 @@
   <div class="controls-row">
     <span class="results-count" id="resultsCount"></span>
     <div class="controls-actions">
-      <button class="control-btn" id="collapseToggle" onclick="toggleCollapseAll()"><i class="icon lucide-rows-3" style="margin-right:4px;font-size:13px;"></i> Collapse all</button>
+      <button class="control-btn" id="collapseToggle" onclick="toggleCollapseAll()"><i data-lucide="rows-" style="margin-right:4px;font-size:13px;"></i> Collapse all</button>
     </div>
   </div>
 
@@ -1455,22 +1464,22 @@
     <div class="notes-bar-top">
       <span id="notesContextBadge" style="display:none" class="notes-context-badge" onclick="clearPaperContext()"></span>
       <div class="note-type-selector">
-        <button class="note-type-btn active" data-type="note" onclick="setNoteType('note')" title="Note"><i class="icon lucide-pen-line"></i></button>
-        <button class="note-type-btn" data-type="idea" onclick="setNoteType('idea')" title="Idea"><i class="icon lucide-lightbulb"></i></button>
-        <button class="note-type-btn" data-type="question" onclick="setNoteType('question')" title="Question"><i class="icon lucide-circle-help"></i></button>
-        <button class="note-type-btn" data-type="connection" onclick="setNoteType('connection')" title="Connection"><i class="icon lucide-link"></i></button>
-        <button class="note-type-btn" data-type="action" onclick="setNoteType('action')" title="Action Item"><i class="icon lucide-square-check-big"></i></button>
+        <button class="note-type-btn active" data-type="note" onclick="setNoteType('note')" title="Note"><i data-lucide="pen-line"></i></button>
+        <button class="note-type-btn" data-type="idea" onclick="setNoteType('idea')" title="Idea"><i data-lucide="lightbulb"></i></button>
+        <button class="note-type-btn" data-type="question" onclick="setNoteType('question')" title="Question"><i data-lucide="circle-help"></i></button>
+        <button class="note-type-btn" data-type="connection" onclick="setNoteType('connection')" title="Connection"><i data-lucide="link"></i></button>
+        <button class="note-type-btn" data-type="action" onclick="setNoteType('action')" title="Action Item"><i data-lucide="square-check-big"></i></button>
       </div>
       <div class="notes-bar-meta">
         <span class="notes-count" id="notesCount"></span>
-        <button class="notes-download-btn" onclick="downloadNotes()" title="Export notes"><i class="icon lucide-download"></i></button>
+        <button class="notes-download-btn" onclick="downloadNotes()" title="Export notes"><i data-lucide="download"></i></button>
       </div>
     </div>
     <div class="notes-input-container">
       <textarea class="notes-input" id="notesInput" placeholder="Jot a note..." rows="1"></textarea>
       <div class="notes-input-actions">
-        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceNote()" title="Voice note"><i class="icon lucide-mic"></i></button>
-        <button class="notes-send-btn" onclick="addNote()" title="Add note"><i class="icon lucide-arrow-up"></i></button>
+        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceNote()" title="Voice note"><i data-lucide="mic"></i></button>
+        <button class="notes-send-btn" onclick="addNote()" title="Add note"><i data-lucide="arrow-up"></i></button>
       </div>
     </div>
   </div>
@@ -2675,7 +2684,8 @@ function toggleTheme() {
 }
 
 function updateThemeIcon(theme) {
-  document.getElementById('themeToggle').innerHTML = theme === 'dark' ? '<i class="icon lucide-moon"></i>' : '<i class="icon lucide-sun"></i>';
+  document.getElementById('themeToggle').innerHTML = theme === 'dark' ? '<i data-lucide="moon"></i>' : '<i data-lucide="sun"></i>';
+  if (window.lucide) lucide.createIcons();
 }
 
 // ── Stats ──
@@ -3070,10 +3080,11 @@ function expandCard(el, paperId) {
 
 function toggleCollapseAll() {
   allCollapsed = !allCollapsed;
-  const icon = allCollapsed ? 'lucide-rows-4' : 'lucide-rows-3';
-  document.getElementById('collapseToggle').innerHTML = `<i class="icon ${icon}" style="margin-right:4px;font-size:13px;"></i> ${allCollapsed ? 'Expand all' : 'Collapse all'}`;
+  const icon = allCollapsed ? 'rows-4' : 'rows-3';
+  document.getElementById('collapseToggle').innerHTML = `<i data-lucide="${icon}" style="margin-right:4px;font-size:13px;"></i> ${allCollapsed ? 'Expand all' : 'Collapse all'}`;
   localStorage.setItem(COLLAPSED_KEY, allCollapsed);
   renderPapers();
+  if (window.lucide) lucide.createIcons();
 }
 
 // ── Render ──
@@ -3141,7 +3152,7 @@ function renderPapers() {
 
     const analysisBtn = p.hasAnalysis
       ? `<button class="action-btn btn-analysis ${analysisOpen[p.id] ? 'open' : ''}" onclick="toggleAnalysis(${p.id})">
-           <i class="icon ${analysisOpen[p.id] ? 'lucide-chevron-down' : 'lucide-sparkles'}" style="font-size:12px;margin-right:3px;"></i>${analysisOpen[p.id] ? 'Hide' : 'Analysis'}
+           <i data-lucide="chevron-down" style="font-size:12px;margin-right:3px;"></i>${analysisOpen[p.id] ? 'Hide' : 'Analysis'}
          </button>`
       : '';
 
@@ -3149,7 +3160,7 @@ function renderPapers() {
     const analysisContent = p.hasAnalysis && analysisOpen[p.id] ? (analysisMap[p.id] || '') : '';
 
     const noteCount = getNotes().filter(n => n.paperId === p.id).length;
-    const noteBadge = noteCount > 0 ? `<span class="note-count-badge"><i class="icon lucide-message-square-text" style="font-size:11px;margin-right:3px;"></i>${noteCount}</span>` : '';
+    const noteBadge = noteCount > 0 ? `<span class="note-count-badge"><i data-lucide="message-square-text" style="font-size:11px;margin-right:3px;"></i>${noteCount}</span>` : '';
 
     const collapsed = allCollapsed && !analysisOpen[p.id] ? 'collapsed' : '';
     const ratingHtml = p.read ? renderRating(p.id) : '';
@@ -3161,19 +3172,19 @@ function renderPapers() {
           <div class="paper-content">
             <div class="paper-title">${p.title}${p.essential ? '<span class="essential-badge">Essential</span>' : ''}</div>
           </div>
-          ${collapsed ? '<i class="icon lucide-chevron-down" style="color:var(--text-tertiary);font-size:16px;flex-shrink:0;align-self:center;"></i>' : ''}
+          ${collapsed ? '<i data-lucide="chevron-down" class="expand-chevron"></i>' : ''}
         </div>
         <div class="paper-body">
           <div class="paper-relevance">${p.relevance}</div>
           <div class="paper-tags">${tags}</div>
           ${p.note ? '<div class="paper-note">📌 ' + p.note + '</div>' : ''}
           <div class="paper-actions">
-            <a href="${p.pdf}" target="_blank" rel="noopener" class="action-btn" onclick="setPaperContext(${p.id})"><i class="icon lucide-file-text" style="font-size:12px;margin-right:3px;"></i>PDF</a>
-            <a href="${p.arxiv}" target="_blank" rel="noopener" class="action-btn"><i class="icon lucide-external-link" style="font-size:11px;margin-right:3px;"></i>arXiv</a>
+            <a href="${p.pdf}" target="_blank" rel="noopener" class="action-btn" onclick="setPaperContext(${p.id})"><i data-lucide="file-text" style="font-size:12px;margin-right:3px;"></i>PDF</a>
+            <a href="${p.arxiv}" target="_blank" rel="noopener" class="action-btn"><i data-lucide="external-link" style="font-size:11px;margin-right:3px;"></i>arXiv</a>
             ${analysisBtn}
             ${noteBadge}
             <button class="action-btn btn-read ${p.read ? 'marked' : ''}" onclick="toggleRead(${p.id})">
-              <i class="icon ${p.read ? 'lucide-check-circle' : 'lucide-circle'}" style="font-size:12px;margin-right:3px;"></i>${p.read ? 'Read' : 'Mark read'}
+              <i data-lucide="check-circle" style="font-size:12px;margin-right:3px;"></i>${p.read ? 'Read' : 'Mark read'}
             </button>
           </div>
           ${ratingHtml}
@@ -3182,6 +3193,8 @@ function renderPapers() {
         </div>
       </div>`;
   }).join('');
+  // Re-initialize Lucide icons for dynamically added elements
+  if (window.lucide) lucide.createIcons();
 }
 
 // ── TTS Engine ──
@@ -3278,11 +3291,11 @@ function isGHConfigured() {
 function updateGHIcon() {
   const icon = document.getElementById('ghSyncStatus');
   if (isGHConfigured()) {
-    icon.innerHTML = '<i class="icon lucide-github"></i>';
+    icon.innerHTML = '<i data-lucide="github"></i>';
     icon.classList.add('gh-connected');
     icon.title = 'GitHub sync connected';
   } else {
-    icon.innerHTML = '<i class="icon lucide-github"></i>';
+    icon.innerHTML = '<i data-lucide="github"></i>';
     icon.classList.remove('gh-connected');
     icon.title = 'GitHub sync — not connected';
   }
@@ -3656,12 +3669,13 @@ addNote = function() {
 loadTheme();
 loadReadState();
 allCollapsed = localStorage.getItem(COLLAPSED_KEY) === 'true';
-if (allCollapsed) document.getElementById('collapseToggle').innerHTML = '<i class="icon lucide-rows-4" style="margin-right:4px;font-size:13px;"></i> Expand all';
+if (allCollapsed) document.getElementById('collapseToggle').innerHTML = '<i data-lucide="rows-" style="margin-right:4px;font-size:13px;"></i> Expand all';
 updateStats();
 renderStreak();
 renderPapers();
 updateNotesCount();
 updateGHIcon();
+if (window.lucide) lucide.createIcons();
 </script>
 </body>
 </html>
