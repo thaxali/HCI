@@ -203,6 +203,13 @@
     background: var(--bg-hover);
   }
 
+  /* Sync Button */
+  .sync-btn { position: relative; }
+  .sync-btn.syncing i { animation: spin 0.8s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .sync-btn.synced { color: var(--green) !important; opacity: 1 !important; }
+  .sync-btn.sync-error { color: var(--rose) !important; opacity: 1 !important; }
+
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -1357,7 +1364,8 @@
         <div class="seena-dot"></div>
         <span class="seena-wordmark">Seena</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:4px;">
+        <button class="theme-toggle sync-btn" id="syncBtn" onclick="quickSync()" title="Sync with GitHub" style="display:none;"><i data-lucide="refresh-cw" id="syncIcon"></i></button>
         <button class="theme-toggle" id="ghSyncStatus" onclick="openSettings()" title="GitHub sync settings" style="font-size:16px;opacity:0.5;"><i data-lucide="github"></i></button>
         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode"><i data-lucide="sun"></i></button>
       </div>
@@ -3290,15 +3298,45 @@ function isGHConfigured() {
 
 function updateGHIcon() {
   const icon = document.getElementById('ghSyncStatus');
+  const syncBtn = document.getElementById('syncBtn');
   if (isGHConfigured()) {
     icon.innerHTML = '<i data-lucide="github"></i>';
     icon.classList.add('gh-connected');
     icon.title = 'GitHub sync connected';
+    if (syncBtn) syncBtn.style.display = '';
   } else {
     icon.innerHTML = '<i data-lucide="github"></i>';
     icon.classList.remove('gh-connected');
     icon.title = 'GitHub sync — not connected';
+    if (syncBtn) syncBtn.style.display = 'none';
   }
+}
+
+async function quickSync() {
+  const btn = document.getElementById('syncBtn');
+  if (btn.classList.contains('syncing')) return;
+
+  btn.classList.remove('synced', 'sync-error');
+  btn.classList.add('syncing');
+  btn.title = 'Syncing...';
+  if (window.lucide) lucide.createIcons();
+
+  try {
+    await pullNotesFromGitHub();
+    await syncNotesToGitHub();
+    btn.classList.remove('syncing');
+    btn.classList.add('synced');
+    btn.title = 'Synced!';
+    showToast('Synced with GitHub');
+    setTimeout(() => { btn.classList.remove('synced'); btn.title = 'Sync with GitHub'; }, 3000);
+  } catch (e) {
+    btn.classList.remove('syncing');
+    btn.classList.add('sync-error');
+    btn.title = 'Sync failed';
+    showToast('Sync failed — check settings');
+    setTimeout(() => { btn.classList.remove('sync-error'); btn.title = 'Sync with GitHub'; }, 3000);
+  }
+  if (window.lucide) lucide.createIcons();
 }
 
 function openSettings() {
