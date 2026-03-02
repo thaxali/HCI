@@ -3,6 +3,7 @@
 Add URLs below (one per line). Claude will automatically fetch, synthesize, and add them to the reading list.
 
 ## Pending
+- https://info.heymarvin.com/hubfs/2025-State-of-Research-Repositories.pdf?hsLang=en
 
 
 ## Processed
