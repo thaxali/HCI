@@ -3,11 +3,11 @@
 Add URLs below (one per line). Claude will automatically fetch, synthesize, and add them to the reading list.
 
 ## Pending
-- https://info.heymarvin.com/hubfs/2025-State-of-Research-Repositories.pdf?hsLang=en
 
 
 ## Processed
 
+- #31 https://info.heymarvin.com/hubfs/2025-State-of-Research-Repositories.pdf?hsLang=en
 - #30 https://www.theverge.com/tech/885741/microsoft-copilot-tasks-ai
 - #27 https://www.theverge.com/policy/886489/pentagon-anthropic-trump-dod
 - #28 https://www.nytimes.com/interactive/2024/06/24/well/live/midlife-health-body-changes-guide.html?smid=nytcore-ios-share

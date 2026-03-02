@@ -354,5 +354,17 @@
       "eid"
     ],
     "hasAnalysis": true
+  },
+  {
+    "id": 31,
+    "title": "The 2025 State of Research Repositories: An Industry Report",
+    "relevance": "Marvin's industry-wide analysis of why research repositories fail \u2014 the exact problem Seena is solving with its <em>AI-native insight infrastructure</em>. Four key findings on culture, adoption, AI scalability, and decision impact.",
+    "pdf": "https://info.heymarvin.com/hubfs/2025-State-of-Research-Repositories.pdf?hsLang=en",
+    "tags": [
+      "seena",
+      "qual",
+      "eid"
+    ],
+    "hasAnalysis": true
   }
 ]
