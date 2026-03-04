@@ -366,5 +366,19 @@
       "eid"
     ],
     "hasAnalysis": true
+  },
+  {
+    "id": 32,
+    "title": "Building Pro-Worker Artificial Intelligence",
+    "relevance": "Acemoglu, Autor, and Johnson define the exact design distinction Seena embodies: <em>AI that amplifies human expertise</em> vs. AI that commodifies it. A rigorous economic framework for why augmentation > automation.",
+    "pdf": "https://www.brookings.edu/wp-content/uploads/2026/02/20260223_THP_ProWorkerAI_Paper.pdf",
+    "tags": [
+      "agents",
+      "seena",
+      "eid",
+      "behavior"
+    ],
+    "hasAnalysis": true,
+    "essential": true
   }
 ]
