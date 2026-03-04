@@ -3,6 +3,7 @@
 Add URLs below (one per line). Claude will automatically fetch, synthesize, and add them to the reading list.
 
 ## Pending
+- https://www.newyorker.com/news/the-financial-page/can-ai-be-pro-worker
 - https://www.brookings.edu/wp-content/uploads/2026/02/20260223_THP_ProWorkerAI_Paper.pdf
 
 
