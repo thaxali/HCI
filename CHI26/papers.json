@@ -380,5 +380,16 @@
     ],
     "hasAnalysis": true,
     "essential": true
+  },
+  {
+    "id": 33,
+    "title": "Can AI Be Pro-Worker?",
+    "relevance": "John Cassidy's New Yorker synthesis of the Acemoglu-Autor-Johnson framework \u2014 the clearest mainstream articulation that <em>automation vs. augmentation is a design choice</em>, not economic inevitability.",
+    "pdf": "https://www.newyorker.com/news/the-financial-page/can-ai-be-pro-worker",
+    "tags": [
+      "eid",
+      "agents"
+    ],
+    "hasAnalysis": true
   }
 ]
